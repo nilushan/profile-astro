@@ -1,25 +1,55 @@
 ---
-import '../styles/global.css';
-// Component Imports
-import Button from '../components/Button.astro';
+import { Integration3 } from '@/components/ui/integration3';
+import '../styles/global.css'
+import { ModeToggle } from '@/components/ModeToggle';
+import { Feature166  } from '@/components/feature166';
 
-// Full Astro Component Syntax:
-// https://docs.astro.build/basics/astro-components/
+const featuresProps  = {
+  heading : "Blocks built with Shadcn & Tailwind",
+  description : "Finely crafted components built with React, Tailwind and Shadcn UI. Developers can copy and paste these blocks directly into their project.",
+  feature1 : {
+    title: "UI/UX Design",
+    description:
+      "Creating intuitive user experiences with modern interface design principles and user-centered methodologies.",
+    image: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg",
+  },
+  feature2 : {
+    title: "Responsive Development",
+    description:
+      "Building websites that look and function perfectly across all devices and screen sizes.",
+    image: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-2.svg",
+  },
+  feature3 : {
+    title: "Brand Integration",
+    description:
+      "Seamlessly incorporating your brand identity into every aspect of your website's design.",
+    image: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg",
+  },
+  feature4 : {
+    title: "Performance Optimization",
+    description:
+      "Ensuring fast loading times and smooth performance through optimized code and assets.",
+    image: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-2.svg",
+  },
+};
+
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro + TailwindCSS</title>
-	</head>
 
+<html lang="en">
 	<body>
-		<div class="grid place-items-center h-screen content-center">
-			<Button>Tailwind Button in Astro!</Button>
-			<a href="/markdown-page" class="p-4 underline">Markdown is also supported...</a>
-		</div>
-	</body>
+      <h1>Astro</h1>
+      <button class="btn btn-neutral">Neutral</button>
+<button class="btn btn-primary">Primary</button>
+<button class="btn btn-secondary">Secondary</button>
+<button class="btn btn-accent">Accent</button>
+<button class="btn btn-info">Info</button>
+<button class="btn btn-success">Success</button>
+<button class="btn btn-warning">Warning</button>
+<button class="btn btn-error">Error</button>
+      <ModeToggle client:load />
+	  <Integration3 />
+	  <Feature166 {...featuresProps} />
+
+		</body>
 </html>
