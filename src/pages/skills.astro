@@ -1,0 +1,412 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { portfolioData } from '@/data/portfolio'
+
+const { skills } = portfolioData
+
+// Skill proficiency levels (for display purposes)
+const skillLevels = {
+  expert: { label: 'Expert', class: 'progress-success', value: 95 },
+  advanced: { label: 'Advanced', class: 'progress-primary', value: 85 },
+  intermediate: { label: 'Intermediate', class: 'progress-secondary', value: 70 },
+  familiar: { label: 'Familiar', class: 'progress-accent', value: 60 }
+}
+
+// Categorize skills with proficiency levels based on CV data
+const skillCategories = [
+  {
+    title: 'Programming Languages',
+    icon: 'code',
+    description: 'Languages I use to build robust applications',
+    skills: [
+      { name: 'TypeScript', level: 'expert', years: '7+' },
+      { name: 'JavaScript', level: 'expert', years: '15+' },
+      { name: 'Node.js', level: 'expert', years: '8+' },
+      { name: 'Java', level: 'advanced', years: '5+' },
+      { name: 'C#', level: 'advanced', years: '4+' },
+      { name: 'C++', level: 'intermediate', years: '3+' },
+      { name: 'PHP', level: 'intermediate', years: '4+' }
+    ]
+  },
+  {
+    title: 'Frontend Development',
+    icon: 'palette',
+    description: 'Technologies for creating engaging user interfaces',
+    skills: [
+      { name: 'React', level: 'expert', years: '7+' },
+      { name: 'Redux', level: 'expert', years: '6+' },
+      { name: 'HTML5', level: 'expert', years: '15+' },
+      { name: 'CSS3', level: 'expert', years: '15+' },
+      { name: 'Bootstrap', level: 'advanced', years: '8+' },
+      { name: 'Chart.js', level: 'advanced', years: '4+' },
+      { name: 'Socket.IO', level: 'advanced', years: '3+' },
+      { name: 'Astro', level: 'intermediate', years: '1+' }
+    ]
+  },
+  {
+    title: 'Backend Development',
+    icon: 'server',
+    description: 'Server-side technologies and architectural patterns',
+    skills: [
+      { name: 'Express', level: 'expert', years: '8+' },
+      { name: 'Fastify', level: 'advanced', years: '3+' },
+      { name: 'REST APIs', level: 'expert', years: '10+' },
+      { name: 'Event-Driven Architecture', level: 'expert', years: '5+' },
+      { name: 'Service-Oriented Architecture', level: 'expert', years: '6+' },
+      { name: 'Microservices', level: 'advanced', years: '4+' },
+      { name: 'GraphQL', level: 'intermediate', years: '2+' }
+    ]
+  },
+  {
+    title: 'Databases',
+    icon: 'database',
+    description: 'Data storage and management solutions',
+    skills: [
+      { name: 'PostgreSQL', level: 'expert', years: '6+' },
+      { name: 'Redis', level: 'expert', years: '5+' },
+      { name: 'Firestore', level: 'advanced', years: '4+' },
+      { name: 'MySQL', level: 'advanced', years: '10+' },
+      { name: 'MongoDB', level: 'advanced', years: '4+' },
+      { name: 'TimescaleDB', level: 'intermediate', years: '2+' },
+      { name: 'ClickHouse', level: 'intermediate', years: '1+' }
+    ]
+  },
+  {
+    title: 'Google Cloud Platform',
+    icon: 'cloud',
+    description: 'GCP services I actively use in production',
+    skills: [
+      { name: 'Kubernetes', level: 'expert', years: '6+' },
+      { name: 'Cloud Functions', level: 'expert', years: '6+' },
+      { name: 'Firebase', level: 'expert', years: '5+' },
+      { name: 'IoT Core', level: 'expert', years: '4+' },
+      { name: 'PubSub', level: 'expert', years: '5+' },
+      { name: 'Compute Engine', level: 'advanced', years: '5+' },
+      { name: 'Cloud Storage', level: 'advanced', years: '6+' },
+      { name: 'Cloud Build', level: 'advanced', years: '4+' }
+    ]
+  },
+  {
+    title: 'DevOps & Tools',
+    icon: 'cog',
+    description: 'Infrastructure, deployment, and development tools',
+    skills: [
+      { name: 'Docker', level: 'expert', years: '6+' },
+      { name: 'CI/CD', level: 'expert', years: '6+' },
+      { name: 'GitHub Actions', level: 'advanced', years: '4+' },
+      { name: 'Git', level: 'expert', years: '15+' },
+      { name: 'Jira', level: 'advanced', years: '8+' },
+      { name: 'Confluence', level: 'advanced', years: '6+' },
+      { name: 'Terraform', level: 'intermediate', years: '2+' }
+    ]
+  }
+]
+
+const getSkillIcon = (iconType: string) => {
+  const icons = {
+    code: 'M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5',
+    palette: 'M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42',
+    server: 'M21.75 17.25v-.228a4.5 4.5 0 00-.12-1.03l-2.268-9.64a3.375 3.375 0 00-3.285-2.602H7.923a3.375 3.375 0 00-3.285 2.602l-2.268 9.64a4.5 4.5 0 00-.12 1.03v.228m19.5 0a3 3 0 01-3 3H5.25a3 3 0 01-3-3m19.5 0a3 3 0 00-3-3H5.25a3 3 0 00-3 3m16.5 0h.008v.008h-.008v-.008zm-3 0h.008v.008h-.008v-.008z',
+    database: 'M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125',
+    cloud: 'M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z',
+    cog: 'M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.240.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z M15 12a3 3 0 11-6 0 3 3 0 016 0z'
+  }
+  return icons[iconType] || icons.code
+}
+---
+
+<Layout title="Skills - Nilushan Silva" description="Explore my comprehensive technical skill set including programming languages, frameworks, cloud platforms, and development tools.">
+  <!-- Page Header -->
+  <section class="hero bg-gradient-to-r from-primary/10 to-secondary/10 py-20">
+    <div class="hero-content text-center">
+      <div class="max-w-3xl">
+        <h1 class="text-4xl lg:text-5xl font-bold mb-6 text-base-content">
+          Technical Skills
+        </h1>
+        <p class="text-lg text-base-content/70">
+          A comprehensive overview of my technical expertise across full-stack development, cloud platforms, and modern development practices.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Overview Stats -->
+  <section class="py-16 bg-base-200">
+    <div class="container mx-auto px-4">
+      <div class="stats stats-vertical lg:stats-horizontal shadow-xl w-full max-w-4xl mx-auto bg-base-100">
+        <div class="stat place-items-center">
+          <div class="stat-figure text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+            </svg>
+          </div>
+          <div class="stat-title">Languages</div>
+          <div class="stat-value text-primary">{skills.programming.length}</div>
+          <div class="stat-desc">Programming Languages</div>
+        </div>
+        
+        <div class="stat place-items-center">
+          <div class="stat-figure text-secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+            </svg>
+          </div>
+          <div class="stat-title">Cloud Services</div>
+          <div class="stat-value text-secondary">{skills.cloud.gcp.actively.length}+</div>
+          <div class="stat-desc">GCP Services</div>
+        </div>
+        
+        <div class="stat place-items-center">
+          <div class="stat-figure text-accent">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.240.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+            </svg>
+          </div>
+          <div class="stat-title">Development Tools</div>
+          <div class="stat-value text-accent">{skills.tools.length}</div>
+          <div class="stat-desc">Tools & Platforms</div>
+        </div>
+        
+        <div class="stat place-items-center">
+          <div class="stat-figure text-info">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="stat-title">Experience</div>
+          <div class="stat-value text-info">15+</div>
+          <div class="stat-desc">Years in Tech</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed Skills Sections -->
+  <section class="py-16 lg:py-24">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-8">
+          {skillCategories.map((category, categoryIndex) => (
+            <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+              <div class="card-body">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class={`w-12 h-12 rounded-full bg-gradient-to-br ${
+                    categoryIndex % 4 === 0 ? 'from-primary/20 to-primary/10' :
+                    categoryIndex % 4 === 1 ? 'from-secondary/20 to-secondary/10' :
+                    categoryIndex % 4 === 2 ? 'from-accent/20 to-accent/10' :
+                    'from-info/20 to-info/10'
+                  } flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class={`h-6 w-6 ${
+                      categoryIndex % 4 === 0 ? 'text-primary' :
+                      categoryIndex % 4 === 1 ? 'text-secondary' :
+                      categoryIndex % 4 === 2 ? 'text-accent' :
+                      'text-info'
+                    }`}>
+                      <path stroke-linecap="round" stroke-linejoin="round" d={getSkillIcon(category.icon)} />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="card-title text-xl">{category.title}</h3>
+                    <p class="text-sm text-base-content/60">{category.description}</p>
+                  </div>
+                </div>
+                
+                <div class="space-y-4">
+                  {category.skills.map((skill) => (
+                    <div class="skill-item">
+                      <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                          <span class="font-medium text-base-content">{skill.name}</span>
+                          <div class={`badge badge-sm ${
+                            skill.level === 'expert' ? 'badge-success' :
+                            skill.level === 'advanced' ? 'badge-primary' :
+                            skill.level === 'intermediate' ? 'badge-secondary' :
+                            'badge-accent'
+                          }`}>
+                            {skillLevels[skill.level].label}
+                          </div>
+                        </div>
+                        <span class="text-xs text-base-content/60 font-mono">{skill.years}</span>
+                      </div>
+                      <progress 
+                        class={`progress ${skillLevels[skill.level].class} w-full`} 
+                        value={skillLevels[skill.level].value} 
+                        max="100"
+                      ></progress>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cloud Platforms Comparison -->
+  <section class="py-16 bg-base-200">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center mb-12">
+        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
+          Cloud Platform Experience
+        </h2>
+        <p class="text-lg text-base-content/70">
+          My experience across different cloud platforms and services
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <!-- Google Cloud Platform -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-7 w-7 text-primary">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold">Google Cloud</h3>
+                <div class="badge badge-success">Expert</div>
+              </div>
+            </div>
+            
+            <p class="text-base-content/80 mb-4">6+ years of production experience</p>
+            
+            <div class="space-y-2">
+              <h4 class="font-semibold text-sm">Actively Using:</h4>
+              <div class="flex flex-wrap gap-1">
+                {skills.cloud.gcp.actively.slice(0, 8).map((service) => (
+                  <div class="badge badge-primary badge-sm">{service}</div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- AWS -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-7 w-7 text-secondary">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold">Amazon AWS</h3>
+                <div class="badge badge-warning">Learning</div>
+              </div>
+            </div>
+            
+            <p class="text-base-content/80 mb-4">Currently expanding knowledge</p>
+            
+            <div class="space-y-2">
+              <h4 class="font-semibold text-sm">Familiar With:</h4>
+              <div class="flex flex-wrap gap-1">
+                {skills.cloud.aws.familiar.slice(0, 6).map((service) => (
+                  <div class="badge badge-secondary badge-sm">{service}</div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Azure -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-7 w-7 text-accent">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold">Microsoft Azure</h3>
+                <div class="badge badge-accent">Familiar</div>
+              </div>
+            </div>
+            
+            <p class="text-base-content/80 mb-4">Basic understanding and usage</p>
+            
+            <div class="space-y-2">
+              <h4 class="font-semibold text-sm">Familiar With:</h4>
+              <div class="flex flex-wrap gap-1">
+                {skills.cloud.azure.familiar.map((service) => (
+                  <div class="badge badge-accent badge-sm">{service}</div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skill Proficiency Legend -->
+  <section class="py-16">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="card bg-gradient-to-r from-info/10 to-accent/10 shadow-lg">
+          <div class="card-body">
+            <h3 class="text-2xl font-bold mb-6 text-center">Skill Proficiency Guide</h3>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div class="text-center">
+                <div class="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <div class="badge badge-success">Expert</div>
+                </div>
+                <h4 class="font-semibold mb-2">Expert Level</h4>
+                <p class="text-xs text-base-content/70">5+ years of production experience, can mentor others, deep understanding of best practices</p>
+              </div>
+              <div class="text-center">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <div class="badge badge-primary">Advanced</div>
+                </div>
+                <h4 class="font-semibold mb-2">Advanced Level</h4>
+                <p class="text-xs text-base-content/70">3+ years experience, comfortable with complex projects, good understanding of patterns</p>
+              </div>
+              <div class="text-center">
+                <div class="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <div class="badge badge-secondary">Intermediate</div>
+                </div>
+                <h4 class="font-semibold mb-2">Intermediate Level</h4>
+                <p class="text-xs text-base-content/70">1-3 years experience, can work independently, understand core concepts</p>
+              </div>
+              <div class="text-center">
+                <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <div class="badge badge-accent">Familiar</div>
+                </div>
+                <h4 class="font-semibold mb-2">Familiar Level</h4>
+                <p class="text-xs text-base-content/70">Basic understanding, can work with guidance, learning actively</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 bg-gradient-to-r from-primary to-secondary">
+    <div class="container mx-auto px-4 text-center">
+      <div class="max-w-2xl mx-auto">
+        <h2 class="text-3xl font-bold mb-4 text-primary-content">
+          Let's Build Something Amazing Together
+        </h2>
+        <p class="text-lg text-primary-content/80 mb-8">
+          With my diverse skill set and experience, I can help bring your technical vision to life. 
+          Whether it's cloud architecture, full-stack development, or IoT solutions.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="btn btn-accent btn-lg">
+            Start a Conversation
+          </a>
+          <a href="/projects" class="btn btn-outline btn-lg text-primary-content border-primary-content hover:bg-primary-content hover:text-primary">
+            See My Work
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

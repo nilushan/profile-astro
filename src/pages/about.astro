@@ -1,0 +1,212 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { portfolioData } from '@/data/portfolio'
+
+const { personal, education, interests, currentLearning } = portfolioData
+const startYear = 2008
+const currentYear = new Date().getFullYear()
+const yearsExperience = currentYear - startYear
+---
+
+<Layout title={`About ${personal.name}`} description="Learn more about my background, journey, and interests in software development and cloud engineering.">
+  <!-- Page Header -->
+  <section class="hero bg-gradient-to-r from-primary/10 to-secondary/10 py-20">
+    <div class="hero-content text-center">
+      <div class="max-w-3xl">
+        <h1 class="text-4xl lg:text-5xl font-bold mb-6 text-base-content">
+          About Me
+        </h1>
+        <p class="text-lg text-base-content/70">
+          Get to know more about my journey, background, and what drives me as a software engineer.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Content -->
+  <section class="py-16 lg:py-24">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <!-- Introduction -->
+        <div class="card bg-base-100 shadow-xl mb-12">
+          <div class="card-body">
+            <div class="flex flex-col lg:flex-row gap-8 items-start">
+              <div class="flex-shrink-0">
+                <div class="avatar placeholder">
+                  <div class="bg-primary text-primary-content w-32 h-32 rounded-full">
+                    <span class="text-3xl">{personal.name.split(' ').map(n => n[0]).join('')}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-1">
+                <h2 class="text-2xl font-bold mb-4 text-base-content">
+                  Hello, I'm {personal.name}
+                </h2>
+                <p class="text-base-content/80 leading-relaxed mb-6">
+                  {personal.summary}
+                </p>
+                <div class="stats stats-vertical lg:stats-horizontal shadow">
+                  <div class="stat">
+                    <div class="stat-title">Years of Experience</div>
+                    <div class="stat-value text-primary">{yearsExperience}+</div>
+                    <div class="stat-desc">Since {startYear}</div>
+                  </div>
+                  <div class="stat">
+                    <div class="stat-title">Location</div>
+                    <div class="stat-value text-secondary text-lg">QLD</div>
+                    <div class="stat-desc">{personal.location}</div>
+                  </div>
+                  <div class="stat">
+                    <div class="stat-title">Focus Areas</div>
+                    <div class="stat-value text-accent text-lg">Full Stack</div>
+                    <div class="stat-desc">& Cloud Engineering</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Professional Journey -->
+        <div class="grid lg:grid-cols-2 gap-8 mb-12">
+          <div class="card bg-gradient-to-br from-primary/5 to-transparent shadow-lg">
+            <div class="card-body">
+              <h3 class="card-title text-xl mb-4 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-primary">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+                </svg>
+                My Journey
+              </h3>
+              <p class="text-base-content/80 leading-relaxed">
+                My journey in technology began during my computer science studies at the University of Colombo. 
+                What started as curiosity about how software works has evolved into a passion for building 
+                scalable, robust systems that solve real-world problems. Over the years, I've had the privilege 
+                of working on everything from military simulation software to large-scale IoT platforms serving 
+                tens of thousands of devices.
+              </p>
+            </div>
+          </div>
+
+          <div class="card bg-gradient-to-br from-secondary/5 to-transparent shadow-lg">
+            <div class="card-body">
+              <h3 class="card-title text-xl mb-4 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-secondary">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189 6.01 6.01 0 001.041-.297 4.5 4.5 0 00.75-.602.375.375 0 00.093-.267.375.375 0 00-.093-.267c-.089-.072-.357-.279-.75-.602a6.01 6.01 0 00-1.041-.297A6.01 6.01 0 0012 10.5a6.01 6.01 0 00-1.5-.189 6.01 6.01 0 00-1.041.297c-.393.323-.661.53-.75.602a.375.375 0 00-.093.267c0 .102.026.17.056.217.022.035.063.084.118.138a4.75 4.75 0 00.576.464c.328.22.694.406 1.089.567A6.01 6.01 0 0012 12.75zM12 12.75a6.01 6.01 0 001.5.189 6.01 6.01 0 001.041-.297 4.5 4.5 0 00.75-.602.375.375 0 00.093-.267c0-.102-.026-.17-.056-.217a.378.378 0 00-.118-.138 4.75 4.75 0 00-.576-.464A6.01 6.01 0 0012.75 11c-.394.161-.76.347-1.089.567a4.75 4.75 0 00-.576.464.378.378 0 00-.118.138.375.375 0 00-.056.217.375.375 0 00.093.267c.089.072.357.279.75.602.324.267.69.499 1.041.297A6.01 6.01 0 0012 12.75z" />
+                </svg>
+                What Drives Me
+              </h3>
+              <p class="text-base-content/80 leading-relaxed">
+                I'm passionate about creating technology that makes a difference. Whether it's optimizing 
+                cloud infrastructure to reduce costs by 50%, building real-time systems that handle thousands 
+                of concurrent users, or designing intuitive interfaces that delight users, I'm driven by the 
+                impact of well-crafted software. I believe in continuous learning and staying at the forefront 
+                of technology trends.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="card bg-base-100 shadow-xl mb-12">
+          <div class="card-body">
+            <h3 class="card-title text-2xl mb-6 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-7 w-7 text-primary">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+              </svg>
+              Education
+            </h3>
+            <div class="flex flex-col lg:flex-row gap-6 items-start">
+              <div class="flex-shrink-0">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8 text-primary">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                  </svg>
+                </div>
+              </div>
+              <div class="flex-1">
+                <h4 class="text-xl font-semibold mb-2">{education.degree}</h4>
+                <p class="text-base-content/70 mb-2">{education.institution}, {education.location}</p>
+                <div class="badge badge-primary">{education.period}</div>
+                <p class="text-base-content/80 mt-4">
+                  My computer science education provided me with a strong foundation in algorithms, data structures, 
+                  software engineering principles, and system design. This academic background, combined with hands-on 
+                  project experience, prepared me well for the challenges of real-world software development.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Current Learning -->
+        <div class="card bg-gradient-to-br from-accent/10 to-transparent shadow-lg mb-12">
+          <div class="card-body">
+            <h3 class="card-title text-xl mb-4 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-accent">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+              </svg>
+              Continuous Learning
+            </h3>
+            <p class="text-base-content/80 mb-4">{currentLearning}</p>
+            <div class="flex flex-wrap gap-2">
+              <div class="badge badge-outline">AWS Architecture</div>
+              <div class="badge badge-outline">Cloud Certifications</div>
+              <div class="badge badge-outline">Modern DevOps</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interests -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h3 class="card-title text-2xl mb-6 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-7 w-7 text-primary">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.847a4.5 4.5 0 003.09 3.09L15.75 12l-2.847.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+              </svg>
+              Professional Interests & Expertise
+            </h3>
+            <div class="grid lg:grid-cols-2 gap-6">
+              {interests.map((interest) => (
+                <div class="card bg-gradient-to-br from-base-200 to-transparent">
+                  <div class="card-body">
+                    <h4 class="text-lg font-semibold mb-2 text-primary">{interest.title}</h4>
+                    <p class="text-base-content/80 text-sm mb-3">{interest.description}</p>
+                    {interest.items && (
+                      <ul class="space-y-2">
+                        {interest.items.map((item) => (
+                          <li class="flex items-start gap-2 text-sm">
+                            <div class="w-1 h-1 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                            <span class="text-base-content/70">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact CTA -->
+        <div class="text-center mt-12">
+          <div class="card bg-gradient-to-r from-primary to-secondary text-primary-content shadow-xl">
+            <div class="card-body">
+              <h3 class="text-2xl font-bold mb-4">Let's Connect</h3>
+              <p class="mb-6 opacity-90">
+                I'm always interested in discussing new opportunities, sharing knowledge, or collaborating on interesting projects.
+              </p>
+              <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/contact" class="btn btn-accent">
+                  Get In Touch
+                </a>
+                <a href="/projects" class="btn btn-outline text-primary-content border-primary-content hover:bg-primary-content hover:text-primary">
+                  View My Work
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,55 +1,300 @@
 ---
-import { Integration3 } from '@/components/ui/integration3';
-import '../styles/global.css'
-import { ModeToggle } from '@/components/ModeToggle';
-import { Feature166  } from '@/components/feature166';
+import Layout from '@/layouts/Layout.astro'
+import Hero from '@/components/sections/Hero.astro'
+import { portfolioData } from '@/data/portfolio'
 
-const featuresProps  = {
-  heading : "Blocks built with Shadcn & Tailwind",
-  description : "Finely crafted components built with React, Tailwind and Shadcn UI. Developers can copy and paste these blocks directly into their project.",
-  feature1 : {
-    title: "UI/UX Design",
-    description:
-      "Creating intuitive user experiences with modern interface design principles and user-centered methodologies.",
-    image: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg",
-  },
-  feature2 : {
-    title: "Responsive Development",
-    description:
-      "Building websites that look and function perfectly across all devices and screen sizes.",
-    image: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-2.svg",
-  },
-  feature3 : {
-    title: "Brand Integration",
-    description:
-      "Seamlessly incorporating your brand identity into every aspect of your website's design.",
-    image: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg",
-  },
-  feature4 : {
-    title: "Performance Optimization",
-    description:
-      "Ensuring fast loading times and smooth performance through optimized code and assets.",
-    image: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-2.svg",
-  },
-};
-
+const { personal, experience, projects, skills } = portfolioData
+const featuredProjects = projects.slice(0, 3)
+const recentExperience = experience.slice(0, 2)
 ---
 
+<Layout>
+  <!-- Hero Section -->
+  <Hero />
+  
+  <!-- About Preview Section -->
+  <section class="py-16 lg:py-24 bg-base-200">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl lg:text-4xl font-bold mb-8 text-base-content">
+          About Me
+        </h2>
+        <p class="text-lg leading-relaxed text-base-content/80 mb-8">
+          {personal.summary}
+        </p>
+        <div class="flex flex-wrap justify-center gap-2 mb-8">
+          <div class="badge badge-primary badge-lg">TypeScript Expert</div>
+          <div class="badge badge-secondary badge-lg">GCP Architect</div>
+          <div class="badge badge-accent badge-lg">IoT Specialist</div>
+          <div class="badge badge-info badge-lg">DevOps Engineer</div>
+        </div>
+        <a href="/about" class="btn btn-primary btn-lg">
+          Learn More About Me
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 ml-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
 
-<html lang="en">
-	<body>
-      <h1>Astro</h1>
-      <button class="btn btn-neutral">Neutral</button>
-<button class="btn btn-primary">Primary</button>
-<button class="btn btn-secondary">Secondary</button>
-<button class="btn btn-accent">Accent</button>
-<button class="btn btn-info">Info</button>
-<button class="btn btn-success">Success</button>
-<button class="btn btn-warning">Warning</button>
-<button class="btn btn-error">Error</button>
-      <ModeToggle client:load />
-	  <Integration3 />
-	  <Feature166 {...featuresProps} />
+  <!-- Featured Projects Section -->
+  <section class="py-16 lg:py-24">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
+          Featured Projects
+        </h2>
+        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+          Here are some of my most impactful projects that demonstrate my expertise in full-stack development and cloud architecture.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {featuredProjects.map((project, index) => (
+          <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+            <figure class="px-6 pt-6">
+              <div class="w-full h-48 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="h-16 w-16 text-primary">
+                  {index === 0 && (
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.115 5.19l.319 1.913A6 6 0 008.11 10.36L9.75 12l-.387.775c-.217.433-.132.956.21 1.298l1.348 1.348c.21.21.329.497.329.795v1.089c0 .426.24.815.622 1.006l.153.076c.433.217.956.132 1.298-.21l.723-.723a8.7 8.7 0 002.288-4.042 1.087 1.087 0 00-.358-1.099l-1.33-1.108c-.251-.21-.582-.299-.905-.245l-1.17.195a1.125 1.125 0 01-.98-.314l-.295-.295a1.125 1.125 0 010-1.591l.13-.132a1.125 1.125 0 011.3-.21l.603.302a.809.809 0 001.086-1.086L14.25 7.5l1.256-.837a4.5 4.5 0 001.528-1.732l.146-.292M6.115 5.19A9 9 0 1017.18 4.64M6.115 5.19A8.965 8.965 0 0112 3c1.929 0 3.716.607 5.18 1.64" />
+                  )}
+                  {index === 1 && (
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                  )}
+                  {index === 2 && (
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                  )}
+                </svg>
+              </div>
+            </figure>
+            <div class="card-body">
+              <h3 class="card-title text-xl group-hover:text-primary transition-colors">
+                {project.title}
+              </h3>
+              <p class="text-base-content/70 text-sm font-medium mb-2">
+                {project.period}
+              </p>
+              <p class="text-base-content/80 mb-4">
+                {project.description}
+              </p>
+              <div class="flex flex-wrap gap-1 mb-4">
+                {project.technologies.slice(0, 3).map((tech) => (
+                  <div class="badge badge-outline badge-sm">{tech}</div>
+                ))}
+                {project.technologies.length > 3 && (
+                  <div class="badge badge-outline badge-sm">+{project.technologies.length - 3}</div>
+                )}
+              </div>
+              <div class="card-actions justify-end">
+                <a href="/projects" class="btn btn-primary btn-sm">
+                  View Details
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href="/projects" class="btn btn-outline btn-lg">
+          View All Projects
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 ml-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
 
-		</body>
-</html>
+  <!-- Experience Timeline Section -->
+  <section class="py-16 lg:py-24 bg-base-200">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
+          Professional Experience
+        </h2>
+        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+          A timeline of my career progression and key achievements in full-stack development and cloud engineering.
+        </p>
+      </div>
+      
+      <div class="max-w-4xl mx-auto">
+        {recentExperience.map((job, index) => (
+          <div class="card bg-base-100 shadow-xl mb-8 hover:shadow-2xl transition-shadow">
+            <div class="card-body">
+              <div class="flex flex-col lg:flex-row lg:items-start gap-4">
+                <div class="flex-shrink-0">
+                  <div class="avatar placeholder">
+                    <div class="bg-primary text-primary-content w-16 h-16 rounded-full">
+                      <span class="text-xl font-bold">
+                        {job.company.split(' ').map(word => word[0]).join('').slice(0, 2)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                    <h3 class="card-title text-xl">{job.title}</h3>
+                    <div class="badge badge-primary badge-lg">{job.period}</div>
+                  </div>
+                  <h4 class="text-lg font-semibold text-base-content/80 mb-4">
+                    {job.company} • {job.location}
+                  </h4>
+                  <div class="grid sm:grid-cols-2 gap-4">
+                    {job.highlights.slice(0, 4).map((highlight) => (
+                      <div class="flex items-start gap-3">
+                        <div class="flex-shrink-0 w-2 h-2 bg-primary rounded-full mt-2"></div>
+                        <div>
+                          <p class="font-medium text-sm text-base-content">
+                            {highlight.title}
+                          </p>
+                          <p class="text-xs text-base-content/70 mt-1">
+                            {highlight.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div class="flex flex-wrap gap-1 mt-4">
+                    {job.technologies.slice(0, 6).map((tech) => (
+                      <div class="badge badge-outline badge-sm">{tech}</div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        
+        <div class="text-center mt-8">
+          <a href="/experience" class="btn btn-outline btn-lg">
+            View Full Experience
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 ml-2">
+              <path stroke-linecpa="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Overview Section -->
+  <section class="py-16 lg:py-24">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
+          Technical Skills
+        </h2>
+        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+          A comprehensive overview of my technical expertise across different domains of software development.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <!-- Programming Languages -->
+        <div class="card bg-gradient-to-br from-primary/10 to-primary/5 shadow-lg">
+          <div class="card-body items-center text-center">
+            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8 text-primary-content">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+              </svg>
+            </div>
+            <h3 class="card-title text-lg mb-2">Programming</h3>
+            <div class="flex flex-wrap gap-1 justify-center">
+              {skills.programming.slice(0, 4).map((skill) => (
+                <div class="badge badge-primary badge-sm">{skill}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        <!-- Frontend -->
+        <div class="card bg-gradient-to-br from-secondary/10 to-secondary/5 shadow-lg">
+          <div class="card-body items-center text-center">
+            <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8 text-secondary-content">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />
+              </svg>
+            </div>
+            <h3 class="card-title text-lg mb-2">Frontend</h3>
+            <div class="flex flex-wrap gap-1 justify-center">
+              {skills.frontend.slice(0, 4).map((skill) => (
+                <div class="badge badge-secondary badge-sm">{skill}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        <!-- Cloud -->
+        <div class="card bg-gradient-to-br from-accent/10 to-accent/5 shadow-lg">
+          <div class="card-body items-center text-center">
+            <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8 text-accent-content">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+              </svg>
+            </div>
+            <h3 class="card-title text-lg mb-2">Cloud</h3>
+            <div class="flex flex-wrap gap-1 justify-center">
+              {skills.cloud.gcp.actively.slice(0, 4).map((skill) => (
+                <div class="badge badge-accent badge-sm">{skill}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        <!-- DevOps -->
+        <div class="card bg-gradient-to-br from-info/10 to-info/5 shadow-lg">
+          <div class="card-body items-center text-center">
+            <div class="w-16 h-16 bg-info rounded-full flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8 text-info-content">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.501 4.205L8.25 2.906m1 16.894l.75 1.299m7.5-16.894L16.5 2.906" />
+              </svg>
+            </div>
+            <h3 class="card-title text-lg mb-2">DevOps</h3>
+            <div class="flex flex-wrap gap-1 justify-center">
+              {skills.devops.slice(0, 4).map((skill) => (
+                <div class="badge badge-info badge-sm">{skill}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href="/skills" class="btn btn-outline btn-lg">
+          View All Skills
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 ml-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 lg:py-24 bg-gradient-to-r from-primary to-secondary">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-primary-content">
+        Ready to Work Together?
+      </h2>
+      <p class="text-lg text-primary-content/80 mb-8 max-w-2xl mx-auto">
+        I'm always interested in new opportunities and challenging projects. Let's discuss how I can help bring your ideas to life.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/contact" class="btn btn-accent btn-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+          </svg>
+          <span>Get In Touch</span>
+        </a>
+        <a href={`https://${personal.social.website}`} target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-lg text-primary-content border-primary-content hover:bg-primary-content hover:text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3s-4.5 4.03-4.5 9 2.015 9 4.5 9z" />
+          </svg>
+          <span>Visit Website</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
