@@ -1,0 +1,372 @@
+---
+title: "Architecture diagrams using C4 diagrams - likeC4"
+description: "Exploring the C4 model for visualizing software architecture and using likeC4 for creating clear, hierarchical diagrams that effectively communicate system design."
+publishDate: 2025-02-02
+author: "Nilushan Silva"
+tags: ["architecture", "diagrams", "C4 model", "documentation", "software design"]
+category: "Architecture"
+featured: true
+---
+
+## The Challenge of Communicating Architecture
+
+As software systems become increasingly complex, one of the biggest challenges we face as architects and developers is effectively communicating system design. Traditional architecture diagrams often fall into two categories: either too high-level to be useful for implementation, or too detailed to provide a clear overview.
+
+After years of struggling with inconsistent diagramming approaches across different projects and teams, I've found the C4 model to be a game-changer for architectural documentation.
+
+## What is the C4 Model?
+
+The C4 model, created by Simon Brown, provides a simple and effective way to create software architecture diagrams. It's based on a hierarchical set of diagrams that zoom into different levels of detail:
+
+1. **Context** - System in its environment
+2. **Container** - High-level technology choices
+3. **Component** - Components within a container
+4. **Code** - Implementation details (classes, functions)
+
+This hierarchical approach allows different stakeholders to understand the system at the level of detail that's most relevant to them.
+
+## Why C4 Works
+
+### Clear Abstraction Levels
+Each level serves a specific purpose:
+- **C1 (Context)**: Perfect for executive summaries and high-level discussions
+- **C2 (Container)**: Ideal for deployment and infrastructure planning
+- **C3 (Component)**: Essential for development team understanding
+- **C4 (Code)**: Useful for detailed implementation discussions
+
+### Consistent Notation
+Unlike ad-hoc diagramming approaches, C4 provides:
+- Standardized shapes and relationships
+- Clear legend and notation rules
+- Consistent color coding and styling
+- Predictable diagram structure
+
+### Stakeholder-Focused
+Different diagrams serve different audiences:
+- **Business stakeholders**: Context diagrams
+- **Operations teams**: Container diagrams
+- **Development teams**: Component diagrams
+- **Individual developers**: Code diagrams
+
+## Introducing likeC4
+
+While the C4 model provides an excellent framework, creating and maintaining these diagrams can be challenging with traditional diagramming tools. This is where [likeC4](https://likec4.dev/) comes in.
+
+LikeC4 is a domain-specific language (DSL) and toolset that allows you to:
+- Define architecture using code
+- Generate multiple diagram types from a single source
+- Maintain consistency across all diagrams
+- Version control your architecture documentation
+- Automatically update diagrams as the system evolves
+
+## Practical Implementation
+
+### Setting Up likeC4
+
+```bash
+# Install likeC4
+npm install -g @likec4/cli
+
+# Initialize a new architecture project
+likec4 init my-architecture
+
+# Start the development server
+likec4 serve
+```
+
+### Defining Your Architecture
+
+Here's how I've been structuring architecture definitions for IoT projects:
+
+```c4
+specification {
+  element actor {
+    style {
+      shape person
+    }
+  }
+  
+  element system {
+    style {
+      shape roundedBox
+    }
+  }
+  
+  element container {
+    style {
+      shape rectangle
+    }
+  }
+  
+  element component {
+    style {
+      shape component
+    }
+  }
+}
+
+model {
+  actor customer "IoT Device User" {
+    description "End user controlling smart devices"
+  }
+  
+  actor technician "Field Technician" {
+    description "Maintains and troubleshoots devices"
+  }
+  
+  system iot_platform "Smart Device Platform" {
+    description "Cloud-based IoT device management platform"
+    
+    container mobile_app "Mobile Application" {
+      technology "React Native"
+      description "Customer-facing mobile app for device control"
+    }
+    
+    container web_dashboard "Web Dashboard" {
+      technology "React, TypeScript"
+      description "Administrative interface for device management"
+    }
+    
+    container api_gateway "API Gateway" {
+      technology "Express.js, Node.js"
+      description "Main API entry point with authentication"
+    }
+    
+    container device_service "Device Service" {
+      technology "Node.js, TypeScript"
+      description "Core device management and control logic"
+      
+      component auth "Authentication" {
+        description "User authentication and authorization"
+      }
+      
+      component device_manager "Device Manager" {
+        description "Device lifecycle and state management"
+      }
+      
+      component command_processor "Command Processor" {
+        description "Device command processing and validation"
+      }
+    }
+    
+    container iot_core "IoT Core" {
+      technology "Google Cloud IoT Core"
+      description "Device connectivity and message routing"
+    }
+    
+    container database "Database" {
+      technology "PostgreSQL"
+      description "User and device data storage"
+    }
+    
+    container cache "Redis Cache" {
+      technology "Redis"
+      description "Session and temporary data caching"
+    }
+  }
+  
+  system voice_assistants "Voice Assistants" {
+    description "Google Assistant and Alexa integration"
+  }
+  
+  system iot_devices "IoT Devices" {
+    description "Smart electrical devices in customer homes"
+  }
+}
+
+views {
+  view context {
+    title "IoT Platform - System Context"
+    
+    include customer, technician, iot_platform, voice_assistants, iot_devices
+    
+    customer -> iot_platform "Controls devices via mobile app"
+    technician -> iot_platform "Monitors and manages devices"
+    voice_assistants -> iot_platform "Voice control integration"
+    iot_platform -> iot_devices "Sends commands and receives telemetry"
+  }
+  
+  view containers {
+    title "IoT Platform - Container View"
+    
+    include iot_platform.*
+    
+    customer -> mobile_app "Uses mobile app"
+    technician -> web_dashboard "Manages devices"
+    
+    mobile_app -> api_gateway "API calls"
+    web_dashboard -> api_gateway "API calls"
+    api_gateway -> device_service "Routes requests"
+    device_service -> iot_core "Device communication"
+    device_service -> database "Stores/retrieves data"
+    device_service -> cache "Caches session data"
+    iot_core -> iot_devices "MQTT communication"
+  }
+  
+  view components {
+    title "Device Service - Component View"
+    
+    include device_service.*
+    
+    api_gateway -> auth "Authenticates requests"
+    auth -> device_manager "Authorized device operations"
+    device_manager -> command_processor "Processes device commands"
+    command_processor -> iot_core "Sends commands to devices"
+  }
+}
+```
+
+## Benefits in Practice
+
+### Living Documentation
+Since adopting likeC4, our architecture documentation has become:
+- **Always Current**: Diagrams are generated from code, reducing documentation drift
+- **Version Controlled**: Architecture changes are tracked alongside code changes
+- **Collaborative**: Team members can contribute to architecture documentation through code reviews
+
+### Improved Communication
+The hierarchical nature of C4 diagrams has significantly improved stakeholder communication:
+- **Executives** can quickly understand system scope and external dependencies
+- **Product managers** can see how features map to system components
+- **Developers** can understand component relationships and responsibilities
+- **Operations teams** can plan deployments and infrastructure needs
+
+### Consistency Across Projects
+Having a standardized approach to architecture diagrams has improved:
+- **Knowledge transfer** between projects
+- **Onboarding** of new team members
+- **Architecture reviews** and decision-making processes
+- **Documentation quality** across all projects
+
+## Real-World Example: IoT Platform Migration
+
+During our IoT platform migration project, C4 diagrams were instrumental in:
+
+### Planning Phase
+- **Context diagrams** helped stakeholders understand the migration scope
+- **Container diagrams** guided infrastructure planning and technology choices
+- **Component diagrams** facilitated team workload distribution
+
+### Implementation Phase
+- Diagrams served as implementation blueprints
+- Component relationships guided API design
+- Container boundaries informed deployment strategies
+
+### Post-Migration
+- Updated diagrams documented the final architecture
+- Diagrams became the foundation for operational runbooks
+- Architecture decisions were preserved for future reference
+
+## Best Practices I've Learned
+
+### 1. Start with Context
+Always begin with a context diagram to establish system boundaries and external relationships before diving into implementation details.
+
+### 2. Use Meaningful Names
+Choose element names that clearly communicate purpose and responsibility. Avoid technical jargon when simpler terms suffice.
+
+### 3. Keep It Current
+Integrate diagram updates into your development workflow. Architecture changes should always include corresponding diagram updates.
+
+### 4. Layer Information Gradually
+Don't try to show everything in one diagram. Use the hierarchical nature of C4 to progressively reveal detail.
+
+### 5. Include Technology Decisions
+Document technology choices and the reasoning behind them directly in the diagrams.
+
+### 6. Review Regularly
+Schedule regular architecture reviews using the diagrams as a foundation for discussion.
+
+## Tools and Integration
+
+### Development Workflow
+I've integrated likeC4 into our development process:
+
+```yaml
+# GitHub Actions workflow for diagram generation
+name: Generate Architecture Diagrams
+
+on:
+  push:
+    paths:
+      - 'architecture/**'
+
+jobs:
+  generate-diagrams:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install likeC4
+        run: npm install -g @likec4/cli
+      - name: Generate diagrams
+        run: likec4 export --format png --output docs/diagrams/
+      - name: Commit updated diagrams
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs/diagrams/
+          git commit -m "Update architecture diagrams" || exit 0
+          git push
+```
+
+### Documentation Integration
+The generated diagrams integrate seamlessly with:
+- **Confluence**: Embedded diagrams in architecture documentation
+- **GitHub/GitLab**: Displayed in README files and wiki pages
+- **Slack**: Shared during architecture discussions
+- **Presentations**: Exported as high-quality images for stakeholder meetings
+
+## Common Pitfalls to Avoid
+
+### Over-Engineering Diagrams
+Don't try to show every detail. Remember that diagrams should communicate, not overwhelm.
+
+### Inconsistent Abstraction Levels
+Keep each diagram at a consistent level of abstraction. Mixing high-level and low-level details in the same diagram creates confusion.
+
+### Forgetting the Audience
+Always consider who will be viewing the diagram and tailor the level of detail appropriately.
+
+### Static Documentation
+Diagrams that aren't maintained become misleading. Make diagram updates part of your definition of done.
+
+## Future Directions
+
+### Integration with Development Tools
+I'm exploring ways to:
+- Generate component diagrams from code analysis
+- Integrate with service mesh tools for runtime validation
+- Connect diagrams to monitoring and observability tools
+
+### Advanced Visualizations
+Future enhancements include:
+- Animated diagrams showing data flow
+- Interactive diagrams with drill-down capabilities
+- Integration with architectural decision records (ADRs)
+
+## Getting Started with C4 and likeC4
+
+If you're interested in adopting C4 diagrams for your projects:
+
+1. **Learn the C4 Model**: Start with Simon Brown's resources at c4model.com
+2. **Try likeC4**: Install the tools and experiment with simple diagrams
+3. **Start Small**: Begin with context diagrams for existing systems
+4. **Iterate**: Refine your approach based on team feedback
+5. **Integrate**: Make diagramming part of your development workflow
+
+## Conclusion
+
+The C4 model, combined with tools like likeC4, has transformed how we approach architecture documentation. By providing clear abstraction levels and maintaining consistency across projects, these diagrams have become an essential tool for:
+
+- **Communication** with stakeholders at all levels
+- **Planning** and decision-making processes
+- **Onboarding** new team members
+- **Maintaining** system understanding over time
+
+The investment in learning and adopting C4 diagrams pays dividends in improved communication, better architectural decisions, and more maintainable systems. For any team serious about architectural documentation, the C4 model should be a core part of their toolkit.
+
+Whether you're documenting existing systems or planning new ones, C4 diagrams provide the structure and clarity needed to effectively communicate complex software architectures. The combination of proven methodology and modern tooling makes this approach both practical and powerful for real-world software development.

@@ -371,6 +371,7 @@ export const navigation = [
   { name: "About", href: "/about" },
   { name: "Experience", href: "/experience" },
   { name: "Projects", href: "/projects" },
+  { name: "Blog", href: "/blog" },
   { name: "Skills", href: "/skills" },
   { name: "Contact", href: "/contact" },
 ];

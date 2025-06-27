@@ -1,16 +1,8 @@
 ---
-import { portfolioData as portfolioContent } from "@/data/portfolio";
+import { navigation , portfolioData  } from "@/data/portfolio";
 
 const currentPath = Astro.url.pathname;
-
-const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/experience", label: "Experience" },
-  { href: "/projects", label: "Projects" },
-  { href: "/skills", label: "Skills" },
-  { href: "/contact", label: "Contact" },
-];
+// const { navigation as navItems} = portfolioData;
 
 const isActive = (href: string) => {
   if (href === "/") return currentPath === href;
@@ -96,22 +88,20 @@ const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
         tabindex="0"
         class="menu menu-xl dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
       >
-        {
-          navItems.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class={
-                  isActive(item.href)
-                    ? "active text-primary font-semibold"
-                    : "text-base-content"
-                }
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
+        {navigation.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class={
+                isActive(item.href)
+                  ? "active text-primary font-semibold"
+                  : "text-base-content"
+              }
+            >
+              {item.name}
+            </a>
+          </li>
+        ))}
       </ul>
     </div>
     
@@ -128,22 +118,20 @@ const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
   <!-- Desktop menu -->
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
-      {
-        navItems.map((item) => (
-          <li>
-            <a
-              href={item.href}
-              class={
-                isActive(item.href)
-                  ? "active text-primary font-semibold bg-primary/10"
-                  : "text-base-content hover:text-primary hover:bg-primary/5"
-              }
-            >
-              {item.label}
-            </a>
-          </li>
-        ))
-      }
+      {navigation.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class={
+              isActive(item.href)
+                ? "active text-primary font-semibold bg-primary/10"
+                : "text-base-content hover:text-primary hover:bg-primary/5"
+            }
+          >
+            {item.name}
+          </a>
+        </li>
+      ))}
     </ul>
   </div>
 
@@ -239,7 +227,7 @@ const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
 
     <!-- Social links -->
     <a
-      href={`https://github.com/${portfolioContent.personal.social.github}`}
+      href={`https://github.com/${portfolioData.personal.social.github}`}
       target="_blank"
       rel="noopener noreferrer"
       class="btn btn-ghost btn-circle btn-sm text-base-content hover:text-primary hover:bg-primary/10"
@@ -257,7 +245,7 @@ const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
       </svg>
     </a>
     <a
-      href={`https://linkedin.com/in/${portfolioContent.personal.social.linkedin}`}
+      href={`https://linkedin.com/in/${portfolioData.personal.social.linkedin}`}
       target="_blank"
       rel="noopener noreferrer"
       class="btn btn-ghost btn-circle btn-sm text-base-content hover:text-primary hover:bg-primary/10"
