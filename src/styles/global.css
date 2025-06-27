@@ -17,3 +17,99 @@
   prefix: ;
   logs: true;
 }
+
+@theme {
+  /* Default fonts */
+  --font-family-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --font-family-serif: "Crimson Text", Georgia, serif;
+  --font-family-mono: "JetBrains Mono", monospace;
+}
+
+/* Theme-specific font overrides
+[data-theme="light"] {
+  --font-family-sans: "Inter", system-ui, sans-serif;
+  --font-family-serif: "Crimson Text", Georgia, serif;
+  --font-family-display: "Inter", system-ui, sans-serif;
+}
+
+[data-theme="dark"] {
+  --font-family-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-family-serif: "Playfair Display", Georgia, serif;
+  --font-family-display: "Space Grotesk", system-ui, sans-serif;
+}
+
+[data-theme="corporate"] {
+  --font-family-sans: "Inter", system-ui, sans-serif;
+  --font-family-serif: "Playfair Display", Georgia, serif;
+  --font-family-display: "Inter", system-ui, sans-serif;
+}
+
+[data-theme="synthwave"] {
+  --font-family-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-family-serif: "JetBrains Mono", monospace;
+  --font-family-display: "Space Grotesk", system-ui, sans-serif;
+}
+
+[data-theme="retro"] {
+  --font-family-sans: "Poppins", system-ui, sans-serif;
+  --font-family-serif: "Crimson Text", Georgia, serif;
+  --font-family-display: "Poppins", system-ui, sans-serif;
+}
+
+[data-theme="cyberpunk"] {
+  --font-family-sans: "JetBrains Mono", monospace;
+  --font-family-serif: "JetBrains Mono", monospace;
+  --font-family-display: "Space Grotesk", system-ui, sans-serif;
+}
+
+[data-theme="valentine"] {
+  --font-family-sans: "Poppins", system-ui, sans-serif;
+  --font-family-serif: "Playfair Display", Georgia, serif;
+  --font-family-display: "Playfair Display", Georgia, serif;
+}
+
+[data-theme="garden"] {
+  --font-family-sans: "Inter", system-ui, sans-serif;
+  --font-family-serif: "Crimson Text", Georgia, serif;
+  --font-family-display: "Crimson Text", Georgia, serif;
+}
+
+[data-theme="forest"] {
+  --font-family-sans: "Inter", system-ui, sans-serif;
+  --font-family-serif: "Crimson Text", Georgia, serif;
+  --font-family-display: "Inter", system-ui, sans-serif;
+}
+
+[data-theme="luxury"] {
+  --font-family-sans: "Inter", system-ui, sans-serif;
+  --font-family-serif: "Playfair Display", Georgia, serif;
+  --font-family-display: "Playfair Display", Georgia, serif;
+}
+
+[data-theme="dracula"] {
+  --font-family-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-family-serif: "Space Grotesk", system-ui, sans-serif;
+  --font-family-display: "Space Grotesk", system-ui, sans-serif;
+}
+
+[data-theme="business"] {
+  --font-family-sans: "Inter", system-ui, sans-serif;
+  --font-family-serif: "Inter", system-ui, sans-serif;
+  --font-family-display: "Inter", system-ui, sans-serif;
+} */
+
+/* Custom font utilities that respect theme */
+@layer utilities {
+  .font-display {
+    font-family: var(--font-family-display);
+  }
+  
+  .font-theme-sans {
+    font-family: var(--font-family-sans);
+  }
+  
+  .font-theme-serif {
+    font-family: var(--font-family-serif);
+  }
+}
+
