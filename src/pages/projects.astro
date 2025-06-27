@@ -1,11 +1,20 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import ProjectsGallery from '@/components/sections/ProjectsGallery.astro'
+import { getCollection } from 'astro:content'
 import { portfolioData } from '@/data/portfolio'
 
-const { projects } = portfolioData
-// Mark all projects as featured for the projects page
-const featuredProjects = projects.map(p => ({ ...p, type: 'featured', status: 'completed' }))
+// Get all projects from the content collection
+const allProjects = await getCollection('projects')
+
+// Sort projects by date (newest first) and featured status
+const sortedProjects = allProjects.sort((a, b) => {
+  // Featured projects first
+  if (a.data.featured && !b.data.featured) return -1
+  if (!a.data.featured && b.data.featured) return 1
+  
+  // Then by publish date (newest first)
+  return new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+})
 ---
 
 <Layout title="Projects - Nilushan Silva" description="Explore my portfolio of full-stack development and cloud engineering projects, featuring IoT platforms, voice control systems, and web applications.">
@@ -23,24 +32,81 @@ const featuredProjects = projects.map(p => ({ ...p, type: 'featured', status: 'c
     </div>
   </section>
 
-  <!-- Projects Gallery -->
+  <!-- Projects Grid -->
   <section class="py-16 lg:py-24">
     <div class="container mx-auto px-4">
-      <ProjectsGallery 
-        projects={featuredProjects} 
-        showAll={true}
-        layout="grid"
-      />
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {sortedProjects.map((project) => (
+          <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+            <figure class="h-48 overflow-hidden">
+              {project.data.image ? (
+                <img 
+                  src={project.data.image} 
+                  alt={project.data.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              ) : (
+                <div class="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                  <div class="text-center text-base-content/60">
+                    <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <p class="text-sm font-medium">{project.data.title}</p>
+                  </div>
+                </div>
+              )}
+            </figure>
+            
+            <div class="card-body">
+              <div class="flex items-start justify-between mb-2">
+                <h3 class="card-title text-base-content flex-1">
+                  {project.data.title}
+                  {project.data.featured && (
+                    <div class="badge badge-primary badge-sm">Featured</div>
+                  )}
+                </h3>
+              </div>
+              
+              <p class="text-sm text-base-content/70 mb-2">{project.data.period}</p>
+              
+              <p class="text-base-content/80 text-sm line-clamp-3 mb-4">
+                {project.data.description}
+              </p>
+              
+              <div class="flex flex-wrap gap-1 mb-4">
+                {project.data.technologies.slice(0, 3).map((tech) => (
+                  <div class="badge badge-outline badge-sm">{tech}</div>
+                ))}
+                {project.data.technologies.length > 3 && (
+                  <div class="badge badge-ghost badge-sm">+{project.data.technologies.length - 3}</div>
+                )}
+              </div>
+              
+              <div class="card-actions justify-end">
+                <a 
+                  href={`/projects/${project.slug}`} 
+                  class="btn btn-primary btn-sm"
+                >
+                  View Details
+                  <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
       
       <!-- Additional Projects Notice -->
       <div class="text-center mt-16">
         <div class="card bg-gradient-to-r from-info/10 to-accent/10 shadow-lg">
           <div class="card-body">
-            <h3 class="text-2xl font-bold mb-4 text-base-content">More Projects</h3>
+            <h3 class="text-2xl font-bold mb-4 text-base-content">Let's Build Something Together</h3>
             <p class="text-base-content/80 mb-6 max-w-2xl mx-auto">
-              These are just a few highlights from my portfolio. I've worked on many more projects across different 
-              domains including military simulation software, open-source tools, and various web applications. 
-              Each project has taught me valuable lessons and contributed to my growth as a developer.
+              These projects represent my journey in software development, from early web applications to complex 
+              IoT platforms and cloud architectures. Each project has contributed to my expertise in building 
+              scalable, secure, and user-focused solutions.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="/contact" class="btn btn-primary">
