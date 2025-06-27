@@ -17,44 +17,53 @@ const isActive = (href: string) => {
   return currentPath.startsWith(href);
 };
 
-// All DaisyUI themes with emojis and descriptions
-const themes = [
+// DaisyUI themes organized by light/dark with emojis and descriptions
+const lightThemes = [
   { name: "light", emoji: "☀️", label: "Light" },
-  { name: "dark", emoji: "🌙", label: "Dark" },
   { name: "cupcake", emoji: "🧁", label: "Cupcake" },
   { name: "bumblebee", emoji: "🐝", label: "Bumblebee" },
   { name: "emerald", emoji: "💎", label: "Emerald" },
   { name: "corporate", emoji: "🏢", label: "Corporate" },
-  { name: "synthwave", emoji: "🌆", label: "Synthwave" },
-  { name: "retro", emoji: "📻", label: "Retro" },
-  { name: "cyberpunk", emoji: "🤖", label: "Cyberpunk" },
   { name: "valentine", emoji: "💝", label: "Valentine" },
-  { name: "halloween", emoji: "🎃", label: "Halloween" },
   { name: "garden", emoji: "🌻", label: "Garden" },
-  { name: "forest", emoji: "🌲", label: "Forest" },
   { name: "aqua", emoji: "🌊", label: "Aqua" },
   { name: "lofi", emoji: "🎵", label: "Lo-Fi" },
   { name: "pastel", emoji: "🎨", label: "Pastel" },
   { name: "fantasy", emoji: "🧚", label: "Fantasy" },
   { name: "wireframe", emoji: "📐", label: "Wireframe" },
-  { name: "black", emoji: "⚫", label: "Black" },
-  { name: "luxury", emoji: "💰", label: "Luxury" },
-  { name: "dracula", emoji: "🧛", label: "Dracula" },
-  { name: "cmyk", emoji: "🖨️", label: "CMYK" },
-  { name: "autumn", emoji: "🍂", label: "Autumn" },
-  { name: "business", emoji: "💼", label: "Business" },
-  { name: "acid", emoji: "🧪", label: "Acid" },
   { name: "lemonade", emoji: "🍋", label: "Lemonade" },
-  { name: "night", emoji: "🌃", label: "Night" },
-  { name: "coffee", emoji: "☕", label: "Coffee" },
   { name: "winter", emoji: "❄️", label: "Winter" },
-  { name: "dim", emoji: "🔅", label: "Dim" },
   { name: "nord", emoji: "🏔️", label: "Nord" },
   { name: "sunset", emoji: "🌅", label: "Sunset" },
   { name: "caramellatte", emoji: "🍮", label: "Caramel Latte" },
-  { name: "abyss", emoji: "🕳️", label: "Abyss" },
   { name: "silk", emoji: "🪞", label: "Silk" }
 ];
+
+const darkThemes = [
+  { name: "dark", emoji: "🌙", label: "Dark" },
+  { name: "synthwave", emoji: "🌆", label: "Synthwave" },
+  { name: "retro", emoji: "📻", label: "Retro" },
+  { name: "cyberpunk", emoji: "🤖", label: "Cyberpunk" },
+  { name: "halloween", emoji: "🎃", label: "Halloween" },
+  { name: "forest", emoji: "🌲", label: "Forest" },
+  { name: "luxury", emoji: "💰", label: "Luxury" },
+  { name: "dracula", emoji: "🧛", label: "Dracula" },
+  { name: "black", emoji: "⚫", label: "Black" },
+  { name: "autumn", emoji: "🍂", label: "Autumn" },
+  { name: "business", emoji: "💼", label: "Business" },
+  { name: "acid", emoji: "🧪", label: "Acid" },
+  { name: "night", emoji: "🌃", label: "Night" },
+  { name: "coffee", emoji: "☕", label: "Coffee" },
+  { name: "dim", emoji: "🔅", label: "Dim" },
+  { name: "abyss", emoji: "🕳️", label: "Abyss" }
+];
+
+const specialThemes = [
+  { name: "cmyk", emoji: "🖨️", label: "CMYK" }
+];
+
+// Combine all themes for reference
+const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
 ---
 
 <div
@@ -164,10 +173,56 @@ const themes = [
       </div>
       <ul
         tabindex="0"
-        class="dropdown-content menu bg-base-100 rounded-box z-[1] w-64 p-2 shadow-lg border border-base-content/10 max-h-80 overflow-y-auto"
+        class="dropdown-content menu bg-base-100 rounded-box z-[1] w-64 p-2 shadow-lg border border-base-content/10 max-h-170 overflow-y-auto"
       >
+        <!-- Light Themes Section -->
+        <li class="menu-title">
+          <span class="text-xs font-semibold text-base-content/60 uppercase tracking-wider">☀️ Light Themes</span>
+        </li>
         {
-          themes.map((theme) => (
+          lightThemes.map((theme) => (
+            <li>
+              <button
+                class="btn btn-sm btn-ghost justify-start w-full text-base-content hover:text-primary hover:bg-primary/10"
+                data-theme-switcher={theme.name}
+              >
+                <span class="text-lg">{theme.emoji}</span>
+                <span>{theme.label}</span>
+              </button>
+            </li>
+          ))
+        }
+        
+        <!-- Divider -->
+        <li><div class="divider my-1"></div></li>
+        
+        <!-- Dark Themes Section -->
+        <li class="menu-title">
+          <span class="text-xs font-semibold text-base-content/60 uppercase tracking-wider">🌙 Dark Themes</span>
+        </li>
+        {
+          darkThemes.map((theme) => (
+            <li>
+              <button
+                class="btn btn-sm btn-ghost justify-start w-full text-base-content hover:text-primary hover:bg-primary/10"
+                data-theme-switcher={theme.name}
+              >
+                <span class="text-lg">{theme.emoji}</span>
+                <span>{theme.label}</span>
+              </button>
+            </li>
+          ))
+        }
+        
+        <!-- Divider -->
+        <li><div class="divider my-1"></div></li>
+        
+        <!-- Special Themes Section -->
+        <li class="menu-title">
+          <span class="text-xs font-semibold text-base-content/60 uppercase tracking-wider">🎨 Special</span>
+        </li>
+        {
+          specialThemes.map((theme) => (
             <li>
               <button
                 class="btn btn-sm btn-ghost justify-start w-full text-base-content hover:text-primary hover:bg-primary/10"
@@ -231,6 +286,20 @@ const themes = [
     // Load saved theme or default to light
     const savedTheme = localStorage.getItem("theme") || "light";
     html.setAttribute("data-theme", savedTheme);
+    
+    // Add visual indicator for current theme
+    const updateCurrentThemeIndicator = (currentTheme) => {
+      // Remove existing indicators
+      document.querySelectorAll('[data-theme-switcher]').forEach(btn => {
+        btn.classList.remove('bg-primary/20', 'text-primary', 'border-primary/30');
+      });
+      
+      // Add indicator to current theme
+      const currentBtn = document.querySelector(`[data-theme-switcher="${currentTheme}"]`);
+      if (currentBtn) {
+        currentBtn.classList.add('bg-primary/20', 'text-primary', 'border-primary/30');
+      }
+    };
 
     // Log current theme fonts for demonstration
     function logThemeFonts(theme: string) {
@@ -253,8 +322,11 @@ const themes = [
       );
     }
 
-    // Initial log
-    setTimeout(() => logThemeFonts(savedTheme), 100);
+    // Initial setup
+    setTimeout(() => {
+      logThemeFonts(savedTheme);
+      updateCurrentThemeIndicator(savedTheme);
+    }, 100);
 
     themeSwitchers.forEach((switcher) => {
       switcher.addEventListener("click", () => {
@@ -262,6 +334,9 @@ const themes = [
         if (theme) {
           html.setAttribute("data-theme", theme);
           localStorage.setItem("theme", theme);
+          
+          // Update visual indicator
+          updateCurrentThemeIndicator(theme);
 
           // Log font changes (for demonstration)
           setTimeout(() => logThemeFonts(theme), 50);
@@ -274,8 +349,8 @@ const themes = [
           );
 
           // Add visual feedback for theme change with theme name
-          const themeLabel = themes.find(t => t.name === theme)?.label || theme;
-          const themeEmoji = themes.find(t => t.name === theme)?.emoji || "🎨";
+          const themeLabel = allThemes.find(t => t.name === theme)?.label || theme;
+          const themeEmoji = allThemes.find(t => t.name === theme)?.emoji || "🎨";
           
           const themeIndicator = document.createElement("div");
           themeIndicator.className =
@@ -296,44 +371,52 @@ const themes = [
       });
     });
 
-    // Theme list for reference in script
-    const themes = [
+    // Theme lists for reference in script (matching the ones defined above)
+    const lightThemes = [
       { name: "light", emoji: "☀️", label: "Light" },
-      { name: "dark", emoji: "🌙", label: "Dark" },
       { name: "cupcake", emoji: "🧁", label: "Cupcake" },
       { name: "bumblebee", emoji: "🐝", label: "Bumblebee" },
       { name: "emerald", emoji: "💎", label: "Emerald" },
       { name: "corporate", emoji: "🏢", label: "Corporate" },
-      { name: "synthwave", emoji: "🌆", label: "Synthwave" },
-      { name: "retro", emoji: "📻", label: "Retro" },
-      { name: "cyberpunk", emoji: "🤖", label: "Cyberpunk" },
       { name: "valentine", emoji: "💝", label: "Valentine" },
-      { name: "halloween", emoji: "🎃", label: "Halloween" },
       { name: "garden", emoji: "🌻", label: "Garden" },
-      { name: "forest", emoji: "🌲", label: "Forest" },
       { name: "aqua", emoji: "🌊", label: "Aqua" },
       { name: "lofi", emoji: "🎵", label: "Lo-Fi" },
       { name: "pastel", emoji: "🎨", label: "Pastel" },
       { name: "fantasy", emoji: "🧚", label: "Fantasy" },
       { name: "wireframe", emoji: "📐", label: "Wireframe" },
-      { name: "black", emoji: "⚫", label: "Black" },
-      { name: "luxury", emoji: "💰", label: "Luxury" },
-      { name: "dracula", emoji: "🧛", label: "Dracula" },
-      { name: "cmyk", emoji: "🖨️", label: "CMYK" },
-      { name: "autumn", emoji: "🍂", label: "Autumn" },
-      { name: "business", emoji: "💼", label: "Business" },
-      { name: "acid", emoji: "🧪", label: "Acid" },
       { name: "lemonade", emoji: "🍋", label: "Lemonade" },
-      { name: "night", emoji: "🌃", label: "Night" },
-      { name: "coffee", emoji: "☕", label: "Coffee" },
       { name: "winter", emoji: "❄️", label: "Winter" },
-      { name: "dim", emoji: "🔅", label: "Dim" },
       { name: "nord", emoji: "🏔️", label: "Nord" },
       { name: "sunset", emoji: "🌅", label: "Sunset" },
       { name: "caramellatte", emoji: "🍮", label: "Caramel Latte" },
-      { name: "abyss", emoji: "🕳️", label: "Abyss" },
       { name: "silk", emoji: "🪞", label: "Silk" }
     ];
+    
+    const darkThemes = [
+      { name: "dark", emoji: "🌙", label: "Dark" },
+      { name: "synthwave", emoji: "🌆", label: "Synthwave" },
+      { name: "retro", emoji: "📻", label: "Retro" },
+      { name: "cyberpunk", emoji: "🤖", label: "Cyberpunk" },
+      { name: "halloween", emoji: "🎃", label: "Halloween" },
+      { name: "forest", emoji: "🌲", label: "Forest" },
+      { name: "luxury", emoji: "💰", label: "Luxury" },
+      { name: "dracula", emoji: "🧛", label: "Dracula" },
+      { name: "black", emoji: "⚫", label: "Black" },
+      { name: "autumn", emoji: "🍂", label: "Autumn" },
+      { name: "business", emoji: "💼", label: "Business" },
+      { name: "acid", emoji: "🧪", label: "Acid" },
+      { name: "night", emoji: "🌃", label: "Night" },
+      { name: "coffee", emoji: "☕", label: "Coffee" },
+      { name: "dim", emoji: "🔅", label: "Dim" },
+      { name: "abyss", emoji: "🕳️", label: "Abyss" }
+    ];
+    
+    const specialThemes = [
+      { name: "cmyk", emoji: "🖨️", label: "CMYK" }
+    ];
+    
+    const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
 
     // Example: Listen for theme changes
     window.addEventListener("themechange", (event) => {
