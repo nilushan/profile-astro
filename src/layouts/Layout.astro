@@ -29,8 +29,20 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
 ---
 
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
+    <script is:inline>
+      // ☝️ This script prevent the FART effect.
+      if (localStorage.getItem("theme") === null) {
+        document.documentElement.setAttribute("data-theme", "light");
+      } else
+        document.documentElement.setAttribute(
+          "data-theme",
+          localStorage.getItem("theme"),
+        );
+      // "theme" LocalStorage value is set by the package to remember user preference.
+      // The value is checked and applyed before rendering anything.
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
@@ -165,8 +177,6 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
       </footer>
     </div>
   </body>
-
-
 </html>
 
 <!-- DaisyUI handles all styling - no custom CSS needed -->

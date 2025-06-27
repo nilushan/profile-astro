@@ -67,7 +67,7 @@ const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
 ---
 
 <div
-  class="navbar bg-base-100 sticky top-0 z-50 shadow-sm border-b border-base-content/10"
+  class="navbar bg-base-100 fixed top-0 z-50 shadow-sm border-b border-base-content/10"
 >
   <div class="navbar-start">
     <!-- Mobile menu -->
@@ -94,7 +94,7 @@ const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
       </div>
       <ul
         tabindex="0"
-        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+        class="menu menu-xl dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
       >
         {
           navItems.map((item) => (
@@ -323,10 +323,10 @@ const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
     }
 
     // Initial setup
-    setTimeout(() => {
-      logThemeFonts(savedTheme);
-      updateCurrentThemeIndicator(savedTheme);
-    }, 100);
+    // setTimeout(() => {
+    //   logThemeFonts(savedTheme);
+    //   updateCurrentThemeIndicator(savedTheme);
+    // }, 100);
 
     themeSwitchers.forEach((switcher) => {
       switcher.addEventListener("click", () => {
@@ -371,58 +371,12 @@ const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
       });
     });
 
-    // Theme lists for reference in script (matching the ones defined above)
-    const lightThemes = [
-      { name: "light", emoji: "☀️", label: "Light" },
-      { name: "cupcake", emoji: "🧁", label: "Cupcake" },
-      { name: "bumblebee", emoji: "🐝", label: "Bumblebee" },
-      { name: "emerald", emoji: "💎", label: "Emerald" },
-      { name: "corporate", emoji: "🏢", label: "Corporate" },
-      { name: "valentine", emoji: "💝", label: "Valentine" },
-      { name: "garden", emoji: "🌻", label: "Garden" },
-      { name: "aqua", emoji: "🌊", label: "Aqua" },
-      { name: "lofi", emoji: "🎵", label: "Lo-Fi" },
-      { name: "pastel", emoji: "🎨", label: "Pastel" },
-      { name: "fantasy", emoji: "🧚", label: "Fantasy" },
-      { name: "wireframe", emoji: "📐", label: "Wireframe" },
-      { name: "lemonade", emoji: "🍋", label: "Lemonade" },
-      { name: "winter", emoji: "❄️", label: "Winter" },
-      { name: "nord", emoji: "🏔️", label: "Nord" },
-      { name: "sunset", emoji: "🌅", label: "Sunset" },
-      { name: "caramellatte", emoji: "🍮", label: "Caramel Latte" },
-      { name: "silk", emoji: "🪞", label: "Silk" }
-    ];
-    
-    const darkThemes = [
-      { name: "dark", emoji: "🌙", label: "Dark" },
-      { name: "synthwave", emoji: "🌆", label: "Synthwave" },
-      { name: "retro", emoji: "📻", label: "Retro" },
-      { name: "cyberpunk", emoji: "🤖", label: "Cyberpunk" },
-      { name: "halloween", emoji: "🎃", label: "Halloween" },
-      { name: "forest", emoji: "🌲", label: "Forest" },
-      { name: "luxury", emoji: "💰", label: "Luxury" },
-      { name: "dracula", emoji: "🧛", label: "Dracula" },
-      { name: "black", emoji: "⚫", label: "Black" },
-      { name: "autumn", emoji: "🍂", label: "Autumn" },
-      { name: "business", emoji: "💼", label: "Business" },
-      { name: "acid", emoji: "🧪", label: "Acid" },
-      { name: "night", emoji: "🌃", label: "Night" },
-      { name: "coffee", emoji: "☕", label: "Coffee" },
-      { name: "dim", emoji: "🔅", label: "Dim" },
-      { name: "abyss", emoji: "🕳️", label: "Abyss" }
-    ];
-    
-    const specialThemes = [
-      { name: "cmyk", emoji: "🖨️", label: "CMYK" }
-    ];
-    
-    const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
 
     // Example: Listen for theme changes
-    window.addEventListener("themechange", (event) => {
-      console.log("🎭 Theme changed to:", event.detail.theme);
-      // Fonts change automatically via CSS custom properties!
-      // No additional JavaScript needed for font switching
-    });
+    // window.addEventListener("themechange", (event) => {
+    //   console.log("🎭 Theme changed to:", event.detail.theme);
+    //   // Fonts change automatically via CSS custom properties!
+    //   // No additional JavaScript needed for font switching
+    // });
   });
 </script>
