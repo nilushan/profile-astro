@@ -1,0 +1,141 @@
+---
+export interface SkillCategory {
+  title: string;
+  icon: string;
+  skills: string[];
+  color: 'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'error';
+  description?: string;
+}
+
+export interface Props {
+  skillCategories: SkillCategory[];
+  showAll?: boolean;
+  maxSkillsPerCategory?: number;
+}
+
+const { skillCategories, showAll = false, maxSkillsPerCategory = 6 } = Astro.props;
+
+// Icon mapping for different skill categories
+const getIconSvg = (iconName: string) => {
+  const icons = {
+    code: `<path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />`,
+    design: `<path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />`,
+    cloud: `<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />`,
+    database: `<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />`,
+    devops: `<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.501 4.205L8.25 2.906m1 16.894l.75 1.299m7.5-16.894L16.5 2.906" />`,
+    tools: `<path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />`,
+    backend: `<path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" />`,
+    frontend: `<path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />`,
+  };
+  return icons[iconName] || icons.tools;
+};
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  {skillCategories.map((category) => (
+    <div class={`card bg-gradient-to-br from-${category.color}/10 to-${category.color}/5 shadow-lg hover:shadow-xl transition-all duration-300 group`}>
+      <div class="card-body items-center text-center p-6">
+        <!-- Icon -->
+        <div class={`w-16 h-16 bg-${category.color} rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke-width="1.5" 
+            stroke="currentColor" 
+            class={`h-8 w-8 text-${category.color}-content`}
+            set:html={getIconSvg(category.icon)}
+          >
+          </svg>
+        </div>
+        
+        <!-- Title -->
+        <h3 class="card-title text-lg mb-2 group-hover:text-primary transition-colors">
+          {category.title}
+        </h3>
+        
+        <!-- Description -->
+        {category.description && (
+          <p class="text-sm text-base-content/60 mb-4">
+            {category.description}
+          </p>
+        )}
+        
+        <!-- Skills -->
+        <div class="flex flex-wrap gap-2 justify-center">
+          {(showAll ? category.skills : category.skills.slice(0, maxSkillsPerCategory)).map((skill) => (
+            <div class={`badge badge-${category.color} badge-sm hover:scale-105 transition-transform cursor-default`}>
+              {skill}
+            </div>
+          ))}
+          {!showAll && category.skills.length > maxSkillsPerCategory && (
+            <div class={`badge badge-outline badge-sm text-${category.color}`}>
+              +{category.skills.length - maxSkillsPerCategory}
+            </div>
+          )}
+        </div>
+        
+        <!-- Progress Indicator (Optional) -->
+        <div class="w-full mt-4">
+          <div class={`progress progress-${category.color} w-full h-2`} value={Math.min(category.skills.length * 10, 100)} max="100"></div>
+          <div class="text-xs text-base-content/50 mt-1">
+            {category.skills.length} skills
+          </div>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<!-- Skills Summary Stats -->
+<div class="stats stats-horizontal shadow-lg mt-12 w-full bg-base-100">
+  <div class="stat place-items-center">
+    <div class="stat-figure text-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+      </svg>
+    </div>
+    <div class="stat-title">Programming Languages</div>
+    <div class="stat-value text-primary">
+      {skillCategories.find(cat => cat.title.toLowerCase().includes('programming'))?.skills.length || 0}
+    </div>
+    <div class="stat-desc">Different languages</div>
+  </div>
+  
+  <div class="stat place-items-center">
+    <div class="stat-figure text-secondary">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+      </svg>
+    </div>
+    <div class="stat-title">Cloud Technologies</div>
+    <div class="stat-value text-secondary">
+      {skillCategories.find(cat => cat.title.toLowerCase().includes('cloud'))?.skills.length || 0}
+    </div>
+    <div class="stat-desc">Platforms & services</div>
+  </div>
+  
+  <div class="stat place-items-center">
+    <div class="stat-figure text-accent">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
+      </svg>
+    </div>
+    <div class="stat-title">Total Skills</div>
+    <div class="stat-value text-accent">
+      {skillCategories.reduce((total, cat) => total + cat.skills.length, 0)}
+    </div>
+    <div class="stat-desc">Across all categories</div>
+  </div>
+</div>
+
+{!showAll && (
+  <div class="text-center mt-8">
+    <a href="/skills" class="btn btn-outline btn-lg group">
+      <span>View All Skills</span>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 transition-transform group-hover:translate-x-1">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+      </svg>
+    </a>
+  </div>
+)}

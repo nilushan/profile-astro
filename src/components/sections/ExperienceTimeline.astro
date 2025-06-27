@@ -1,0 +1,164 @@
+---
+export interface ExperienceItem {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  period: string;
+  type: string;
+  description?: string;
+  highlights: Array<{
+    title: string;
+    description: string;
+  }>;
+  technologies: string[];
+}
+
+export interface Props {
+  experiences: ExperienceItem[];
+  showAll?: boolean;
+  maxItems?: number;
+}
+
+const { experiences, showAll = false, maxItems = 3 } = Astro.props;
+const displayedExperiences = showAll ? experiences : experiences.slice(0, maxItems);
+
+// Function to get company initials for avatar
+const getCompanyInitials = (company: string) => {
+  return company
+    .split(' ')
+    .map(word => word[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+};
+
+// Function to determine if position is current
+const isCurrent = (period: string) => {
+  return period.toLowerCase().includes('present') || period.toLowerCase().includes('current');
+};
+---
+
+<div class="max-w-4xl mx-auto">
+  {displayedExperiences.map((experience, index) => (
+    <div class="relative">
+      <!-- Timeline line (for all except last item) -->
+      {index < displayedExperiences.length - 1 && (
+        <div class="absolute left-8 top-20 w-0.5 h-full bg-base-300 -z-10"></div>
+      )}
+      
+      <div class="card bg-base-100 shadow-xl mb-8 hover:shadow-2xl transition-all duration-300 group">
+        <div class="card-body">
+          <div class="flex flex-col lg:flex-row lg:items-start gap-6">
+            <!-- Company Avatar and Timeline Dot -->
+            <div class="flex-shrink-0 relative">
+              <div class="avatar placeholder">
+                <div class="bg-primary text-primary-content w-16 h-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                  <span class="text-sm font-bold">
+                    {getCompanyInitials(experience.company)}
+                  </span>
+                </div>
+              </div>
+              <!-- Current position indicator -->
+              {isCurrent(experience.period) && (
+                <div class="absolute -bottom-1 -right-1">
+                  <div class="flex h-4 w-4">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-4 w-4 bg-success"></span>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <!-- Experience Content -->
+            <div class="flex-1 min-w-0">
+              <!-- Header -->
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+                <div>
+                  <h3 class="card-title text-xl lg:text-2xl group-hover:text-primary transition-colors">
+                    {experience.title}
+                  </h3>
+                  <h4 class="text-lg font-semibold text-base-content/80 mt-1">
+                    {experience.company} • {experience.location}
+                  </h4>
+                </div>
+                <div class="flex flex-col sm:items-end gap-2 mt-2 sm:mt-0">
+                  <div class="badge badge-primary badge-lg">
+                    {experience.period}
+                  </div>
+                  {isCurrent(experience.period) && (
+                    <div class="badge badge-success gap-1">
+                      <div class="w-2 h-2 bg-current rounded-full animate-pulse"></div>
+                      Current
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              <!-- Description -->
+              {experience.description && (
+                <p class="text-base-content/70 mb-6 text-base leading-relaxed">
+                  {experience.description}
+                </p>
+              )}
+              
+              <!-- Key Highlights -->
+              <div class="mb-6">
+                <h5 class="font-semibold text-base-content mb-3 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-primary">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.563.563 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                  </svg>
+                  Key Achievements
+                </h5>
+                <div class="grid sm:grid-cols-2 gap-4">
+                  {experience.highlights.map((highlight) => (
+                    <div class="flex items-start gap-3 p-3 bg-base-200/50 rounded-lg hover:bg-base-200 transition-colors">
+                      <div class="flex-shrink-0 w-2 h-2 bg-primary rounded-full mt-2"></div>
+                      <div>
+                        <p class="font-medium text-sm text-base-content">
+                          {highlight.title}
+                        </p>
+                        <p class="text-xs text-base-content/70 mt-1 leading-relaxed">
+                          {highlight.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <!-- Technologies -->
+              <div>
+                <h5 class="font-semibold text-base-content mb-3 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-secondary">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                  </svg>
+                  Technologies Used
+                </h5>
+                <div class="flex flex-wrap gap-2">
+                  {experience.technologies.map((tech) => (
+                    <div class="badge badge-outline hover:badge-primary transition-colors cursor-default">
+                      {tech}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ))}
+  
+  <!-- View More Button -->
+  {!showAll && experiences.length > maxItems && (
+    <div class="text-center mt-8">
+      <a href="/experience" class="btn btn-outline btn-lg group">
+        <span>View Full Experience</span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 transition-transform group-hover:translate-x-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+        </svg>
+      </a>
+    </div>
+  )}
+</div>

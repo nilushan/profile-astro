@@ -7,7 +7,6 @@ export const portfolioData = {
     email: "nilushan.silva@gmail.com",
     phone: "0416285726",
     location: "Gold Coast, Queensland, Australia",
-    address: "17 Richmond Cres, Waterford, QLD, 4133",
     social: {
       github: "nilushan",
       linkedin: "nilushan-silva-27235310",
@@ -37,14 +36,68 @@ export const portfolioData = {
     tools: ["Jira", "Confluence", "ClickUp", "Draw.io", "Lucid Charts", "Axure RP 9", "Illograph", "Mermaid", "C4 Diagrams"],
   },
 
+  // Organized skills for the SkillsGrid component
+  skillCategories: [
+    {
+      title: "Programming Languages",
+      icon: "code",
+      color: "primary",
+      description: "Core programming languages I use for development",
+      skills: ["TypeScript", "JavaScript", "Node.js", "Java", "C#", "C++", "PHP"]
+    },
+    {
+      title: "Frontend Development",
+      icon: "frontend",
+      color: "secondary",
+      description: "Modern frontend technologies and frameworks",
+      skills: ["React", "Redux", "Next.js", "Astro", "Bootstrap", "HTML5", "CSS3", "Chart.js", "Socket.IO"]
+    },
+    {
+      title: "Backend Development",
+      icon: "backend",
+      color: "accent",
+      description: "Server-side technologies and architectural patterns",
+      skills: ["Express", "Fastify", "REST APIs", "Event-Driven Architecture", "Service-Oriented Architecture", "OAuth2", "JWT"]
+    },
+    {
+      title: "Cloud Platforms",
+      icon: "cloud",
+      color: "info",
+      description: "Cloud services and infrastructure",
+      skills: ["Google Cloud Platform", "AWS", "Azure", "Kubernetes", "Cloud Functions", "IoT Core", "PubSub", "Firebase"]
+    },
+    {
+      title: "Databases",
+      icon: "database",
+      color: "success",
+      description: "Database technologies and data storage solutions",
+      skills: ["PostgreSQL", "MySQL", "Firestore", "MongoDB", "Redis", "TimescaleDB", "ClickHouse", "BigQuery"]
+    },
+    {
+      title: "DevOps & Tools",
+      icon: "devops",
+      color: "warning",
+      description: "Development operations and productivity tools",
+      skills: ["Docker", "Kubernetes", "CI/CD", "GitHub Actions", "Cloud Build", "Git", "Terraform", "Monitoring"]
+    },
+    {
+      title: "Project Management",
+      icon: "tools",
+      color: "error",
+      description: "Tools for project management and documentation",
+      skills: ["Jira", "Confluence", "ClickUp", "Draw.io", "Lucid Charts", "Mermaid", "C4 Diagrams", "Agile", "Scrum"]
+    }
+  ],
+
   experience: [
     {
       id: "zimi-current",
-      title: "Full Stack & Cloud Engineer",
+      title: "Senior Cloud Engineer",
       company: "Zimi Ltd",
-      location: "Gold Coast, Queensland, Australia",
-      period: "October 2017 – Present",
+      location: "QLD, AU",
+      period: "December 2020 – Present",
       type: "full-time",
+      description: "Full stack development and cloud deployment of Zimi product as earlier. Continue building on the IoT platform with additional features and integrations.",
       highlights: [
         {
           title: "Platform Migration",
@@ -94,8 +147,52 @@ export const portfolioData = {
           title: "Platform Evaluation",
           description: "Experienced in evaluating software tools and platforms to select optimal solutions for specific use cases",
         },
+        {
+          title: "Alexa Integration",
+          description: "Alexa smart home voice control integration with the Zimi smart devices",
+        },
+        {
+          title: "3rd Party API",
+          description: "Design, document and develop API for 3rd party integrations for device information retrieval, device control and status change events with user authorization based security",
+        },
+        {
+          title: "Firmware Update CDN",
+          description: "IoT device firmware update CDN service for memory limited devices needing OTA with self signed Certificate Authority and Certificate management system",
+        },
       ],
-      technologies: ["GCP", "Kubernetes", "TypeScript", "React", "Node.js", "PostgreSQL", "Redis", "MQTT", "Docker", "Firebase", "IoT Core", "PubSub", "Cloud Functions"],
+      technologies: ["GCP", "Kubernetes", "TypeScript", "React", "Node.js", "PostgreSQL", "Redis", "MQTT", "Docker", "Firebase", "IoT Core", "PubSub", "Cloud Functions", "Alexa Smart Home API"],
+    },
+    {
+      id: "bluekey-zimi",
+      title: "Full Stack Developer",
+      company: "BlueKey Pty Ltd (acquired by Zimi)",
+      location: "QLD, AU",
+      period: "October 2017 – December 2020",
+      type: "full-time",
+      description: "As the only full-stack/cloud engineer of the team, designed, developed, tested, deployed and maintained the services and infrastructure of the entire backend system.",
+      highlights: [
+        {
+          title: "Initial Platform Development",
+          description: "Initially developed product functionality based on Xively IoT platform with REST API for apps and admin dashboard",
+        },
+        {
+          title: "Cloud Migration to GCP",
+          description: "Successfully migrated the entire live cloud backend from Xively to Google Cloud Platform with zero downtime",
+        },
+        {
+          title: "Microservices Architecture",
+          description: "Designed and developed new cloud services using microservices based architecture considering scalability, low latency, security, maintainability and traceability",
+        },
+        {
+          title: "Voice Control Integration",
+          description: "Integrated and certified voice control of devices using Google assistant and later Alexa",
+        },
+        {
+          title: "Cost & Performance Optimization",
+          description: "Infrastructure cost reduced by more than 50%. Latency decreased considerably. Reliability increased.",
+        },
+      ],
+      technologies: ["GCP", "Firebase", "Firestore", "Cloud Functions", "IoT Core", "PubSub", "Kubernetes", "Docker", "PostgreSQL", "BigQuery", "TypeScript", "React", "Redux"],
     },
     {
       id: "simcentric-pm",
