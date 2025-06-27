@@ -7,12 +7,13 @@ export const portfolioData = {
     email: "nilushan.silva@gmail.com",
     phone: "0416285726",
     location: "Gold Coast, Queensland, Australia",
+    address: "17 Richmond Cres, Waterford, QLD, 4133",
     social: {
       github: "nilushan",
       linkedin: "nilushan-silva-27235310",
       website: "www.nilushansilva.info",
     },
-    summary: `Full Stack Software Engineer & Cloud Solutions Developer with 15+ years delivering robust, high-quality software. Specialized expertise includes 7+ years in TypeScript/React development and 6+ years architecting solutions on Google Cloud Platform. Proven track record in service-oriented architecture, large-scale IoT integrations, and DevOps practices with consistently high uptime achievement.`,
+    summary: `Full Stack Software Engineer & Cloud Solutions Developer with 15+ years delivering robust, high-quality software. Specialized expertise includes 7+ years in TypeScript/React development and 6+ years architecting solutions on Google Cloud Platform. Proven track record in service-oriented architecture, large-scale IoT integrations, and DevOps practices with consistently high uptime achievement. Excel at analyzing requirements and designing solutions through collaboration, diagramming, and documentation. Passionate about implementing engineering best practices to create well designed, testable, reliable, maintainable, and cost-efficient systems.`,
   },
 
   skills: {
@@ -77,8 +78,24 @@ export const portfolioData = {
           title: "DevOps",
           description: "Setup automated CI/CD pipelines with Docker, Google Cloud Build, GitHub Actions, Container Registry, Kubernetes for seamless multi-environment deployments",
         },
+        {
+          title: "Knowledge Transfer",
+          description: "Documented the entire system architecture and conducted comprehensive knowledge sharing sessions covering system components and business processes to facilitate seamless transition",
+        },
+        {
+          title: "Solution Design",
+          description: "Diagrammed and documented solutions, interfaces, and test cases thoroughly before implementation, leading to high-quality, well-designed components",
+        },
+        {
+          title: "System Modernization",
+          description: "Proactively planned system improvements by selecting and collaborating with a third-party software company to develop a scalable system capable of handling millions of devices, telemetry data, analytics, and insights",
+        },
+        {
+          title: "Platform Evaluation",
+          description: "Experienced in evaluating software tools and platforms to select optimal solutions for specific use cases",
+        },
       ],
-      technologies: ["GCP", "Kubernetes", "TypeScript", "React", "Node.js", "PostgreSQL", "Redis", "MQTT", "Docker"],
+      technologies: ["GCP", "Kubernetes", "TypeScript", "React", "Node.js", "PostgreSQL", "Redis", "MQTT", "Docker", "Firebase", "IoT Core", "PubSub", "Cloud Functions"],
     },
     {
       id: "simcentric-pm",
@@ -198,7 +215,7 @@ export const portfolioData = {
   interests: [
     {
       title: "AI & LLMs",
-      description: "Leveraging LLMs, AI Agents, and AI-based coding assistants to accelerate development while maintaining high quality",
+      description: "Leveraging LLMs, AI Agents, and AI-based coding assistants to accelerate development while maintaining high quality through effective prompting, providing latest documentation, and contextual information",
     },
     {
       title: "Diagramming & Documentation",
@@ -207,9 +224,9 @@ export const portfolioData = {
     {
       title: "Emerging Technologies",
       items: [
-        "Dapr: Distributed Application Runtime for simplified microservice development",
-        "Next.js: For integrated frontend and backend systems",
-        "Supabase: Open source, self-hosted or managed essential services",
+        "Dapr: Distributed Application Runtime for simplified microservice development with built-in service discovery, state management, PubSub messaging, and observability",
+        "Next.js: For integrated frontend and backend systems in smaller projects",
+        "Supabase: Open source, self-hosted or managed essential services for web applications",
       ],
     },
   ],
