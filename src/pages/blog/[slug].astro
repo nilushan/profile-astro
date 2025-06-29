@@ -2,18 +2,19 @@
 import { getCollection, getEntry } from 'astro:content'
 import Layout from '@/layouts/Layout.astro'
 import { portfolioData } from '@/data/portfolio'
+import { render } from 'astro:content'
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog')
   
   return allPosts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: { post },
   }))
 }
 
 const { post } = Astro.props
-const { Content } = await post.render()
+const { Content } = await render(post)
 
 // Format the publish date
 const publishDate = new Date(post.data.publishDate)
@@ -25,13 +26,13 @@ const formattedDate = publishDate.toLocaleDateString('en-US', {
 
 // Calculate reading time (rough estimate)
 const wordsPerMinute = 200
-const wordCount = post.body.split(' ').length
+const wordCount = post.body?.split(' ').length || 0;
 const readingTime = Math.ceil(wordCount / wordsPerMinute)
 
 // Get other blog posts for related content
 const allPosts = await getCollection('blog')
 const relatedPosts = allPosts
-  .filter(p => p.slug !== post.slug)
+  .filter(p => p.id !== post.id)
   .filter(p => p.data.category === post.data.category || 
     (p.data.tags && post.data.tags && p.data.tags.some(tag => post.data.tags?.includes(tag))))
   .slice(0, 3)
@@ -201,7 +202,7 @@ const relatedPosts = allPosts
 
           <!-- Main Content -->
           <div class="lg:col-span-3">
-            <div class="prose prose-lg max-w-none prose-headings:text-base-content prose-p:text-base-content/80 prose-strong:text-base-content prose-code:text-base-content prose-pre:bg-base-200 prose-pre:text-base-content prose-a:text-primary hover:prose-a:text-primary-focus">
+            <div class="prose prose-lg max-w-none prose-headings:text-base-content prose-p:text-base-content/80 prose-strong:text-base-content prose-inline-code:text-base-content prose-pre:bg-base-200 prose-pre:text-base-content prose-a:text-primary hover:prose-a:text-primary-focus">
               <Content />
             </div>
           </div>
@@ -243,7 +244,7 @@ const relatedPosts = allPosts
                   </p>
                   <div class="card-actions">
                     <a 
-                      href={`/blog/${relatedPost.slug}`} 
+                      href={`/blog/${relatedPost.id}`} 
                       class="btn btn-primary btn-xs"
                     >
                       Read More

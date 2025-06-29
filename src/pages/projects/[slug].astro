@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntry } from 'astro:content'
+import { getCollection, getEntry, render } from 'astro:content'
 import Layout from '@/layouts/Layout.astro'
 import { portfolioData } from '@/data/portfolio'
 
@@ -7,13 +7,13 @@ export async function getStaticPaths() {
   const allProjects = await getCollection('projects')
   
   return allProjects.map((project) => ({
-    params: { slug: project.slug },
+    params: { slug: project.id },
     props: { project },
   }))
 }
 
 const { project } = Astro.props
-const { Content } = await project.render()
+const { Content } = await render(project)
 
 // Format the publish date
 const publishDate = new Date(project.data.publishDate)
@@ -220,7 +220,8 @@ const getCategoryIcon = (category: string) => {
 
           <!-- Main Content -->
           <div class="lg:col-span-3">
-            <div class="prose prose-lg max-w-none prose-headings:text-base-content prose-p:text-base-content/80 prose-strong:text-base-content prose-code:text-base-content prose-pre:bg-base-200 prose-pre:text-base-content">
+            <!-- <div class="prose prose-lg max-w-none prose-headings:text-base-content prose-p:text-base-content/80 prose-strong:text-base-content prose-code:text-base-content prose-pre:bg-base-200 prose-pre:text-base-content"> -->
+            <div class="prose lg:prose-xl prose-h2:underline">
               <Content />
             </div>
           </div>

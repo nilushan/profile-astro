@@ -1,7 +1,19 @@
 import { defineCollection, z } from 'astro:content';
+import { docsLoader  } from '@astrojs/starlight/loaders';
+import { docsSchema } from '@astrojs/starlight/schema';
+import { glob } from 'astro/loaders';
+
+// export const collections = {
+//   docs: defineCollection({ 
+//     loader: docsLoader(), 
+//     schema: docsSchema() 
+//   }),
+// };
+
 
 const projects = defineCollection({
-  type: 'content',
+  // type: 'content',
+  loader: glob({ pattern: '*.mdx', base: './src/content/projects' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -27,7 +39,9 @@ const projects = defineCollection({
 });
 
 const blog = defineCollection({
-  type: 'content',
+  // type: 'content',
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/blog' }),
+
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -39,10 +53,35 @@ const blog = defineCollection({
     featured: z.boolean().default(false),
     image: z.string().optional(),
     draft: z.boolean().default(false),
+
   }),
 });
+
+// Renamed to avoid conflict with Starlight's docs collection
+// const knowledge = defineCollection({
+//   type: 'content',
+//   schema: z.object({
+//     title: z.string(),
+//     description: z.string(),
+//     // category: z.string().optional(),
+//     // order: z.number().default(0),
+//     // lastUpdated: z.date().optional(),
+//     // author: z.string().default('Nilushan Silva'),
+//     // tags: z.array(z.string()).optional(),
+//     // featured: z.boolean().default(false),
+//     // difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
+//     // estimatedTime: z.string().optional(),
+//     // prerequisites: z.array(z.string()).optional(),
+//     // relatedDocs: z.array(z.string()).optional(),
+//   }),
+// });
 
 export const collections = {
   projects,
   blog,
+  // knowledge, // Renamed from 'docs' to avoid Starlight conflict
+  docs: defineCollection({
+    loader: docsLoader(),
+    schema: docsSchema()
+  }),
 };

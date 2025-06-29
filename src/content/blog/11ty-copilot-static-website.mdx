@@ -53,7 +53,7 @@ Using GitHub Copilot throughout the development process provided significant ass
 ### Template Creation
 Copilot excelled at generating Nunjucks templates:
 
-```njk
+```
 <!-- Copilot helped generate this layout template -->
 <!DOCTYPE html>
 <html lang="{{ meta.lang or 'en' }}">
@@ -90,13 +90,11 @@ Copilot excelled at generating Nunjucks templates:
     <link rel="canonical" href="{{ meta.url }}{{ page.url }}">
 </head>
 <body>
-    {% include "header.njk" %}
     
     <main>
         {{ content | safe }}
     </main>
     
-    {% include "footer.njk" %}
     
     <!-- Scripts -->
     {% if env.ENVIRONMENT === 'production' %}
@@ -399,7 +397,7 @@ jobs:
 ### Image Optimization
 Implemented responsive images with multiple formats:
 
-```njk
+```
 {% macro responsiveImage(src, alt, sizes = "100vw") %}
   <picture>
     <source srcset="{{ src | replace('.jpg', '.avif') }}" type="image/avif">

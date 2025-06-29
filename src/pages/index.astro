@@ -1,21 +1,27 @@
 ---
-import Layout from '@/layouts/Layout.astro'
-import Hero from '@/components/sections/Hero.astro'
-import ExperienceTimeline from '@/components/sections/ExperienceTimeline.astro'
-import ProjectsGallery from '@/components/sections/ProjectsGallery.astro'
-import SkillsGrid from '@/components/sections/SkillsGrid.astro'
-import ContactSection from '@/components/sections/ContactSection.astro'
-import { portfolioData } from '@/data/portfolio'
+import Layout from "@/layouts/Layout.astro";
+import Hero from "@/components/sections/Hero.astro";
+import ExperienceTimeline from "@/components/sections/ExperienceTimeline.astro";
+import ProjectsGallery from "@/components/sections/ProjectsGallery.astro";
+import SkillsGrid from "@/components/sections/SkillsGrid.astro";
+import ContactSection from "@/components/sections/ContactSection.astro";
+import { portfolioData } from "@/data/portfolio";
+import { getCollection } from "astro:content";
 
-const { personal, experience, projects, skills, skillCategories } = portfolioData
-const featuredProjects = projects.map(p => ({ ...p, type: 'featured' })).slice(0, 3)
+const { personal, experience, skills, skillCategories } = portfolioData;
+// const projects: any[] = await getCollection("projects", (data: any) => {
+//   return data.featured === true;
+// });
+
+const projects: any[] = await getCollection('projects');
+const featuredProjects = projects.slice(0, 3);
 const recentExperience = experience; //.slice(0, 2)
 ---
 
 <Layout>
   <!-- Hero Section -->
   <Hero />
-  
+
   <!-- About Preview Section -->
   <section class="py-16 lg:py-24 bg-base-200">
     <div class="container mx-auto px-4">
@@ -34,8 +40,18 @@ const recentExperience = experience; //.slice(0, 2)
         </div>
         <a href="/about" class="btn btn-primary btn-lg">
           Learn More About Me
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 ml-2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-5 w-5 ml-2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
           </svg>
         </a>
       </div>
@@ -50,13 +66,14 @@ const recentExperience = experience; //.slice(0, 2)
           Featured Projects
         </h2>
         <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-          Here are some of my most impactful projects that demonstrate my expertise in full-stack development and cloud architecture.
+          Here are some of my most impactful projects that demonstrate my
+          expertise in full-stack development and cloud architecture.
         </p>
       </div>
-      
-      <ProjectsGallery 
-        projects={featuredProjects} 
-        showAll={false} 
+
+      <ProjectsGallery
+        projects={featuredProjects}
+        showAll={false}
         maxProjects={3}
         layout="grid"
       />
@@ -71,13 +88,14 @@ const recentExperience = experience; //.slice(0, 2)
           Professional Experience
         </h2>
         <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-          A timeline of my career progression and key achievements in full-stack development and cloud engineering.
+          A timeline of my career progression and key achievements in full-stack
+          development and cloud engineering.
         </p>
       </div>
-      
-      <ExperienceTimeline 
-        experiences={recentExperience} 
-        showAll={false} 
+
+      <ExperienceTimeline
+        experiences={recentExperience}
+        showAll={false}
         maxItems={2}
       />
     </div>
@@ -91,13 +109,14 @@ const recentExperience = experience; //.slice(0, 2)
           Technical Skills
         </h2>
         <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-          A comprehensive overview of my technical expertise across different domains of software development.
+          A comprehensive overview of my technical expertise across different
+          domains of software development.
         </p>
       </div>
-      
-      <SkillsGrid 
-        skillCategories={skillCategories} 
-        showAll={false} 
+
+      <SkillsGrid
+        skillCategories={skillCategories}
+        showAll={false}
         maxSkillsPerCategory={4}
       />
     </div>

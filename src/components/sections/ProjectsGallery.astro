@@ -1,6 +1,8 @@
 ---
 export interface ProjectItem {
+
   id: string;
+  data: {
   title: string;
   period: string;
   description: string;
@@ -11,6 +13,7 @@ export interface ProjectItem {
   github?: string;
   type?: 'featured' | 'regular';
   status?: 'completed' | 'in-progress' | 'planning';
+  }
 }
 
 export interface Props {
@@ -23,18 +26,19 @@ export interface Props {
 const { projects, showAll = false, maxProjects = 6, layout = 'grid' } = Astro.props;
 const displayedProjects = showAll ? projects : projects.slice(0, maxProjects);
 
+
 // Function to get project icon based on technologies
 const getProjectIcon = (technologies: string[], index: number) => {
-  if (technologies.some(tech => tech.toLowerCase().includes('iot') || tech.toLowerCase().includes('mqtt'))) {
+  if (technologies?.some(tech => tech.toLowerCase().includes('iot') || tech.toLowerCase().includes('mqtt'))) {
     return 'iot';
   }
-  if (technologies.some(tech => tech.toLowerCase().includes('voice') || tech.toLowerCase().includes('alexa') || tech.toLowerCase().includes('assistant'))) {
+  if (technologies?.some(tech => tech.toLowerCase().includes('voice') || tech.toLowerCase().includes('alexa') || tech.toLowerCase().includes('assistant'))) {
     return 'voice';
   }
-  if (technologies.some(tech => tech.toLowerCase().includes('dashboard') || tech.toLowerCase().includes('chart') || tech.toLowerCase().includes('react'))) {
+  if (technologies?.some(tech => tech.toLowerCase().includes('dashboard') || tech.toLowerCase().includes('chart') || tech.toLowerCase().includes('react'))) {
     return 'dashboard';
   }
-  if (technologies.some(tech => tech.toLowerCase().includes('cloud') || tech.toLowerCase().includes('gcp') || tech.toLowerCase().includes('aws'))) {
+  if (technologies?.some(tech => tech.toLowerCase().includes('cloud') || tech.toLowerCase().includes('gcp') || tech.toLowerCase().includes('aws'))) {
     return 'cloud';
   }
   return 'default';
@@ -65,28 +69,28 @@ const statusColors = {
   {displayedProjects.map((project, index) => (
     <div class={`
       card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group
-      ${project.type === 'featured' ? 'ring-2 ring-primary ring-offset-2 ring-offset-base-100' : ''}
+      ${project.data.type === 'featured' ? 'ring-2 ring-primary ring-offset-2 ring-offset-base-100' : ''}
       ${layout === 'masonry' ? 'break-inside-avoid mb-8' : ''}
       ${layout === 'list' ? 'card-side' : ''}
     `}>
       <!-- Project Image/Icon -->
       <figure class={`${layout === 'list' ? 'w-48' : 'px-6 pt-6'}`}>
-        {project.image ? (
+        {project.data.image ? (
           <img 
-            src={project.image} 
-            alt={project.title}
+            src={project.data.image} 
+            alt={project.data.title}
             class={`${layout === 'list' ? 'h-full object-cover' : 'w-full h-48 object-cover rounded-xl'}`}
           />
         ) : (
           <div class="w-full h-48 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-secondary/30 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="h-16 w-16 text-primary">
-              <path set:html={iconPaths[getProjectIcon(project.technologies, index)]} />
+              <path set:html={iconPaths[getProjectIcon(project.data.technologies, index)]} />
             </svg>
           </div>
         )}
         
         <!-- Featured Badge -->
-        {project.type === 'featured' && (
+        {project.data.type === 'featured' && (
           <div class="absolute top-2 left-2">
             <div class="badge badge-primary gap-1">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
@@ -103,31 +107,31 @@ const statusColors = {
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
           <div class="flex-1">
             <h3 class="card-title text-xl group-hover:text-primary transition-colors">
-              {project.title}
+              {project.data.title}
             </h3>
             <p class="text-base-content/70 text-sm font-medium">
-              {project.period}
+              {project.data.period}
             </p>
           </div>
           
           <!-- Status Badge -->
-          {project.status && (
-            <div class={`badge badge-${statusColors[project.status]} gap-1`}>
-              {project.status === 'in-progress' && (
+          {project.data.status && (
+            <div class={`badge badge-${statusColors[project.data.status]} gap-1`}>
+              {project.data.status === 'in-progress' && (
                 <div class="w-2 h-2 bg-current rounded-full animate-pulse"></div>
               )}
-              {project.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+              {project.data.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
             </div>
           )}
         </div>
         
         <!-- Description -->
         <p class="text-base-content/80 mb-4 text-sm leading-relaxed">
-          {project.description}
+          {project.data.description}
         </p>
         
         <!-- Achievements -->
-        {project.achievements && project.achievements.length > 0 && (
+        {project.data.achievements && project.data.achievements.length > 0 && (
           <div class="mb-4">
             <h4 class="font-semibold text-sm text-base-content mb-2 flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-success">
@@ -136,7 +140,7 @@ const statusColors = {
               Key Achievements
             </h4>
             <ul class="space-y-1">
-              {project.achievements.slice(0, 3).map((achievement) => (
+              {project.data.achievements.slice(0, 3).map((achievement) => (
                 <li class="text-xs text-base-content/70 flex items-start gap-2">
                   <div class="w-1 h-1 bg-primary rounded-full mt-1.5 flex-shrink-0"></div>
                   <span>{achievement}</span>
@@ -149,14 +153,14 @@ const statusColors = {
         <!-- Technologies -->
         <div class="mb-4">
           <div class="flex flex-wrap gap-1">
-            {project.technologies.slice(0, 6).map((tech) => (
+            {project.data.technologies?.slice(0, 6).map((tech) => (
               <div class="badge badge-outline badge-sm hover:badge-primary transition-colors">
                 {tech}
               </div>
             ))}
-            {project.technologies.length > 6 && (
+            {project.data.technologies?.length > 6 && (
               <div class="badge badge-outline badge-sm">
-                +{project.technologies.length - 6}
+                +{project.data.technologies.length - 6}
               </div>
             )}
           </div>
@@ -164,9 +168,9 @@ const statusColors = {
         
         <!-- Actions -->
         <div class="card-actions justify-end">
-          {project.github && (
+          {project.data.github && (
             <a 
-              href={project.github} 
+              href={project.data.github} 
               target="_blank" 
               rel="noopener noreferrer"
               class="btn btn-ghost btn-sm"
@@ -178,9 +182,9 @@ const statusColors = {
             </a>
           )}
           
-          {project.link && (
+          {project.data.link && (
             <a 
-              href={project.link} 
+              href={project.data.link} 
               target="_blank" 
               rel="noopener noreferrer"
               class="btn btn-primary btn-sm"
@@ -192,7 +196,7 @@ const statusColors = {
             </a>
           )}
           
-          {!project.link && !project.github && (
+          {!project.data.link && !project.data.github && (
             <div class="btn btn-primary btn-sm">
               <span>View Details</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
@@ -239,7 +243,7 @@ const statusColors = {
     </div>
     <div class="stat-title">Featured</div>
     <div class="stat-value text-secondary">
-      {projects.filter(p => p.type === 'featured').length}
+      {projects.filter(p => p.data.type === 'featured').length}
     </div>
     <div class="stat-desc">Highlighted projects</div>
   </div>
@@ -252,7 +256,7 @@ const statusColors = {
     </div>
     <div class="stat-title">Technologies</div>
     <div class="stat-value text-accent">
-      {new Set(projects.flatMap(p => p.technologies)).size}
+      {new Set(projects.flatMap(p => p.data.technologies)).size}
     </div>
     <div class="stat-desc">Unique technologies used</div>
   </div>

@@ -109,7 +109,7 @@ const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))]
               
               <div class="card-actions justify-end">
                 <a 
-                  href={`/blog/${post.slug}`} 
+                  href={`/blog/${post.id}`} 
                   class="btn btn-primary btn-sm"
                 >
                   Read More
