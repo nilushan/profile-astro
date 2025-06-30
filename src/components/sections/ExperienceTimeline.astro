@@ -18,9 +18,10 @@ export interface Props {
   experiences: ExperienceItem[];
   showAll?: boolean;
   maxItems?: number;
+  summary?: boolean;
 }
 
-const { experiences, showAll = false, maxItems = 3 } = Astro.props;
+const { experiences, showAll = false, maxItems = 3, summary = false } = Astro.props;
 const displayedExperiences = showAll ? experiences : experiences.slice(0, maxItems);
 
 // Function to get company initials for avatar
@@ -103,6 +104,8 @@ const isCurrent = (period: string) => {
               )}
               
               <!-- Key Highlights -->
+              { !summary && ( 
+
               <div class="mb-6">
                 <h5 class="font-semibold text-base-content mb-3 flex items-center gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-primary">
@@ -126,6 +129,8 @@ const isCurrent = (period: string) => {
                   ))}
                 </div>
               </div>
+              )}
+
               
               <!-- Technologies -->
               <div>

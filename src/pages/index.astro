@@ -23,7 +23,7 @@ const recentExperience = experience; //.slice(0, 2)
   <Hero />
 
   <!-- About Preview Section -->
-  <section class="py-16 lg:py-24 bg-base-200">
+  <!-- <section class="py-16 lg:py-24 bg-base-200">
     <div class="container mx-auto px-4">
       <div class="max-w-4xl mx-auto text-center">
         <h2 class="text-3xl lg:text-4xl font-bold mb-8 text-base-content">
@@ -56,10 +56,53 @@ const recentExperience = experience; //.slice(0, 2)
         </a>
       </div>
     </div>
+  </section> -->
+
+    <!-- Skills Overview Section -->
+  <section class="py-16 lg:py-16">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
+          Technical Skills
+        </h2>
+        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+          A comprehensive overview of my technical expertise across different
+          domains of software development.
+        </p>
+      </div>
+
+      <SkillsGrid
+        skillCategories={skillCategories}
+        showAll={false}
+        maxSkillsPerCategory={4}
+      />
+    </div>
+  </section>
+
+  <!-- Experience Timeline Section -->
+  <section class="py-16 lg:py-16 bg-base-200">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
+          Professional Experience
+        </h2>
+        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+          A timeline of my career progression and key achievements in full-stack
+          development and cloud engineering.
+        </p>
+      </div>
+
+      <ExperienceTimeline
+        experiences={recentExperience}
+        showAll={false}
+        maxItems={2}
+        summary={true}
+      />
+    </div>
   </section>
 
   <!-- Featured Projects Section -->
-  <section class="py-16 lg:py-24">
+  <section class="py-16 lg:py-16">
     <div class="container mx-auto px-4">
       <div class="text-center mb-12">
         <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
@@ -80,47 +123,8 @@ const recentExperience = experience; //.slice(0, 2)
     </div>
   </section>
 
-  <!-- Experience Timeline Section -->
-  <section class="py-16 lg:py-24 bg-base-200">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
-          Professional Experience
-        </h2>
-        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-          A timeline of my career progression and key achievements in full-stack
-          development and cloud engineering.
-        </p>
-      </div>
 
-      <ExperienceTimeline
-        experiences={recentExperience}
-        showAll={false}
-        maxItems={2}
-      />
-    </div>
-  </section>
 
-  <!-- Skills Overview Section -->
-  <section class="py-16 lg:py-24">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
-          Technical Skills
-        </h2>
-        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-          A comprehensive overview of my technical expertise across different
-          domains of software development.
-        </p>
-      </div>
-
-      <SkillsGrid
-        skillCategories={skillCategories}
-        showAll={false}
-        maxSkillsPerCategory={4}
-      />
-    </div>
-  </section>
 
   <!-- Contact Section -->
   <!-- <ContactSection 

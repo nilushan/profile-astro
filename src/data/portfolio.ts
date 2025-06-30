@@ -1,4 +1,9 @@
 // Portfolio data structure - easily editable for CMS integration
+// Calculate years of experience dynamically
+const startYear = 2008; // Based on CV
+const currentYear = new Date().getFullYear();
+const yearsExperience = currentYear - startYear;
+
 export const portfolioData = {
   personal: {
     name: "Nilushan Silva",
@@ -12,7 +17,11 @@ export const portfolioData = {
       linkedin: "nilushan-silva-27235310",
       website: "www.nilushansilva.info",
     },
-    summary: `Full Stack Software Engineer & Cloud Solutions Developer with 15+ years delivering robust, high-quality software. Specialized expertise includes 7+ years in TypeScript/React development and 6+ years architecting solutions on Google Cloud Platform. Proven track record in service-oriented architecture, large-scale IoT integrations, and DevOps practices with consistently high uptime achievement. Excel at analyzing requirements and designing solutions through collaboration, diagramming, and documentation. Passionate about implementing engineering best practices to create well designed, testable, reliable, maintainable, and cost-efficient systems.`,
+    heroSummary: `Full Stack Software Engineer & Cloud Developer with ${yearsExperience}+ years delivering robust, high-quality software. Specialized in TypeScript frontends and backend services development, integrating with 3rd party systems. Infrastructure setup and deployment on Google Cloud Platform.`,
+    summary: [`Passionate in delivering robust, efficient, high-quality software. Latest expertise includes design and development of backend services and frontend UIs using TypeScript. Interating systems with 3rd party systems. Architecting solutions on Google Cloud Platform.`,
+      `Proven track record in service-oriented architecture based system development, large-scale IoT integrations, and DevOps practices with consistently high uptime achievement. Excel at analyzing requirements and designing solutions through collaboration, diagramming, and documentation.`,
+      ` Passionate about implementing engineering best practices to create well designed, testable, reliable, maintainable, and cost-efficient systems. Also able to develop MVPs with the most essential functionality faster by prioratizing the most essential components when required`],
+    yearsExperience
   },
 
   skills: {
@@ -97,7 +106,7 @@ export const portfolioData = {
       location: "QLD, AU",
       period: "December 2020 – Present",
       type: "full-time",
-      description: "Full stack development and cloud deployment of Zimi product as earlier. Continue building on the IoT platform with additional features and integrations.",
+      description: "As the only full stack and cloud developer, Full stack development and cloud deployment of Zimi smart home iot cloud product. Involved in maintaining infrastructure on GCP and Amazon, Frontend admin and customer portal development, backend api development and message handler development. Continue building on the IoT platform with additional features and integrations.",
       highlights: [
         {
           title: "Platform Migration",
@@ -329,41 +338,41 @@ export const portfolioData = {
   ],
 
   certifications: [],
-  
+
   currentLearning: "Currently studying AWS architecture and services with the aim of obtaining certification",
 };
 
 // Theme configurations
-export const themes = {
-  professional: {
-    name: "Professional",
-    primary: "primary",
-    secondary: "secondary",
-    accent: "accent",
-    neutral: "neutral",
-  },
-  dark: {
-    name: "Dark Mode",
-    primary: "primary",
-    secondary: "secondary",
-    accent: "accent",
-    neutral: "neutral",
-  },
-  cyberpunk: {
-    name: "Cyberpunk",
-    primary: "warning",
-    secondary: "info",
-    accent: "error",
-    neutral: "neutral",
-  },
-  nature: {
-    name: "Nature",
-    primary: "success",
-    secondary: "info",
-    accent: "warning",
-    neutral: "neutral",
-  },
-};
+// export const themes = {
+//   professional: {
+//     name: "Professional",
+//     primary: "primary",
+//     secondary: "secondary",
+//     accent: "accent",
+//     neutral: "neutral",
+//   },
+//   dark: {
+//     name: "Dark Mode",
+//     primary: "primary",
+//     secondary: "secondary",
+//     accent: "accent",
+//     neutral: "neutral",
+//   },
+//   cyberpunk: {
+//     name: "Cyberpunk",
+//     primary: "warning",
+//     secondary: "info",
+//     accent: "error",
+//     neutral: "neutral",
+//   },
+//   nature: {
+//     name: "Nature",
+//     primary: "success",
+//     secondary: "info",
+//     accent: "warning",
+//     neutral: "neutral",
+//   },
+// };
 
 // Navigation configuration
 export const navigation = [
