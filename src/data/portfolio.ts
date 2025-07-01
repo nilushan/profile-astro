@@ -18,9 +18,9 @@ export const portfolioData = {
       website: "www.nilushansilva.info",
     },
     heroSummary: `Full Stack Software Engineer & Cloud Developer with ${yearsExperience}+ years delivering robust, high-quality software. Specialized in TypeScript frontends and backend services development, integrating with 3rd party systems. Infrastructure setup and deployment on Google Cloud Platform.`,
-    summary: [`Passionate in delivering robust, efficient, high-quality software. Latest expertise includes design and development of backend services and frontend UIs using TypeScript. Interating systems with 3rd party systems. Architecting solutions on Google Cloud Platform.`,
-      `Proven track record in service-oriented architecture based system development, large-scale IoT integrations, and DevOps practices with consistently high uptime achievement. Excel at analyzing requirements and designing solutions through collaboration, diagramming, and documentation.`,
-      ` Passionate about implementing engineering best practices to create well designed, testable, reliable, maintainable, and cost-efficient systems. Where required, able to develop MVPs with the most essential functionality faster by prioratizing the most essential components.`],
+    summary: [`Passionate about delivering robust, efficient, and high-quality software solutions. My expertise focuses on designing and developing backend services and frontend user interfaces using TypeScript, integrating systems with third-party platforms, and architecting solutions on Google Cloud Platform.`,
+      `Proven track record in service-oriented architecture development, large-scale IoT integrations, and DevOps practices with consistently high uptime achievements. I excel at analyzing requirements and designing solutions through collaboration, diagramming, and comprehensive documentation.`,
+      `Committed to implementing engineering best practices to create well-designed, testable, reliable, maintainable, and cost-efficient systems. I always choose the best tools for each purpose rather than reinventing the wheel—leveraging cloud-native open-source frameworks for platform independence or serverless platforms for rapid development and deployment. When needed, I can rapidly develop MVPs with essential functionality by prioritizing the most critical components.`],
     yearsExperience
   },
 
