@@ -20,7 +20,7 @@ export const portfolioData = {
     heroSummary: `Full Stack Software Engineer & Cloud Developer with ${yearsExperience}+ years delivering robust, high-quality software. Specialized in TypeScript frontends and backend services development, integrating with 3rd party systems. Infrastructure setup and deployment on Google Cloud Platform.`,
     summary: [`Passionate in delivering robust, efficient, high-quality software. Latest expertise includes design and development of backend services and frontend UIs using TypeScript. Interating systems with 3rd party systems. Architecting solutions on Google Cloud Platform.`,
       `Proven track record in service-oriented architecture based system development, large-scale IoT integrations, and DevOps practices with consistently high uptime achievement. Excel at analyzing requirements and designing solutions through collaboration, diagramming, and documentation.`,
-      ` Passionate about implementing engineering best practices to create well designed, testable, reliable, maintainable, and cost-efficient systems. Also able to develop MVPs with the most essential functionality faster by prioratizing the most essential components when required`],
+      ` Passionate about implementing engineering best practices to create well designed, testable, reliable, maintainable, and cost-efficient systems. Where required, able to develop MVPs with the most essential functionality faster by prioratizing the most essential components.`],
     yearsExperience
   },
 
