@@ -47,34 +47,34 @@ const DATA = [
 const Integration3 = () => {
   return (
     <section className="py-32">
-      <div className="container">
+      <div className="container mx-auto px-4">
         <div className="mx-auto flex flex-col items-center text-center">
           <div className="flex max-w-5xl flex-col items-center text-center">
-            <h1 className="my-6 text-4xl font-bold text-pretty lg:text-6xl">
+            <h1 className="my-6 text-4xl font-bold text-base-content lg:text-6xl">
               Integrations
             </h1>
-            <h2 className="mb-8 max-w-3xl text-muted-foreground lg:text-2xl">
+            <h2 className="mb-8 max-w-3xl text-base-content/70 lg:text-2xl">
               Connect your favourite apps to your workflow.
             </h2>
           </div>
 
           <div className="flex flex-col justify-center gap-4">
             {DATA.map(({ id, icon, title, description }) => (
-              <div key={id} className="flex items-center gap-4 py-4">
-                <div className="h-12 w-12 flex-shrink-0">
-                  <img
-                    src={icon}
-                    alt={title}
-                    width={48}
-                    height={48}
-                    className="h-full w-full object-contain"
-                  />
-                </div>
-                <div className="text-left">
-                  <div className="text-lg font-semibold">{title}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {description}
+              <div key={id} className="card card-side bg-base-100 shadow-md hover:shadow-lg transition-shadow p-4">
+                <div className="avatar">
+                  <div className="w-12 h-12">
+                    <img
+                      src={icon}
+                      alt={title}
+                      className="w-full h-full object-contain"
+                    />
                   </div>
+                </div>
+                <div className="card-body p-4">
+                  <h3 className="card-title text-lg text-base-content">{title}</h3>
+                  <p className="text-sm text-base-content/70">
+                    {description}
+                  </p>
                 </div>
               </div>
             ))}
