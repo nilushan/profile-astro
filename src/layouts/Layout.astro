@@ -64,21 +64,59 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(image, siteURL).href} />
 
-    <!-- Fonts -->
+    <!-- Fonts - Optimized loading with preconnect and consolidated requests -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Primary fonts - loaded first with font-display: swap for better performance -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    
+    <!-- Secondary fonts - consolidated into single request -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
+    
+    <!-- Accessibility font - loaded separately for specific use cases -->
     <link
       href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": portfolioContent.personal.name,
+      "jobTitle": portfolioContent.personal.title,
+      "email": portfolioContent.personal.email,
+      "url": siteURL.href,
+      "image": new URL("/og-image.png", siteURL).href,
+      "sameAs": [
+        `https://github.com/${portfolioContent.personal.social?.github || portfolioContent.personal.github}`,
+        `https://linkedin.com/in/${portfolioContent.personal.social?.linkedin || portfolioContent.personal.linkedin}`
+      ].filter(Boolean),
+      "knowsAbout": [
+        "TypeScript",
+        "React",
+        "Node.js", 
+        "Google Cloud Platform",
+        "IoT Development",
+        "DevOps",
+        "Software Architecture"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "University"
+      },
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Software Engineer"
+      }
+    })} />
 
     <title>{title}</title>
   </head>
