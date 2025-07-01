@@ -59,15 +59,15 @@ const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
 ---
 
 <div
-  class="navbar bg-base-100 fixed top-0 z-50 shadow-sm border-b border-base-content/10"
+  class="navbar bg-base-100 fixed top-0 z-50 shadow-sm border-b border-base-content/10 h-20 min-h-20 items-center"
 >
-  <div class="navbar-start">
+  <div class="navbar-start items-center">
     <!-- Mobile menu -->
     <div class="dropdown">
       <div
         tabindex="0"
         role="button"
-        class="btn btn-ghost lg:hidden"
+        class="btn btn-ghost lg:hidden h-12"
         aria-label="Open menu"
       >
         <svg
@@ -108,7 +108,7 @@ const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
     <!-- Logo -->
     <a
       href="/"
-      class="btn btn-ghost text-xl font-bold text-primary hover:text-primary-focus"
+      class="btn btn-ghost text-2xl font-bold text-primary hover:text-primary-focus h-16 flex items-center"
       aria-label="Home"
     >
       <span class="text-primary">N</span><span class="text-secondary">S</span>
@@ -116,16 +116,16 @@ const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
   </div>
 
   <!-- Desktop menu -->
-  <div class="navbar-center hidden lg:flex">
-    <ul class="menu menu-horizontal px-1">
+  <div class="navbar-center hidden lg:flex items-center">
+    <ul class="menu menu-horizontal px-1 text-lg items-center">
       {navigation.map((item) => (
         <li>
           <a
             href={item.href}
             class={
               isActive(item.href)
-                ? "active text-primary font-semibold bg-primary/10"
-                : "text-base-content hover:text-primary hover:bg-primary/5"
+                ? "active text-primary font-semibold bg-primary/10 h-12 px-4 flex items-center"
+                : "text-base-content hover:text-primary hover:bg-primary/5 h-12 px-4 flex items-center"
             }
           >
             {item.name}
@@ -135,13 +135,13 @@ const allThemes = [...lightThemes, ...darkThemes, ...specialThemes];
     </ul>
   </div>
 
-  <div class="navbar-end">
+  <div class="navbar-end items-center">
     <!-- Theme switcher -->
     <div class="dropdown dropdown-end ">
       <div
         tabindex="0"
         role="button"
-        class="btn btn-ghost btn-sm text-base-content hover:text-primary hover:bg-primary/10"
+        class="btn btn-ghost text-base-content hover:text-primary hover:bg-primary/10 h-12 flex items-center"
         aria-label="Change theme"
       >
         <svg
