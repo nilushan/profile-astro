@@ -78,8 +78,12 @@ const statusColors = {
         {project.data.image ? (
           <img 
             src={project.data.image} 
-            alt={project.data.title}
+            alt={`${project.data.title} - ${project.data.description}`}
             class={`${layout === 'list' ? 'h-full object-cover' : 'w-full h-48 object-cover rounded-xl'}`}
+            loading="lazy"
+            decoding="async"
+            width={layout === 'list' ? "192" : "400"}
+            height={layout === 'list' ? "100" : "192"}
           />
         ) : (
           <div class="w-full h-48 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-secondary/30 transition-all">

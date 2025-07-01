@@ -138,8 +138,12 @@ const getCategoryIcon = (category: string) => {
         <div class="max-w-4xl mx-auto">
           <img 
             src={project.data.image} 
-            alt={project.data.title}
+            alt={`${project.data.title} project showcase - ${project.data.description}`}
             class="w-full h-auto rounded-lg shadow-2xl"
+            loading="eager"
+            decoding="async"
+            width="800"
+            height="450"
           />
         </div>
       </div>
