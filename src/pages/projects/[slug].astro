@@ -64,16 +64,28 @@ const getCategoryIcon = (category: string) => {
   image={project.data.image}
 >
   <!-- Project Hero Section -->
-  <section class="hero min-h-[60vh] bg-gradient-to-r from-primary/10 to-secondary/10">
-    <div class="hero-content text-center max-w-4xl">
-      <div>
+  <section class="hero min-h-[60vh] bg-gradient-to-r from-primary/10 to-secondary/10 pt-20">
+    <div class="hero-content text-center w-full max-w-4xl px-4 mx-auto">
+      <div class="w-full max-w-3xl mx-auto">
         <!-- Breadcrumb -->
-        <div class="breadcrumbs text-base mb-4">
-          <ul>
-            <li><a href="/" class="text-primary hover:text-primary-focus">Home</a></li>
-            <li><a href="/projects" class="text-primary hover:text-primary-focus">Projects</a></li>
-            <li class="text-base-content/70">{project.data.title}</li>
-          </ul>
+        <div class="mb-4">
+          <!-- Mobile: Simple back link -->
+          <div class="sm:hidden">
+            <a href="/projects" class="btn btn-ghost btn-sm text-primary hover:text-primary-focus">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+              </svg>
+              Back to Projects
+            </a>
+          </div>
+          <!-- Desktop: Full breadcrumb -->
+          <div class="breadcrumbs text-sm hidden sm:block">
+            <ul>
+              <li><a href="/" class="text-primary hover:text-primary-focus">Home</a></li>
+              <li><a href="/projects" class="text-primary hover:text-primary-focus">Projects</a></li>
+              <li class="text-base-content/70">{project.data.title}</li>
+            </ul>
+          </div>
         </div>
 
         <!-- Project Title and Badges -->
@@ -94,16 +106,16 @@ const getCategoryIcon = (category: string) => {
           )}
         </div>
 
-        <h1 class="text-3xl lg:text-5xl font-bold mb-6 text-base-content">
+        <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold mb-6 text-base-content break-words">
           {project.data.title}
         </h1>
         
-        <p class="text-lg lg:text-xl text-base-content/80 mb-6 max-w-3xl mx-auto">
+        <p class="text-base sm:text-lg lg:text-xl text-base-content/80 mb-6 max-w-3xl mx-auto">
           {project.data.description}
         </p>
 
         <!-- Project Meta Info -->
-        <div class="flex flex-wrap justify-center gap-6 text-sm text-base-content/70">
+        <div class="flex flex-wrap justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-base-content/70">
           <div class="flex items-center gap-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -153,7 +165,7 @@ const getCategoryIcon = (category: string) => {
   <!-- Project Content -->
   <section class="py-16 lg:py-24">
     <div class="container mx-auto px-4">
-      <div class="max-w-m mx-auto">
+      <div class="max-w-4xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <!-- Sidebar -->
           <div class="lg:col-span-1">
