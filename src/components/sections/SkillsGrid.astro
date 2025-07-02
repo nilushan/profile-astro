@@ -50,13 +50,13 @@ const getIconSvg = (iconName: string) => {
         </div>
         
         <!-- Title -->
-        <h3 class="card-title text-lg mb-2 group-hover:text-primary transition-colors">
+        <h3 class="card-title text-xl mb-2 group-hover:text-primary transition-colors">
           {category.title}
         </h3>
         
         <!-- Description -->
         {category.description && (
-          <p class="text-sm text-base-content/60 mb-4">
+          <p class="text-base text-base-content/60 mb-4">
             {category.description}
           </p>
         )}
@@ -78,7 +78,7 @@ const getIconSvg = (iconName: string) => {
         <!-- Progress Indicator (Optional) -->
         <div class="w-full mt-4">
           <div class={`progress progress-${category.color} w-full h-2`} value={Math.min(category.skills.length * 10, 100)} max="100"></div>
-          <div class="text-xs text-base-content/50 mt-1">
+          <div class="text-sm text-base-content/50 mt-1">
             {category.skills.length} skills
           </div>
         </div>

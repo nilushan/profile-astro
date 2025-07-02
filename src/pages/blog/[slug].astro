@@ -48,7 +48,7 @@ const relatedPosts = allPosts
     <div class="hero-content text-center max-w-4xl">
       <div>
         <!-- Breadcrumb -->
-        <div class="breadcrumbs text-sm mb-4">
+        <div class="breadcrumbs text-base mb-4">
           <ul>
             <li><a href="/" class="text-primary hover:text-primary-focus">Home</a></li>
             <li><a href="/blog" class="text-primary hover:text-primary-focus">Blog</a></li>
@@ -80,7 +80,7 @@ const relatedPosts = allPosts
         </p>
 
         <!-- Post Meta Info -->
-        <div class="flex flex-wrap justify-center gap-6 text-sm text-base-content/70">
+        <div class="flex flex-wrap justify-center gap-6 text-base text-base-content/70">
           <div class="flex items-center gap-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -130,8 +130,8 @@ const relatedPosts = allPosts
               <!-- Table of Contents (would need JavaScript to generate) -->
               <div class="card bg-base-100 shadow-lg">
                 <div class="card-body">
-                  <h3 class="card-title text-sm mb-3">In This Article</h3>
-                  <div class="text-sm space-y-2 text-base-content/80">
+                  <h3 class="card-title text-base mb-3">In This Article</h3>
+                  <div class="text-base space-y-2 text-base-content/80">
                     <p>Use the headings in the article to navigate</p>
                   </div>
                 </div>
@@ -141,10 +141,10 @@ const relatedPosts = allPosts
               {post.data.tags && post.data.tags.length > 0 && (
                 <div class="card bg-base-100 shadow-lg">
                   <div class="card-body">
-                    <h3 class="card-title text-sm mb-3">Tags</h3>
+                    <h3 class="card-title text-base mb-3">Tags</h3>
                     <div class="flex flex-wrap gap-1">
                       {post.data.tags.map((tag) => (
-                        <div class="badge badge-outline badge-sm">{tag}</div>
+                        <div class="badge badge-outline">{tag}</div>
                       ))}
                     </div>
                   </div>
@@ -154,7 +154,7 @@ const relatedPosts = allPosts
               <!-- Share -->
               <div class="card bg-base-100 shadow-lg">
                 <div class="card-body">
-                  <h3 class="card-title text-sm mb-3">Share</h3>
+                  <h3 class="card-title text-base mb-3">Share</h3>
                   <div class="space-y-2">
                     <a 
                       href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.data.title)}&url=${encodeURIComponent(Astro.url.href)}`}
@@ -185,8 +185,8 @@ const relatedPosts = allPosts
               <!-- Contact CTA -->
               <div class="card bg-base-100 shadow-lg">
                 <div class="card-body">
-                  <h3 class="card-title text-sm mb-3">Discuss This</h3>
-                  <p class="text-xs text-base-content/70 mb-3">
+                  <h3 class="card-title text-base mb-3">Discuss This</h3>
+                  <p class="text-sm text-base-content/70 mb-3">
                     Have questions or want to discuss this topic further?
                   </p>
                   <a href="/contact" class="btn btn-primary btn-sm w-full">
@@ -236,16 +236,16 @@ const relatedPosts = allPosts
                   )}
                 </figure>
                 <div class="card-body p-4">
-                  <h3 class="card-title text-sm line-clamp-2 mb-2">
+                  <h3 class="card-title text-base line-clamp-2 mb-2">
                     {relatedPost.data.title}
                   </h3>
-                  <p class="text-xs text-base-content/70 mb-3">
+                  <p class="text-sm text-base-content/70 mb-3">
                     {new Date(relatedPost.data.publishDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </p>
                   <div class="card-actions">
                     <a 
                       href={`/blog/${relatedPost.id}`} 
-                      class="btn btn-primary btn-xs"
+                      class="btn btn-primary btn-sm"
                     >
                       Read More
                     </a>

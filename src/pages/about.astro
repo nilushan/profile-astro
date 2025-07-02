@@ -42,7 +42,7 @@ const yearsExperience = currentYear - startYear
                 <h2 class="text-2xl font-bold mb-4 text-base-content">
                   Hello, I'm {personal.name}
                 </h2>
-                <p class="text-base-content/80 leading-relaxed mb-6">
+                <p class="text-lg text-base-content/80 leading-relaxed mb-6">
                   {personal.summary}
                 </p>
                 <div class="stats stats-vertical lg:stats-horizontal shadow">
@@ -77,7 +77,7 @@ const yearsExperience = currentYear - startYear
                 </svg>
                 My Journey
               </h3>
-              <p class="text-base-content/80 leading-relaxed">
+              <p class="text-base text-base-content/80 leading-relaxed">
                 My journey in technology began during my computer science studies at the University of Colombo. 
                 What started as curiosity about how software works has evolved into a passion for building 
                 scalable, robust systems that solve real-world problems. Over the years, I've had the privilege 
@@ -95,7 +95,7 @@ const yearsExperience = currentYear - startYear
                 </svg>
                 What Drives Me
               </h3>
-              <p class="text-base-content/80 leading-relaxed">
+              <p class="text-base text-base-content/80 leading-relaxed">
                 I'm passionate about creating technology that makes a difference. Whether it's optimizing 
                 cloud infrastructure to reduce costs by 50%, building real-time systems that handle thousands 
                 of concurrent users, or designing intuitive interfaces that delight users, I'm driven by the 
@@ -127,7 +127,7 @@ const yearsExperience = currentYear - startYear
                 <h4 class="text-xl font-semibold mb-2">{education.degree}</h4>
                 <p class="text-base-content/70 mb-2">{education.institution}, {education.location}</p>
                 <div class="badge badge-primary">{education.period}</div>
-                <p class="text-base-content/80 mt-4">
+                <p class="text-base text-base-content/80 mt-4">
                   My computer science education provided me with a strong foundation in algorithms, data structures, 
                   software engineering principles, and system design. This academic background, combined with hands-on 
                   project experience, prepared me well for the challenges of real-world software development.
@@ -146,7 +146,7 @@ const yearsExperience = currentYear - startYear
               </svg>
               Continuous Learning
             </h3>
-            <p class="text-base-content/80 mb-4">{currentLearning}</p>
+            <p class="text-base text-base-content/80 mb-4">{currentLearning}</p>
             <div class="flex flex-wrap gap-2">
               <div class="badge badge-outline">AWS Architecture</div>
               <div class="badge badge-outline">Cloud Certifications</div>
@@ -169,11 +169,11 @@ const yearsExperience = currentYear - startYear
                 <div class="card bg-gradient-to-br from-base-200 to-transparent">
                   <div class="card-body">
                     <h4 class="text-lg font-semibold mb-2 text-primary">{interest.title}</h4>
-                    <p class="text-base-content/80 text-sm mb-3">{interest.description}</p>
+                    <p class="text-base-content/80 text-base mb-3">{interest.description}</p>
                     {interest.items && (
                       <ul class="space-y-2">
                         {interest.items.map((item) => (
-                          <li class="flex items-start gap-2 text-sm">
+                          <li class="flex items-start gap-2 text-base">
                             <div class="w-1 h-1 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                             <span class="text-base-content/70">{item}</span>
                           </li>
@@ -192,7 +192,7 @@ const yearsExperience = currentYear - startYear
           <div class="card bg-gradient-to-r from-primary to-secondary text-primary-content shadow-xl">
             <div class="card-body">
               <h3 class="text-2xl font-bold mb-4">Let's Connect</h3>
-              <p class="mb-6 opacity-90">
+              <p class="text-lg mb-6 opacity-90">
                 I'm always interested in discussing new opportunities, sharing knowledge, or collaborating on interesting projects.
               </p>
               <div class="flex flex-col sm:flex-row gap-4 justify-center">

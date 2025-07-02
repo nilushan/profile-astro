@@ -22,7 +22,7 @@ const { skills, skillCategories } = portfolioData
   </section>
 
   <!-- Skills Overview Stats -->
-  <section class="py-16 bg-base-200">
+  <!-- <section class="py-16 bg-base-200">
     <div class="container mx-auto px-4">
       <div class="stats stats-vertical lg:stats-horizontal shadow-xl w-full max-w-4xl mx-auto bg-base-100">
         <div class="stat place-items-center">
@@ -70,7 +70,7 @@ const { skills, skillCategories } = portfolioData
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- Skills Grid -->
   <section class="py-16 lg:py-24">
@@ -110,10 +110,10 @@ const { skills, skillCategories } = portfolioData
               </div>
             </div>
             
-            <p class="text-base-content/80 mb-4">6+ years of production experience</p>
+            <p class="text-base text-base-content/80 mb-4">6+ years of production experience</p>
             
             <div class="space-y-2">
-              <h4 class="font-semibold text-sm">Actively Using:</h4>
+              <h4 class="font-semibold text-base">Actively Using:</h4>
               <div class="flex flex-wrap gap-1">
                 {skills.cloud.gcp.actively.slice(0, 8).map((service) => (
                   <div class="badge badge-primary badge-sm">{service}</div>
@@ -138,10 +138,10 @@ const { skills, skillCategories } = portfolioData
               </div>
             </div>
             
-            <p class="text-base-content/80 mb-4">Currently expanding knowledge</p>
+            <p class="text-base text-base-content/80 mb-4">Currently expanding knowledge</p>
             
             <div class="space-y-2">
-              <h4 class="font-semibold text-sm">Familiar With:</h4>
+              <h4 class="font-semibold text-base">Familiar With:</h4>
               <div class="flex flex-wrap gap-1">
                 {skills.cloud.aws.familiar.slice(0, 6).map((service) => (
                   <div class="badge badge-secondary badge-sm">{service}</div>
@@ -166,10 +166,10 @@ const { skills, skillCategories } = portfolioData
               </div>
             </div>
             
-            <p class="text-base-content/80 mb-4">Basic understanding and usage</p>
+            <p class="text-base text-base-content/80 mb-4">Basic understanding and usage</p>
             
             <div class="space-y-2">
-              <h4 class="font-semibold text-sm">Familiar With:</h4>
+              <h4 class="font-semibold text-base">Familiar With:</h4>
               <div class="flex flex-wrap gap-1">
                 {skills.cloud.azure.familiar.map((service) => (
                   <div class="badge badge-accent badge-sm">{service}</div>
@@ -195,28 +195,28 @@ const { skills, skillCategories } = portfolioData
                   <div class="badge badge-success">Expert</div>
                 </div>
                 <h4 class="font-semibold mb-2">Expert Level</h4>
-                <p class="text-xs text-base-content/70">5+ years of production experience, can mentor others, deep understanding of best practices</p>
+                <p class="text-base text-base-content/70">5+ years of production experience, can mentor others, deep understanding of best practices</p>
               </div>
               <div class="text-center">
                 <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                   <div class="badge badge-primary">Advanced</div>
                 </div>
                 <h4 class="font-semibold mb-2">Advanced Level</h4>
-                <p class="text-xs text-base-content/70">3+ years experience, comfortable with complex projects, good understanding of patterns</p>
+                <p class="text-base text-base-content/70">3+ years experience, comfortable with complex projects, good understanding of patterns</p>
               </div>
               <div class="text-center">
                 <div class="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                   <div class="badge badge-secondary">Intermediate</div>
                 </div>
                 <h4 class="font-semibold mb-2">Intermediate Level</h4>
-                <p class="text-xs text-base-content/70">1-3 years experience, can work independently, understand core concepts</p>
+                <p class="text-base text-base-content/70">1-3 years experience, can work independently, understand core concepts</p>
               </div>
               <div class="text-center">
                 <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
                   <div class="badge badge-accent">Familiar</div>
                 </div>
                 <h4 class="font-semibold mb-2">Familiar Level</h4>
-                <p class="text-xs text-base-content/70">Basic understanding, can work with guidance, learning actively</p>
+                <p class="text-base text-base-content/70">Basic understanding, can work with guidance, learning actively</p>
               </div>
             </div>
           </div>
