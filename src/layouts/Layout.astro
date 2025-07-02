@@ -134,22 +134,26 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
 
       <!-- Footer -->
       <footer
-        class="footer footer-center p-10 bg-base-200 text-base-content mt-20"
+        class="footer footer-center p-10 bg-base-200 text-base-content flex flex-col "
       >
-        <div class="grid grid-flow-col gap-4">
-          <a href="/about" class="link link-hover hover:text-primary">About</a>
-          <a href="/projects" class="link link-hover hover:text-primary"
-            >Projects</a
-          >
-          <a href="/blog" class="link link-hover hover:text-primary">Blog</a>
-          <a href="/skills" class="link link-hover hover:text-primary">Skills</a
-          >
-          <a href="/contact" class="link link-hover hover:text-primary"
-            >Contact</a
-          >
-        </div>
-        <div>
-          <div class="grid grid-flow-col gap-4">
+        <!-- First row: Menu and Social Icons -->
+        <div class="flex flex-col md:flex-row justify-center items-center gap-8 w-full">
+          <!-- Menu Links -->
+          <div class="flex flex-col md:flex-row justify-center gap-2">
+            <a href="/about" class="link link-hover hover:text-primary text-center">About</a>
+            <a href="/projects" class="link link-hover hover:text-primary text-center"
+              >Projects</a
+            >
+            <a href="/blog" class="link link-hover hover:text-primary text-center">Blog</a>
+            <a href="/skills" class="link link-hover hover:text-primary text-center">Skills</a
+            >
+            <a href="/contact" class="link link-hover hover:text-primary text-center"
+              >Contact</a
+            >
+          </div>
+          
+          <!-- Social Icons -->
+          <div class="flex justify-center gap-4">
             <a
               href={`https://github.com/${portfolioContent.personal.social.github}`}
               target="_blank"
@@ -204,14 +208,18 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
             </a>
           </div>
         </div>
-        <div>
-          <p class="text-sm text-base-content/70">
-            © {new Date().getFullYear()}
-            {portfolioContent.personal.name}. All rights reserved.
-          </p>
-          <p class="text-xs text-base-content/50 mt-1">
-            Built with Astro, React, and DaisyUI
-          </p>
+        
+        <!-- Second row: Copyright -->
+        <div class="w-full border-t border-base-300 pt-6">
+          <div class="flex flex-row justify-between items-center gap-2 text-center">
+            <p class="text-sm text-base-content/70">
+              © {new Date().getFullYear()}
+              {portfolioContent.personal.name}. All rights reserved.
+            </p>
+            <p class="text-xs text-base-content/50">
+              Built with Astro, React, and DaisyUI
+            </p>
+          </div>
         </div>
       </footer>
     </div>
