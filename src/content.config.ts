@@ -1,6 +1,6 @@
 import { defineCollection, z } from 'astro:content';
-import { docsLoader  } from '@astrojs/starlight/loaders';
-import { docsSchema } from '@astrojs/starlight/schema';
+// import { docsLoader  } from '@astrojs/starlight/loaders';
+// import { docsSchema } from '@astrojs/starlight/schema';
 import { glob } from 'astro/loaders';
 
 // export const collections = {
@@ -80,8 +80,8 @@ export const collections = {
   projects,
   blog,
   // knowledge, // Renamed from 'docs' to avoid Starlight conflict
-  docs: defineCollection({
-    loader: docsLoader(),
-    schema: docsSchema()
-  }),
+  // docs: defineCollection({
+  //   loader: docsLoader(),
+  //   schema: docsSchema()
+  // }),
 };
