@@ -1,6 +1,9 @@
 ---
 import { portfolioData } from "@/data/portfolio";
-import { generateSocialLinksWithMetadata, getSocialIcon } from "@/lib/social-links";
+import {
+  generateSocialLinksWithMetadata,
+  getSocialIcon,
+} from "@/lib/social-links";
 
 const { personal } = portfolioData;
 
@@ -22,9 +25,13 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
     <div class="flex-shrink-0">
       <div class="avatar placeholder">
         <div
-          class="bg-primary text-primary-content w-48 sm:w-64 lg:w-80 rounded-full ring ring-primary ring-offset-base-100 ring-offset-4 sm:ring-offset-8"
+          class="bg-primary text-primary-content w-48 sm:w-64 lg:w-80 rounded-full ring ring-primary ring-offset-base-100 ring-offset-4 sm:ring-offset-8 flex items-center"
         >
-          <span class="text-5xl sm:text-6xl lg:text-7xl">{initials}</span>
+          <div
+            class="text-5xl sm:text-6xl lg:text-7xl items-center justify-around flex h-full w-full"
+          >
+            {initials}
+          </div>
         </div>
       </div>
       <!-- Status Indicator -->
@@ -64,27 +71,26 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
         <div class="badge badge-info badge-lg">DevOps Engineer</div>
       </div>
 
-
       <!-- CTA Buttons -->
       <div
         class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
       >
-            <a href="/about" class="btn btn-primary btn-lg">
-        Learn More About Me
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="h-5 w-5 ml-2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
-        </svg>
-      </a>
+        <a href="/about" class="btn btn-primary btn-lg">
+          Learn More About Me
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-5 w-5 ml-2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+          </svg>
+        </a>
 
         <a href="/projects" class="btn btn-primary btn-lg group">
           <span>View Projects</span>
@@ -102,7 +108,6 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
               d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
           </svg>
         </a>
-  
       </div>
 
       <!-- Stats Section -->
@@ -170,18 +175,20 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
       <div
         class="flex flex-wrap gap-2 sm:gap-4 mt-8 justify-center lg:justify-start"
       >
-        {socialLinks.map((link) => (
-          <a
-            href={link.url}
-            target={link.external ? "_blank" : undefined}
-            rel={link.external ? "noopener noreferrer" : undefined}
-            class="btn btn-ghost btn-sm gap-2"
-            aria-label={link.ariaLabel}
-          >
-            <Fragment set:html={getSocialIcon(link.platform)} />
-            <span>{link.name}</span>
-          </a>
-        ))}
+        {
+          socialLinks.map((link) => (
+            <a
+              href={link.url}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noopener noreferrer" : undefined}
+              class="btn btn-ghost btn-sm gap-2"
+              aria-label={link.ariaLabel}
+            >
+              <Fragment set:html={getSocialIcon(link.platform)} />
+              <span>{link.name}</span>
+            </a>
+          ))
+        }
       </div>
     </div>
   </div>
