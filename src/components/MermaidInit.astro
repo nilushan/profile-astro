@@ -4,11 +4,11 @@
 ---
 
 <script>
-  import mermaid from 'mermaid';
+  // Use dynamic import for better Vite compatibility
+  const initMermaid = async () => {
+    const mermaid = (await import('mermaid')).default;
 
-  // Initialize Mermaid when the DOM is ready
-  document.addEventListener('DOMContentLoaded', () => {
-    mermaid.initialize({
+    const config = {
       startOnLoad: true,
       theme: 'base',
       themeVariables: {
@@ -25,48 +25,40 @@
       },
       securityLevel: 'loose',
       fontFamily: 'var(--font-family-sans)',
-    });
+    };
+
+    mermaid.initialize(config);
 
     // Run Mermaid on all code blocks with language-mermaid class
-    mermaid.run({
+    await mermaid.run({
       querySelector: 'code.language-mermaid',
     });
-  });
 
-  // Re-initialize Mermaid when theme changes
-  window.addEventListener('theme-changed', () => {
-    // Small delay to ensure CSS variables are updated
-    setTimeout(() => {
-      mermaid.initialize({
-        startOnLoad: true,
-        theme: 'base',
-        themeVariables: {
-          primaryColor: 'oklch(var(--p))',
-          primaryTextColor: 'oklch(var(--pc))',
-          primaryBorderColor: 'oklch(var(--p))',
-          lineColor: 'oklch(var(--bc) / 0.2)',
-          secondaryColor: 'oklch(var(--s))',
-          tertiaryColor: 'oklch(var(--a))',
-          background: 'oklch(var(--b1))',
-          mainBkg: 'oklch(var(--b1))',
-          textColor: 'oklch(var(--bc))',
-          fontSize: '16px',
-        },
-        securityLevel: 'loose',
-        fontFamily: 'var(--font-family-sans)',
-      });
+    // Re-initialize Mermaid when theme changes
+    window.addEventListener('theme-changed', async () => {
+      // Small delay to ensure CSS variables are updated
+      setTimeout(async () => {
+        mermaid.initialize(config);
 
-      // Re-render all diagrams
-      const mermaidElements = document.querySelectorAll('code.language-mermaid');
-      mermaidElements.forEach((element) => {
-        element.removeAttribute('data-processed');
-      });
+        // Re-render all diagrams
+        const mermaidElements = document.querySelectorAll('code.language-mermaid');
+        mermaidElements.forEach((element) => {
+          element.removeAttribute('data-processed');
+        });
 
-      mermaid.run({
-        querySelector: 'code.language-mermaid',
-      });
-    }, 100);
-  });
+        await mermaid.run({
+          querySelector: 'code.language-mermaid',
+        });
+      }, 100);
+    });
+  };
+
+  // Initialize Mermaid when the DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMermaid);
+  } else {
+    initMermaid();
+  }
 </script>
 
 <style is:global>
