@@ -9,7 +9,7 @@
     const mermaid = (await import('mermaid')).default;
 
     const config = {
-      startOnLoad: true,
+      startOnLoad: false,
       theme: 'base',
       themeVariables: {
         primaryColor: 'oklch(var(--p))',
@@ -29,26 +29,40 @@
 
     mermaid.initialize(config);
 
-    // Run Mermaid on all code blocks with language-mermaid class
-    await mermaid.run({
-      querySelector: 'code.language-mermaid',
+    // Find all mermaid code blocks and render them
+    const mermaidBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
+
+    mermaidBlocks.forEach((block, index) => {
+      const code = block.querySelector('code');
+      if (!code) return;
+
+      // Get the diagram text content
+      const diagramText = code.textContent || '';
+
+      // Create a div to hold the rendered diagram
+      const diagramDiv = document.createElement('div');
+      diagramDiv.className = 'mermaid-diagram';
+      diagramDiv.id = `mermaid-${index}`;
+
+      // Replace the pre/code block with the diagram div
+      block.parentNode?.replaceChild(diagramDiv, block);
+
+      // Render the diagram
+      mermaid.render(`mermaid-svg-${index}`, diagramText).then(({ svg }) => {
+        diagramDiv.innerHTML = svg;
+      }).catch((error) => {
+        console.error('Mermaid rendering error:', error);
+        // On error, show the original code block
+        diagramDiv.parentNode?.replaceChild(block, diagramDiv);
+      });
     });
 
     // Re-initialize Mermaid when theme changes
     window.addEventListener('theme-changed', async () => {
-      // Small delay to ensure CSS variables are updated
-      setTimeout(async () => {
-        mermaid.initialize(config);
-
-        // Re-render all diagrams
-        const mermaidElements = document.querySelectorAll('code.language-mermaid');
-        mermaidElements.forEach((element) => {
-          element.removeAttribute('data-processed');
-        });
-
-        await mermaid.run({
-          querySelector: 'code.language-mermaid',
-        });
+      // Reload the page to re-render diagrams with new theme
+      // This is simpler than trying to re-render in place
+      setTimeout(() => {
+        location.reload();
       }, 100);
     });
   };
@@ -95,17 +109,19 @@
   }
 
   /* Ensure Mermaid diagrams are visible and properly styled */
-  code.language-mermaid {
-    display: flex !important;
+  .mermaid-diagram {
+    display: flex;
     justify-content: center;
     align-items: center;
     padding: 2rem 1rem;
-    background: oklch(var(--b1)) !important;
+    background: oklch(var(--b1));
     overflow-x: auto;
     min-height: 200px;
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
   }
 
-  code.language-mermaid svg {
+  .mermaid-diagram svg {
     max-width: 100%;
     height: auto;
   }
