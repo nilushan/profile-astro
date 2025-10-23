@@ -27,9 +27,9 @@
       fontFamily: 'var(--font-family-sans)',
     });
 
-    // Run Mermaid on all code blocks with language 'mermaid'
+    // Run Mermaid on all code blocks with language-mermaid class
     mermaid.run({
-      querySelector: 'pre code.language-mermaid',
+      querySelector: 'code.language-mermaid',
     });
   });
 
@@ -57,37 +57,93 @@
       });
 
       // Re-render all diagrams
-      const mermaidElements = document.querySelectorAll('.mermaid');
+      const mermaidElements = document.querySelectorAll('code.language-mermaid');
       mermaidElements.forEach((element) => {
         element.removeAttribute('data-processed');
       });
 
       mermaid.run({
-        querySelector: '.mermaid',
+        querySelector: 'code.language-mermaid',
       });
     }, 100);
   });
 </script>
 
 <style is:global>
-  /* Ensure Mermaid diagrams are visible and properly styled */
-  .mermaid {
-    display: flex;
-    justify-content: center;
+  /* Diagram preview container */
+  .diagram-preview {
     margin: 2rem 0;
-    background: oklch(var(--b1));
-    padding: 1rem;
-    border-radius: 0.5rem;
-    overflow-x: auto;
+    border: 2px solid oklch(var(--bc) / 0.1);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: oklch(var(--b2));
   }
 
-  .mermaid svg {
+  .diagram-preview-header {
+    background: oklch(var(--b3));
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid oklch(var(--bc) / 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .diagram-preview-header svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: oklch(var(--p));
+  }
+
+  .diagram-preview-header span {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: oklch(var(--bc) / 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Ensure Mermaid diagrams are visible and properly styled */
+  code.language-mermaid {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    background: oklch(var(--b1)) !important;
+    overflow-x: auto;
+    min-height: 200px;
+  }
+
+  code.language-mermaid svg {
     max-width: 100%;
     height: auto;
   }
 
-  /* Ensure code blocks with mermaid class are processed */
-  pre code.language-mermaid {
-    display: block;
+  /* Code block styling for mermaid syntax */
+  .diagram-code {
+    margin: 1.5rem 0;
+    position: relative;
+  }
+
+  .diagram-code-header {
+    background: oklch(var(--b3));
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid oklch(var(--bc) / 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  .diagram-code-header span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: oklch(var(--bc) / 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .diagram-code pre {
+    margin: 0;
+    border-radius: 0 0 0.5rem 0.5rem;
   }
 </style>
