@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { portfolioData as portfolioContent } from "@/data/portfolio";
 import Navbar from "@/components/navigation/Navbar.astro";
+import MermaidInit from "@/components/MermaidInit.astro";
 
 export interface Props {
   title?: string;
@@ -281,6 +282,9 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
         </div>
       </footer>
     </div>
+
+    <!-- Mermaid diagram initialization -->
+    <MermaidInit />
   </body>
 </html>
 

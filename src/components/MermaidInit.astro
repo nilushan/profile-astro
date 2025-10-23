@@ -1,0 +1,93 @@
+---
+// Mermaid diagram initialization component
+// This component initializes Mermaid.js to render diagrams on the client side
+---
+
+<script>
+  import mermaid from 'mermaid';
+
+  // Initialize Mermaid when the DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: 'oklch(var(--p))',
+        primaryTextColor: 'oklch(var(--pc))',
+        primaryBorderColor: 'oklch(var(--p))',
+        lineColor: 'oklch(var(--bc) / 0.2)',
+        secondaryColor: 'oklch(var(--s))',
+        tertiaryColor: 'oklch(var(--a))',
+        background: 'oklch(var(--b1))',
+        mainBkg: 'oklch(var(--b1))',
+        textColor: 'oklch(var(--bc))',
+        fontSize: '16px',
+      },
+      securityLevel: 'loose',
+      fontFamily: 'var(--font-family-sans)',
+    });
+
+    // Run Mermaid on all code blocks with language 'mermaid'
+    mermaid.run({
+      querySelector: 'pre code.language-mermaid',
+    });
+  });
+
+  // Re-initialize Mermaid when theme changes
+  window.addEventListener('theme-changed', () => {
+    // Small delay to ensure CSS variables are updated
+    setTimeout(() => {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'base',
+        themeVariables: {
+          primaryColor: 'oklch(var(--p))',
+          primaryTextColor: 'oklch(var(--pc))',
+          primaryBorderColor: 'oklch(var(--p))',
+          lineColor: 'oklch(var(--bc) / 0.2)',
+          secondaryColor: 'oklch(var(--s))',
+          tertiaryColor: 'oklch(var(--a))',
+          background: 'oklch(var(--b1))',
+          mainBkg: 'oklch(var(--b1))',
+          textColor: 'oklch(var(--bc))',
+          fontSize: '16px',
+        },
+        securityLevel: 'loose',
+        fontFamily: 'var(--font-family-sans)',
+      });
+
+      // Re-render all diagrams
+      const mermaidElements = document.querySelectorAll('.mermaid');
+      mermaidElements.forEach((element) => {
+        element.removeAttribute('data-processed');
+      });
+
+      mermaid.run({
+        querySelector: '.mermaid',
+      });
+    }, 100);
+  });
+</script>
+
+<style is:global>
+  /* Ensure Mermaid diagrams are visible and properly styled */
+  .mermaid {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    background: oklch(var(--b1));
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+
+  .mermaid svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Ensure code blocks with mermaid class are processed */
+  pre code.language-mermaid {
+    display: block;
+  }
+</style>

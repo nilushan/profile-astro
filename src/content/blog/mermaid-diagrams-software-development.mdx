@@ -1,0 +1,636 @@
+---
+title: "Mastering Mermaid Diagrams for Software Development"
+description: "A comprehensive guide to using Mermaid diagrams for software development - from sequence diagrams to class diagrams, component diagrams, and more. Learn how to create powerful visual documentation with simple text-based syntax."
+publishDate: 2025-10-23
+author: "Nilushan Silva"
+tags: ["mermaid", "diagrams", "documentation", "software design", "DevOps", "architecture"]
+category: "Documentation"
+featured: true
+---
+
+Mermaid is a powerful JavaScript-based diagramming and charting tool that lets you create diagrams using text and code. It's particularly valuable for software developers because diagrams can be version-controlled, reviewed, and maintained alongside your code.
+
+In this post, I'll explore the different types of Mermaid diagrams that are most useful for software development, with practical examples you can use immediately.
+
+## Why Mermaid?
+
+Before diving into the diagram types, here's why I love Mermaid:
+
+- **Text-based**: Store diagrams in version control with your code
+- **Easy to maintain**: Update diagrams by editing text, not dragging boxes
+- **GitHub-native**: Renders automatically in GitHub README files and issues
+- **No special tools**: Works in Markdown, documentation sites, and many IDEs
+- **Consistent styling**: Automatic layout and theming
+
+## 1. Sequence Diagrams
+
+Sequence diagrams are perfect for visualizing interactions over time. Let's model the process of creating and deploying a blog post in this very portfolio project.
+
+### Creating and Deploying a Blog Post
+
+```mermaid
+sequenceDiagram
+    actor Dev as Developer
+    participant IDE as VS Code
+    participant Git as Git Repository
+    participant GH as GitHub
+    participant Actions as GitHub Actions
+    participant Firebase as Firebase Hosting
+
+    Dev->>IDE: Create new .mdx file
+    Dev->>IDE: Write blog content
+    Dev->>IDE: Add Mermaid diagrams
+
+    Note over Dev,IDE: Local Development
+
+    Dev->>IDE: Test with pnpm dev
+    IDE-->>Dev: Preview at localhost:4321
+
+    Dev->>Git: git add blog/post.mdx
+    Dev->>Git: git commit -m "Add blog post"
+    Dev->>Git: git push origin main
+
+    Note over Git,GH: CI/CD Pipeline Starts
+
+    Git->>GH: Push to main branch
+    GH->>Actions: Trigger workflow
+
+    Actions->>Actions: Checkout code
+    Actions->>Actions: Setup Node.js 22
+    Actions->>Actions: Setup pnpm@9
+    Actions->>Actions: pnpm install --frozen-lockfile
+    Actions->>Actions: pnpm build
+
+    alt Build Successful
+        Actions->>Firebase: Deploy to hosting
+        Firebase-->>Actions: Deployment successful
+        Actions-->>GH: ✅ Build passed
+        GH-->>Dev: Email notification
+    else Build Failed
+        Actions-->>GH: ❌ Build failed
+        GH-->>Dev: Email notification with errors
+        Dev->>Dev: Fix issues locally
+    end
+
+    Note over Firebase: Live at nilushansilva.info
+```
+
+This sequence diagram shows the complete workflow from creating a blog post to deployment. Notice how it captures:
+- User interactions
+- System processes
+- Conditional logic (build success/failure)
+- Notes for context
+
+## 2. Flowcharts
+
+Flowcharts are ideal for showing decision trees and process flows. Here's how the portfolio site decides which theme to apply:
+
+```mermaid
+flowchart TD
+    Start([User visits site]) --> CheckStorage{localStorage<br/>theme exists?}
+
+    CheckStorage -->|Yes| LoadTheme[Load saved theme]
+    CheckStorage -->|No| CheckPreference{Check system<br/>preference}
+
+    CheckPreference -->|Dark mode| SetDark[Set dark theme]
+    CheckPreference -->|Light mode| SetLight[Set light theme]
+    CheckPreference -->|No preference| SetDefault[Set default theme]
+
+    LoadTheme --> ValidateTheme{Is theme<br/>valid?}
+    ValidateTheme -->|Yes| ApplyTheme[Apply theme to HTML]
+    ValidateTheme -->|No| SetDefault
+
+    SetDark --> ApplyTheme
+    SetLight --> ApplyTheme
+    SetDefault --> ApplyTheme
+
+    ApplyTheme --> SaveToStorage[Save to localStorage]
+    SaveToStorage --> DispatchEvent[Dispatch theme-changed event]
+    DispatchEvent --> End([Render page])
+
+    style Start fill:#4ade80
+    style End fill:#60a5fa
+    style ApplyTheme fill:#f472b6
+```
+
+## 3. Class Diagrams
+
+Class diagrams show object-oriented structure. Here's the type system for the portfolio data:
+
+```mermaid
+classDiagram
+    class PortfolioData {
+        +PersonalInfo personal
+        +Skills skills
+        +SkillCategory[] skillCategories
+        +Experience[] experience
+        +Education education
+        +Interest[] interests
+    }
+
+    class PersonalInfo {
+        +string name
+        +string title
+        +string tagline
+        +string email
+        +string phone
+        +string location
+        +SocialLinks social
+        +string heroSummary
+        +string[] summary
+        +number yearsExperience
+    }
+
+    class SocialLinks {
+        +string github
+        +string linkedin
+        +string? twitter
+        +string? website
+    }
+
+    class SkillCategory {
+        +string title
+        +string icon
+        +string color
+        +string? description
+        +string[] skills
+    }
+
+    class Experience {
+        +string id
+        +string title
+        +string company
+        +string location
+        +string period
+        +string type
+        +string description
+        +Highlight[] highlights
+        +string[] technologies
+    }
+
+    class Highlight {
+        +string title
+        +string description
+    }
+
+    class Education {
+        +string degree
+        +string institution
+        +string location
+        +string period
+    }
+
+    class Interest {
+        +string title
+        +string description
+        +string[]? items
+    }
+
+    PortfolioData *-- PersonalInfo
+    PortfolioData *-- SkillCategory
+    PortfolioData *-- Experience
+    PortfolioData *-- Education
+    PortfolioData *-- Interest
+    PersonalInfo *-- SocialLinks
+    Experience *-- Highlight
+```
+
+This shows the complete type hierarchy of the portfolio data structure, including:
+- Composition relationships (`*--`)
+- Property types (string, arrays, optional)
+- Nested objects
+
+## 4. Component Diagrams
+
+Component diagrams visualize system architecture. Here's the Astro portfolio architecture:
+
+```mermaid
+graph TB
+    subgraph "Client Browser"
+        HTML[HTML Pages]
+        CSS[Tailwind CSS]
+        JS[Client JS]
+        React[React Islands]
+    end
+
+    subgraph "Build Time - Astro"
+        Pages[Pages/*.astro]
+        Components[Components/*.astro]
+        ReactComp[React Components]
+        Layouts[Layouts/*.astro]
+        Content[Content Collections]
+        Data[portfolio.ts]
+    end
+
+    subgraph "Styling"
+        TW[Tailwind v4]
+        DaisyUI[DaisyUI Themes]
+        Global[Global CSS]
+    end
+
+    subgraph "Content Sources"
+        Projects[Projects MDX]
+        Blog[Blog MDX]
+        Portfolio[Portfolio Data]
+    end
+
+    subgraph "Deployment"
+        Build[Astro Build]
+        Dist[Static Files]
+        Firebase[Firebase Hosting]
+    end
+
+    Pages --> Components
+    Pages --> Layouts
+    Pages --> Content
+    Components --> ReactComp
+    Components --> Data
+
+    Content --> Projects
+    Content --> Blog
+    Data --> Portfolio
+
+    Pages --> TW
+    Components --> DaisyUI
+    Layouts --> Global
+
+    Build --> Pages
+    Build --> Dist
+    Dist --> Firebase
+    Firebase --> HTML
+    Firebase --> CSS
+    Firebase --> JS
+
+    ReactComp -.->|Hydrated| React
+
+    style Build fill:#fbbf24
+    style Firebase fill:#f87171
+    style React fill:#60a5fa
+```
+
+## 5. State Diagrams
+
+State diagrams model state transitions. Here's the project status lifecycle:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Planned: New project idea
+
+    Planned --> InProgress: Start development
+    Planned --> OnHold: Deprioritized
+    Planned --> Cancelled: Scope changed
+
+    InProgress --> Testing: Feature complete
+    InProgress --> OnHold: Blocked
+    InProgress --> Cancelled: Requirements changed
+
+    OnHold --> InProgress: Unblocked
+    OnHold --> Cancelled: No longer viable
+
+    Testing --> InProgress: Issues found
+    Testing --> Completed: All tests pass
+
+    Completed --> Deployed: Production release
+
+    Deployed --> Maintenance: Post-launch
+    Maintenance --> Deployed: Updates deployed
+
+    Cancelled --> [*]
+    Deployed --> [*]: Project sunset
+
+    note right of InProgress
+        Active development
+        Daily commits
+        Regular updates
+    end note
+
+    note right of Completed
+        Code freeze
+        Final testing
+        Documentation
+    end note
+```
+
+## 6. Entity Relationship Diagrams
+
+ER diagrams are perfect for database schema visualization:
+
+```mermaid
+erDiagram
+    USER ||--o{ BLOG_POST : writes
+    USER ||--o{ PROJECT : creates
+    USER ||--o{ COMMENT : makes
+
+    BLOG_POST ||--o{ COMMENT : has
+    BLOG_POST }o--o{ TAG : tagged_with
+    BLOG_POST }o--|| CATEGORY : belongs_to
+
+    PROJECT }o--o{ TECHNOLOGY : uses
+    PROJECT }o--o{ TAG : tagged_with
+    PROJECT ||--o{ PROJECT_IMAGE : contains
+
+    USER {
+        string id PK
+        string name
+        string email
+        string avatar
+        datetime created_at
+        datetime updated_at
+    }
+
+    BLOG_POST {
+        string id PK
+        string user_id FK
+        string title
+        string slug UK
+        text content
+        string category_id FK
+        boolean featured
+        boolean draft
+        datetime publish_date
+        datetime created_at
+        datetime updated_at
+    }
+
+    PROJECT {
+        string id PK
+        string user_id FK
+        string title
+        string slug UK
+        text description
+        string period
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    TAG {
+        string id PK
+        string name UK
+        string slug UK
+    }
+
+    CATEGORY {
+        string id PK
+        string name UK
+        string slug UK
+    }
+
+    TECHNOLOGY {
+        string id PK
+        string name UK
+        string icon
+    }
+
+    COMMENT {
+        string id PK
+        string user_id FK
+        string post_id FK
+        text content
+        datetime created_at
+    }
+
+    PROJECT_IMAGE {
+        string id PK
+        string project_id FK
+        string url
+        string alt
+        int order
+    }
+```
+
+## 7. Git Graph
+
+Visualize your Git branching strategy:
+
+```mermaid
+gitGraph
+    commit id: "Initial commit"
+    commit id: "Add Astro setup"
+    commit id: "Add Tailwind & DaisyUI"
+
+    branch develop
+    checkout develop
+    commit id: "Setup content collections"
+    commit id: "Add blog schema"
+
+    branch feature/mermaid-blog
+    checkout feature/mermaid-blog
+    commit id: "Create mermaid blog post"
+    commit id: "Add sequence diagrams"
+    commit id: "Add class diagrams"
+
+    checkout develop
+    merge feature/mermaid-blog
+    commit id: "Test blog post"
+
+    checkout main
+    merge develop tag: "v1.2.0"
+
+    checkout develop
+    branch feature/theme-improvements
+    checkout feature/theme-improvements
+    commit id: "Fix dynamic classes"
+    commit id: "Update color mapping"
+
+    checkout develop
+    merge feature/theme-improvements
+
+    checkout main
+    merge develop tag: "v1.3.0"
+```
+
+## 8. Gantt Charts
+
+Project timeline visualization:
+
+```mermaid
+gantt
+    title Portfolio Development Timeline
+    dateFormat YYYY-MM-DD
+    section Planning
+    Requirements gathering    :done, req, 2025-01-01, 7d
+    Architecture design       :done, arch, after req, 5d
+
+    section Development
+    Setup Astro project       :done, setup, 2025-01-13, 2d
+    Implement layouts         :done, layouts, after setup, 5d
+    Build components          :done, comps, after layouts, 10d
+    Content collections       :done, content, after comps, 7d
+
+    section Styling
+    Tailwind integration      :done, tw, 2025-01-20, 3d
+    DaisyUI themes            :done, daisy, after tw, 5d
+    Theme switching           :done, themes, after daisy, 4d
+
+    section Content
+    Portfolio data            :done, data, 2025-02-01, 5d
+    Blog posts               :active, blog, after data, 10d
+    Project case studies     :active, projects, after blog, 7d
+
+    section Deployment
+    GitHub Actions setup     :done, ci, 2025-02-10, 2d
+    Firebase hosting         :done, deploy, after ci, 2d
+    Domain configuration     :done, domain, after deploy, 1d
+
+    section Optimization
+    Performance audit        :perf, 2025-02-20, 3d
+    SEO improvements        :seo, after perf, 3d
+    Accessibility review    :a11y, after seo, 3d
+```
+
+## 9. Pie Charts and Bar Charts
+
+For data visualization:
+
+```mermaid
+%%{init: {'theme':'base'}}%%
+pie title Technology Stack Distribution
+    "TypeScript/JavaScript" : 40
+    "React Components" : 15
+    "Astro Components" : 25
+    "CSS/Tailwind" : 12
+    "MDX Content" : 8
+```
+
+## 10. Mindmaps
+
+For brainstorming and concept mapping:
+
+```mermaid
+mindmap
+    root((Portfolio<br/>Architecture))
+        Frontend
+            Astro 5
+                SSG
+                Islands
+            React 19
+                ModeToggle
+                UI Components
+            Styling
+                Tailwind v4
+                DaisyUI
+                41 Themes
+        Content
+            Blog Posts
+                MDX Format
+                Code Syntax
+                Mermaid Diagrams
+            Projects
+                Case Studies
+                Technologies
+                Achievements
+            Portfolio Data
+                Personal Info
+                Skills
+                Experience
+        Infrastructure
+            GitHub
+                Version Control
+                Actions CI/CD
+            Firebase
+                Hosting
+                CDN
+            Build
+                pnpm
+                Vite
+                TypeScript
+        Features
+            Multi-theme
+            SEO Optimized
+            Responsive
+            Type-safe
+```
+
+## Best Practices for Mermaid Diagrams
+
+### 1. Keep It Simple
+Don't try to show everything in one diagram. Break complex systems into multiple focused diagrams.
+
+### 2. Use Consistent Styling
+```mermaid
+flowchart LR
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Action 1]
+    B -->|No| D[Action 2]
+
+    style A fill:#4ade80
+    style B fill:#fbbf24
+    style C fill:#60a5fa
+    style D fill:#f87171
+```
+
+### 3. Add Notes for Context
+Notes help explain non-obvious aspects of your diagrams.
+
+### 4. Version Control Your Diagrams
+Since they're text, they diff well and can be code-reviewed.
+
+### 5. Use Subgraphs for Organization
+Group related components together for clarity.
+
+## Integrating Mermaid in Your Projects
+
+### In Markdown (GitHub)
+Just use code blocks with `mermaid` language:
+
+~~~markdown
+```mermaid
+graph TD
+    A[Start] --> B[End]
+```
+~~~
+
+### In Astro (like this blog)
+Astro automatically renders Mermaid diagrams in MDX files when you have the proper remark plugin configured.
+
+### In Documentation Sites
+Most modern documentation frameworks (Docusaurus, VuePress, Starlight) support Mermaid out of the box.
+
+### In VS Code
+Install the "Markdown Preview Mermaid Support" extension for live preview.
+
+## Real-World Use Cases
+
+### 1. API Documentation
+Use sequence diagrams to show API request/response flows.
+
+### 2. System Architecture
+Component diagrams for microservices architecture.
+
+### 3. User Flows
+Flowcharts for UX documentation.
+
+### 4. Database Design
+ER diagrams for schema documentation.
+
+### 5. Project Planning
+Gantt charts for sprint planning.
+
+### 6. State Management
+State diagrams for Redux/Zustand flows.
+
+## Conclusion
+
+Mermaid diagrams are an invaluable tool for software developers. They allow you to:
+
+- **Document as you code** - No context switching to diagramming tools
+- **Review diagrams in PRs** - See exactly what changed
+- **Keep docs in sync** - Update diagrams with code changes
+- **Onboard faster** - Visual documentation is easier to understand
+- **Communicate clearly** - A diagram is worth a thousand lines of code
+
+The best part? You can start using Mermaid today. Just add a code block with `mermaid` syntax to your next Markdown file, and you're ready to go!
+
+## Resources
+
+- [Mermaid Official Documentation](https://mermaid.js.org/)
+- [Mermaid Live Editor](https://mermaid.live/) - Test your diagrams online
+- [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid)
+- [GitHub Mermaid Support](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/)
+
+Happy diagramming! 📊
+
+---
+
+*Have you used Mermaid in your projects? What's your favorite diagram type? Let me know in the comments or reach out on [GitHub](https://github.com/nilushan)!*
