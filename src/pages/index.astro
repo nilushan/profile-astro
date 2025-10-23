@@ -4,7 +4,6 @@ import Hero from "@/components/sections/Hero.astro";
 import ExperienceTimeline from "@/components/sections/ExperienceTimeline.astro";
 import ProjectsGallery from "@/components/sections/ProjectsGallery.astro";
 import SkillsGrid from "@/components/sections/SkillsGrid.astro";
-import ContactSection from "@/components/sections/ContactSection.astro";
 import { portfolioData } from "@/data/portfolio";
 import { getCollection } from "astro:content";
 
@@ -122,15 +121,4 @@ const recentExperience = experience; //.slice(0, 2)
       />
     </div>
   </section>
-
-
-
-
-  <!-- Contact Section -->
-  <!-- <ContactSection 
-    contactInfo={personal}
-    showForm={false}
-    title="Ready to Work Together?"
-    subtitle="I'm always interested in new opportunities and challenging projects. Let's discuss how I can help bring your ideas to life."
-  /> -->
 </Layout>

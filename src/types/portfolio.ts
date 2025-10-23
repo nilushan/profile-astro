@@ -7,13 +7,14 @@
 export interface PersonalInfo {
   name: string;
   title: string;
+  tagline: string;
   email: string;
+  phone: string;
   location: string;
-  yearsExperience: number;
-  summary: string[];
   social: SocialLinks;
-  github: string; // Deprecated: use social.github instead
-  linkedin: string; // Deprecated: use social.linkedin instead
+  heroSummary: string;
+  summary: string[];
+  yearsExperience: number;
 }
 
 export interface SocialLinks {
@@ -86,18 +87,32 @@ export type ProjectType = 'web-app' | 'mobile-app' | 'api' | 'infrastructure' | 
 
 // Skills Types
 export interface SkillCategory {
-  name: string;
-  skills: Skill[];
-  icon?: string;
+  title: string;
+  icon: string;
+  color: 'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'error';
   description?: string;
+  skills: string[];
 }
 
-export interface Skill {
-  name: string;
-  level: SkillLevel;
-  yearsExperience?: number;
-  category?: string;
-  keywords?: string[];
+export interface Skills {
+  programming: string[];
+  frontend: string[];
+  backend: string[];
+  databases: string[];
+  cloud: {
+    gcp: {
+      actively: string[];
+      familiar: string[];
+    };
+    aws: {
+      familiar: string[];
+    };
+    azure: {
+      familiar: string[];
+    };
+  };
+  devops: string[];
+  tools: string[];
 }
 
 export type SkillLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert';
@@ -105,55 +120,36 @@ export type SkillLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert';
 // Experience Types
 export interface Experience {
   id: string;
+  title: string;
   company: string;
-  position: string;
-  period: string;
-  startDate: string;
-  endDate?: string;
   location: string;
+  period: string;
   type: EmploymentType;
   description: string;
-  achievements: string[];
+  highlights: Highlight[];
   technologies: string[];
-  projects?: ExperienceProject[];
-  team_size?: number;
-  reporting_to?: string;
 }
 
-export interface ExperienceProject {
-  name: string;
+export interface Highlight {
+  title: string;
   description: string;
-  technologies: string[];
-  achievements: string[];
 }
 
 export type EmploymentType = 'full-time' | 'part-time' | 'contract' | 'freelance' | 'internship';
 
 // Education Types
 export interface Education {
-  id: string;
-  institution: string;
   degree: string;
-  field: string;
+  institution: string;
+  location: string;
   period: string;
-  startDate: string;
-  endDate: string;
-  gpa?: number;
-  honors?: string[];
-  relevant_courses?: string[];
-  projects?: string[];
 }
 
-// Certificate Types
-export interface Certificate {
-  id: string;
-  name: string;
-  issuer: string;
-  date: string;
-  expiry?: string;
-  credential_id?: string;
-  verification_url?: string;
-  skills?: string[];
+// Interests Types
+export interface Interest {
+  title: string;
+  description: string;
+  items?: string[];
 }
 
 // Blog Post Types
@@ -193,14 +189,11 @@ export interface SEOData {
 // Main Portfolio Data Interface
 export interface PortfolioData {
   personal: PersonalInfo;
-  navigation: NavigationItem[];
-  projects: Project[];
-  skills: SkillCategory[];
+  skills: Skills;
+  skillCategories: SkillCategory[];
   experience: Experience[];
-  education: Education[];
-  certificates: Certificate[];
-  featured_projects?: string[]; // Array of project IDs
-  featured_skills?: string[]; // Array of skill names
+  education: Education;
+  interests: Interest[];
 }
 
 // Component Props Types

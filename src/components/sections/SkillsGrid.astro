@@ -15,6 +15,73 @@ export interface Props {
 
 const { skillCategories, showAll = false, maxSkillsPerCategory = 6 } = Astro.props;
 
+// Color class mapping for Tailwind (must be static strings)
+const colorClasses = {
+  primary: {
+    gradientFrom: 'from-primary/10',
+    gradientTo: 'to-primary/5',
+    bg: 'bg-primary',
+    text: 'text-primary-content',
+    badge: 'badge-primary',
+    badgeText: 'text-primary',
+    progress: 'progress-primary'
+  },
+  secondary: {
+    gradientFrom: 'from-secondary/10',
+    gradientTo: 'to-secondary/5',
+    bg: 'bg-secondary',
+    text: 'text-secondary-content',
+    badge: 'badge-secondary',
+    badgeText: 'text-secondary',
+    progress: 'progress-secondary'
+  },
+  accent: {
+    gradientFrom: 'from-accent/10',
+    gradientTo: 'to-accent/5',
+    bg: 'bg-accent',
+    text: 'text-accent-content',
+    badge: 'badge-accent',
+    badgeText: 'text-accent',
+    progress: 'progress-accent'
+  },
+  info: {
+    gradientFrom: 'from-info/10',
+    gradientTo: 'to-info/5',
+    bg: 'bg-info',
+    text: 'text-info-content',
+    badge: 'badge-info',
+    badgeText: 'text-info',
+    progress: 'progress-info'
+  },
+  success: {
+    gradientFrom: 'from-success/10',
+    gradientTo: 'to-success/5',
+    bg: 'bg-success',
+    text: 'text-success-content',
+    badge: 'badge-success',
+    badgeText: 'text-success',
+    progress: 'progress-success'
+  },
+  warning: {
+    gradientFrom: 'from-warning/10',
+    gradientTo: 'to-warning/5',
+    bg: 'bg-warning',
+    text: 'text-warning-content',
+    badge: 'badge-warning',
+    badgeText: 'text-warning',
+    progress: 'progress-warning'
+  },
+  error: {
+    gradientFrom: 'from-error/10',
+    gradientTo: 'to-error/5',
+    bg: 'bg-error',
+    text: 'text-error-content',
+    badge: 'badge-error',
+    badgeText: 'text-error',
+    progress: 'progress-error'
+  }
+};
+
 // Icon mapping for different skill categories
 const getIconSvg = (iconName: string) => {
   const icons = {
@@ -32,18 +99,20 @@ const getIconSvg = (iconName: string) => {
 ---
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-  {skillCategories.map((category) => (
-    <div class={`card bg-gradient-to-br from-${category.color}/10 to-${category.color}/5 shadow-lg hover:shadow-xl transition-all duration-300 group`}>
+  {skillCategories.map((category) => {
+    const colors = colorClasses[category.color];
+    return (
+    <div class={`card bg-gradient-to-br ${colors.gradientFrom} ${colors.gradientTo} shadow-lg hover:shadow-xl transition-all duration-300 group`}>
       <div class="card-body items-center text-center p-6">
         <!-- Icon -->
-        <div class={`w-16 h-16 bg-${category.color} rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            stroke-width="1.5" 
-            stroke="currentColor" 
-            class={`h-8 w-8 text-${category.color}-content`}
+        <div class={`w-16 h-16 ${colors.bg} rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class={`h-8 w-8 ${colors.text}`}
             set:html={getIconSvg(category.icon)}
           >
           </svg>
@@ -64,12 +133,12 @@ const getIconSvg = (iconName: string) => {
         <!-- Skills -->
         <div class="flex flex-wrap gap-2 justify-center">
           {(showAll ? category.skills : category.skills.slice(0, maxSkillsPerCategory)).map((skill) => (
-            <div class={`badge badge-${category.color} badge-sm hover:scale-105 transition-transform cursor-default`}>
+            <div class={`badge ${colors.badge} badge-sm hover:scale-105 transition-transform cursor-default`}>
               {skill}
             </div>
           ))}
           {!showAll && category.skills.length > maxSkillsPerCategory && (
-            <div class={`badge badge-outline badge-sm text-${category.color}`}>
+            <div class={`badge badge-outline badge-sm ${colors.badgeText}`}>
               +{category.skills.length - maxSkillsPerCategory}
             </div>
           )}
@@ -77,14 +146,15 @@ const getIconSvg = (iconName: string) => {
         
         <!-- Progress Indicator (Optional) -->
         <div class="w-full mt-4">
-          <div class={`progress progress-${category.color} w-full h-2`} value={Math.min(category.skills.length * 10, 100)} max="100"></div>
+          <div class={`progress ${colors.progress} w-full h-2`} value={Math.min(category.skills.length * 10, 100)} max="100"></div>
           <div class="text-sm text-base-content/50 mt-1">
             {category.skills.length} skills
           </div>
         </div>
       </div>
     </div>
-  ))}
+    );
+  })}
 </div>
 
 <!-- Skills Summary Stats -->
