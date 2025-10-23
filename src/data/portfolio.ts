@@ -1,10 +1,12 @@
 // Portfolio data structure - easily editable for CMS integration
+import type { PortfolioData, NavigationItem } from '@/types/portfolio';
+
 // Calculate years of experience dynamically
 const startYear = 2008; // Based on CV
 const currentYear = new Date().getFullYear();
 const yearsExperience = currentYear - startYear;
 
-export const portfolioData = {
+export const portfolioData: PortfolioData = {
   personal: {
     name: "Nilushan Silva",
     title: "Full Stack & Cloud Engineer",
@@ -266,50 +268,8 @@ export const portfolioData = {
     },
   ],
 
-  projects: [
-    {
-      id: "iot-migration",
-      title: "Enterprise IoT Cloud Platform Migration",
-      period: "2017-2020",
-      description: "Researched, designed, implemented, tested and deployed and migrated a IoT system of 55,000+ IoT devices to GCP using a service oriented architecture with zero downtime. Achieved 99.999% uptime while handling 100+ events/second.",
-      achievements: [
-        "Zero downtime migration",
-        "50% reduction in operational costs",
-        "40% latency improvement",
-        "99.999% uptime achieved",
-      ],
-      technologies: ["GCP", "Kubernetes", "Firebase", "IoT Core", "PubSub", "PostgreSQL", "Redis", "MQTT", "TypeScript", "React", "Redux", "Express", "Fastify"],
-      image: "/images/iot-platform.jpg",
-    },
-    {
-      id: "voice-control",
-      title: "Smart Home Voice Control Ecosystem",
-      period: "2019-2021",
-      description: "Architected, implemented, tested voice-control integrations for Google Assistant and Alexa. Developed unified business logic with platform-specific adapters ensuring consistent behavior across ecosystems.",
-      achievements: [
-        "Certified for both Google Assistant and Alexa",
-        "Unified business logic architecture",
-        "Real-time state reporting",
-        "Expanded market reach",
-      ],
-      technologies: ["TypeScript", "Express", "OAuth", "AWS Lambda", "Google Actions API", "Alexa Smart Home API"],
-      image: "/images/voice-control.jpg",
-    },
-    {
-      id: "iot-dashboard",
-      title: "IoT Network Management Dashboard",
-      period: "2018-2022",
-      description: "Developed comprehensive web-based platform for IoT device network management and monitoring. Created interactive data visualizations for device telemetry, usage patterns, and IoT device health metrics.",
-      achievements: [
-        "Real-time device monitoring",
-        "Interactive data visualizations",
-        "Usage pattern analytics",
-        "Health metrics tracking",
-      ],
-      technologies: ["React", "Redux", "TypeScript", "Bootstrap", "Chart.js", "WebSocket"],
-      image: "/images/dashboard.jpg",
-    },
-  ],
+  // NOTE: Projects are managed via content collections in src/content/projects/
+  // Use getCollection('projects') to fetch project data
 
   education: {
     degree: "Bachelor of Science in Computer Science (Honours)",
@@ -375,7 +335,7 @@ export const portfolioData = {
 // };
 
 // Navigation configuration
-export const navigation = [
+export const navigation: NavigationItem[] = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Skills", href: "/skills" },
