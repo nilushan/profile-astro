@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
+import mermaid from 'astro-mermaid';
 // import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
@@ -40,5 +41,9 @@ export default defineConfig({
     //   },
     // ),
     mdx(),
+    mermaid({
+      // Use base theme for custom theming with DaisyUI colors
+      theme: 'base',
+    }),
   ]
 });
