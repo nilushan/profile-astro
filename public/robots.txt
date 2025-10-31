@@ -1,9 +1,23 @@
-# Robots.txt for portfolio site
+# Robots.txt for Nilushan Silva's Portfolio
+# All bots are welcome!
+
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
 
 # Sitemap location
 Sitemap: https://www.nilushansilva.info/sitemap-index.xml
 
-# Crawl delay (optional - be nice to small servers)
+# Specific bot configurations
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Crawl rate
 Crawl-delay: 1
