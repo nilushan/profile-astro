@@ -1,0 +1,65 @@
+---
+/**
+ * Google Analytics Component
+ * Loads and initializes Google Analytics 4 (GA4) tracking script
+ *
+ * Environment Variables Required:
+ * - PUBLIC_GA_ID: Your GA4 Measurement ID (format: G-XXXXXXXXXX)
+ * - PUBLIC_ANALYTICS_ENABLED: Set to 'true' to enable analytics
+ * - PUBLIC_CONSENT_MODE: Set to 'true' to enable consent mode (GDPR compliance)
+ *
+ * Usage in Layout.astro:
+ * import GoogleAnalytics from '@/components/analytics/GoogleAnalytics.astro';
+ * <GoogleAnalytics />
+ */
+
+const gaId = import.meta.env.PUBLIC_GA_ID
+const analyticsEnabled = import.meta.env.PUBLIC_ANALYTICS_ENABLED === 'true'
+const consentMode = import.meta.env.PUBLIC_CONSENT_MODE === 'true'
+
+// Only render if analytics is enabled and GA ID is configured
+const shouldRender = analyticsEnabled && gaId
+---
+
+{shouldRender && (
+  <>
+    <!-- Google Analytics Script -->
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+
+    <!-- Initialize Google Analytics with consent mode -->
+    <script is:inline define:vars={{ gaId, consentMode }}>
+      // Initialize consent status based on environment
+      if (consentMode) {
+        // Consent mode: ask user before tracking
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag('consent', 'default', {
+          'analytics_storage': 'denied',
+          'ad_storage': 'denied',
+          'wait_for_update': 500,
+        });
+      }
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', gaId, {
+        'page_path': window.location.pathname,
+        'anonymize_ip': true,
+      });
+    </script>
+
+    <!-- Debug script (development only) -->
+    {import.meta.env.DEV && (
+      <script is:inline>
+        console.log('[Analytics] Google Analytics 4 initialized');
+        console.log('[Analytics] Measurement ID:', gaId);
+        console.log('[Analytics] Consent Mode:', consentMode);
+      </script>
+    )}
+  </>
+)}

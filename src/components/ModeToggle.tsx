@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Moon, Sun, Palette } from "lucide-react"
 import { ThemeManager, allThemes, type ThemeName } from "@/lib/theme-manager"
+import { trackThemeToggle } from "@/lib/analytics"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -36,6 +37,8 @@ export function ModeToggle() {
   const handleThemeChange = (theme: ThemeName) => {
     ThemeManager.setTheme(theme)
     setCurrentTheme(theme)
+    // Track theme toggle for analytics
+    trackThemeToggle(theme)
   }
 
   const currentThemeInfo = ThemeManager.getThemeInfo(currentTheme)

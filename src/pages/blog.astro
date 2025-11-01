@@ -110,9 +110,11 @@ const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))]
               )}
               
               <div class="card-actions justify-end">
-                <a 
-                  href={`/blog/${post.id}`} 
-                  class="btn btn-primary btn-sm"
+                <a
+                  href={`/blog/${post.id}`}
+                  class="btn btn-primary btn-sm track-blog-read"
+                  data-blog-title={post.data.title}
+                  data-blog-category={post.data.category}
                 >
                   Read More
                   <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -154,3 +156,26 @@ const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))]
     </div>
   </section>
 </Layout>
+
+<!-- Analytics Tracking Script -->
+<script>
+  import { trackBlogView } from '@/lib/analytics';
+
+  // Track blog read clicks
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const link = target.closest('.track-blog-read') as HTMLElement;
+
+    if (link) {
+      const blogTitle = link.getAttribute('data-blog-title');
+      const blogCategory = link.getAttribute('data-blog-category');
+
+      if (blogTitle) {
+        trackBlogView({
+          post_title: blogTitle,
+          post_category: blogCategory || 'uncategorized',
+        });
+      }
+    }
+  });
+</script>
