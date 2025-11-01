@@ -27,6 +27,7 @@ const navSocialLinks = socialLinks.filter(link => ['github', 'linkedin'].include
         class="btn btn-ghost lg:hidden h-12"
         aria-label="Open navigation menu"
         aria-expanded="false"
+        id="mobile-menu-button"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -278,5 +279,21 @@ const navSocialLinks = socialLinks.filter(link => ['github', 'linkedin'].include
     window.addEventListener("theme-changed", (event) => {
       updateCurrentThemeIndicator(event.detail.theme);
     });
+
+    // Handle mobile menu aria-expanded toggle
+    const mobileMenuButton = document.getElementById("mobile-menu-button");
+    if (mobileMenuButton) {
+      mobileMenuButton.addEventListener("click", () => {
+        const isExpanded = mobileMenuButton.getAttribute("aria-expanded") === "true";
+        mobileMenuButton.setAttribute("aria-expanded", (!isExpanded).toString());
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener("click", (event) => {
+        if (!mobileMenuButton.contains(event.target as Node)) {
+          mobileMenuButton.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
   });
 </script>

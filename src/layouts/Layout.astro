@@ -47,8 +47,12 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="author" content={portfolioContent.personal.name} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="theme-color" content="#570df8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -64,27 +68,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(image, siteURL).href} />
 
-    <!-- Fonts - Optimized loading with preconnect and consolidated requests -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
-    <!-- Primary fonts - loaded first with font-display: swap for better performance -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    
-    <!-- Secondary fonts - consolidated into single request -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    
-    <!-- Accessibility font - loaded separately for specific use cases -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Fonts now self-hosted via @fontsource packages for better performance and privacy -->
 
     <!-- Structured Data for SEO -->
     <script type="application/ld+json" set:html={JSON.stringify({
@@ -121,6 +105,14 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
     <title>{title}</title>
   </head>
   <body>
+    <!-- Skip to main content link for accessibility -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:btn focus:btn-primary focus:btn-sm"
+    >
+      Skip to main content
+    </a>
+
     <div class="bg-base-200 font-theme-sans">
       <div class="bg-base-100 border-base-300 text-base-content">
         <!-- Navigation -->
@@ -128,7 +120,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
       </div>
 
       <!-- Main Content -->
-      <main>
+      <main id="main-content" tabindex="-1">
         <slot />
       </main>
 
@@ -143,16 +135,6 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
           <!-- Main Footer Content -->
           <div class="px-6 py-16 lg:py-20">
             <div class="container mx-auto max-w-6xl">
-              <!-- Header Section -->
-              <!-- <div class="text-center mb-12">
-                <h3 class="text-2xl lg:text-3xl font-bold text-base-content mb-4">
-                  {portfolioContent.personal.name}
-                </h3>
-                <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-                  Full Stack & Cloud Engineer crafting innovative solutions with passion and precision
-                </p>
-              </div> -->
-
               <!-- Navigation & Social Section -->
               <div class="grid md:grid-cols-2 gap-12 lg:gap-16 mb-12">
                 <!-- Navigation Links -->
@@ -283,5 +265,3 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
     </div>
   </body>
 </html>
-
-<!-- DaisyUI handles all styling - no custom CSS needed -->
