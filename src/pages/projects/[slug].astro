@@ -2,6 +2,8 @@
 import { getCollection, getEntry, render } from 'astro:content'
 import Layout from '@/layouts/Layout.astro'
 import { portfolioData } from '@/data/portfolio'
+import DynamicImage from '@/components/DynamicImage.astro'
+import { resolveImage } from '@/lib/image-utils'
 
 export async function getStaticPaths() {
   const allProjects = await getCollection('projects')
@@ -144,18 +146,15 @@ const getCategoryIcon = (category: string) => {
   </section>
 
   <!-- Project Image -->
-  {project.data.image && (
+  {project.data.image && resolveImage(project.data.image) && (
     <section class="py-8">
       <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
-          <img 
-            src={project.data.image} 
+          <DynamicImage
+            src={project.data.image}
             alt={`${project.data.title} project showcase - ${project.data.description}`}
             class="w-full h-auto rounded-lg shadow-2xl"
             loading="eager"
-            decoding="async"
-            width="800"
-            height="450"
           />
         </div>
       </div>
