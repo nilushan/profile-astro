@@ -291,3 +291,11 @@ const relatedPosts = allPosts
     </div>
   </section>
 </Layout>
+
+<!-- Analytics Tracking Script -->
+<script define:vars={{ postTitle: post.data.title, postCategory: post.data.category, readingTime }}>
+  import { setupScrollTracking } from '@/lib/analytics';
+
+  // Setup scroll depth tracking for blog posts
+  setupScrollTracking(postTitle, postCategory);
+</script>
