@@ -1,143 +1,168 @@
 ---
 import { portfolioData } from "@/data/portfolio";
 import {
-  generateSocialLinksWithMetadata,
-  getSocialIcon,
+    generateSocialLinksWithMetadata,
+    getSocialIcon,
 } from "@/lib/social-links";
 
 const { personal } = portfolioData;
 
 // Get initials for avatar fallback
 const initials = personal.name
-  .split(" ")
-  .map((n) => n[0])
-  .join("");
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
 
 // Generate social links with metadata
 const socialLinks = generateSocialLinksWithMetadata(personal);
 ---
 
 <section class="hero min-h-[calc(100vh-5rem)]">
-  <div
-    class="hero-content flex-col lg:flex-row-reverse gap-8 lg:gap-16 w-full py-8 lg:py-16"
-  >
-    <!-- Avatar Section -->
-    <div class="flex-shrink-0">
-      <div class="avatar placeholder">
+    <div class="container mx-auto px-4">
         <div
-          class="bg-primary text-primary-content w-48 sm:w-64 lg:w-80 rounded-full ring ring-primary ring-offset-base-100 ring-offset-4 sm:ring-offset-8 flex items-center"
+            class="flex flex-col lg:flex-row-reverse gap-8 lg:gap-12 items-center py-8 lg:py-16"
         >
-          <div
-            class="text-5xl sm:text-6xl lg:text-7xl items-center justify-around flex h-full w-full"
-          >
-            {initials}
-          </div>
-        </div>
-      </div>
-      <!-- Status Indicator -->
-      <div class="flex justify-center mt-6">
-        <div class="badge badge-success badge-lg gap-2 text-success-content">
-          <div class="h-2 w-2 rounded-full bg-current animate-pulse"></div>
-          Available for the next awesome idea
-        </div>
-      </div>
-    </div>
+            <!-- Avatar Section -->
+            <div class="flex-shrink-0 flex flex-col items-center">
+                <div class="avatar placeholder">
+                    <div
+                        class="bg-primary text-primary-content w-48 sm:w-56 lg:w-64 rounded-full ring ring-primary ring-offset-base-100 ring-offset-4 sm:ring-offset-6 flex items-center"
+                    >
+                        <div
+                            class="text-5xl sm:text-6xl lg:text-7xl items-center justify-around flex h-full w-full"
+                        >
+                            {initials}
+                        </div>
+                    </div>
+                </div>
+                <!-- Status Indicator -->
+                <div class="flex justify-center mt-6">
+                    <div
+                        class="badge badge-success badge-lg gap-2 text-success-content"
+                    >
+                        <div
+                            class="h-2 w-2 rounded-full bg-current animate-pulse"
+                        >
+                        </div>
+                        Available for the next awesome idea
+                    </div>
+                </div>
+            </div>
 
-    <!-- Content Section -->
-    <div class="text-center lg:text-left max-w-2xl">
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-base-content">
-        Hi, I'm <span class="text-primary">{personal.name.split(" ")[0]}</span>
-      </h1>
-      <h2
-        class="text-xl sm:text-2xl lg:text-3xl font-semibold mt-4 mb-6 text-base-content/70"
-      >
-        {personal.title}
-      </h2>
+            <!-- Content Section -->
+            <div class="text-center lg:text-left flex-1">
+                <h1
+                    class="text-4xl sm:text-5xl lg:text-6xl font-bold text-base-content"
+                >
+                    Hi, I'm <span class="text-primary"
+                        >{personal.name.split(" ")[0]}</span
+                    >
+                </h1>
+                <h2
+                    class="text-xl sm:text-2xl lg:text-3xl font-semibold mt-4 mb-6 text-base-content/70"
+                >
+                    {personal.title}
+                </h2>
 
-      <!-- <p class="text-base sm:text-lg leading-relaxed text-base-content/80 mb-8"> -->
-      {
-        personal.summary.map((item) => (
-          <p class="text-base sm:text-lg leading-relaxed text-base-content/80 mb-8">
-            {item}
-          </p>
-        ))
-      }
-      <!-- </p> -->
+                <!-- <p class="text-base sm:text-lg leading-relaxed text-base-content/80 mb-8"> -->
+                {
+                    personal.summary.map((item) => (
+                        <p class="text-base sm:text-lg leading-relaxed text-base-content/80 mb-8">
+                            {item}
+                        </p>
+                    ))
+                }
+                <!-- </p> -->
 
-      <div class="flex flex-wrap justify-center gap-2 mb-8">
-        <div class="badge badge-primary badge-lg">TypeScript Expert</div>
-        <div class="badge badge-secondary badge-lg">GCP Architect</div>
-        <div class="badge badge-accent badge-lg">IoT Specialist</div>
-        <div class="badge badge-info badge-lg">DevOps Engineer</div>
-      </div>
+                <div
+                    class="flex flex-wrap justify-center gap-2 mb-8 lg:justify-start"
+                >
+                    <div class="badge badge-primary badge-lg">
+                        TypeScript Expert
+                    </div>
+                    <div class="badge badge-secondary badge-lg">
+                        GCP Architect
+                    </div>
+                    <div class="badge badge-accent badge-lg">
+                        IoT Specialist
+                    </div>
+                    <div class="badge badge-info badge-lg">DevOps Engineer</div>
+                </div>
 
-      <!-- CTA Buttons -->
-      <div
-        class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-      >
-        <a href="/about" class="btn btn-primary btn-lg">
-          Learn More About Me
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="h-5 w-5 ml-2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
-          </svg>
-        </a>
+                <!-- CTA Buttons -->
+                <div
+                    class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+                >
+                    <a href="/about" class="btn btn-primary btn-lg">
+                        Learn More About Me
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="h-5 w-5 ml-2"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+                        </svg>
+                    </a>
 
-        <a href="/projects" class="btn btn-primary btn-lg group">
-          <span>View Projects</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="h-5 w-5 transition-transform group-hover:translate-x-1"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
-          </svg>
-        </a>
-      </div>
+                    <a href="/projects" class="btn btn-primary btn-lg group">
+                        <span>View Projects</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="h-5 w-5 transition-transform group-hover:translate-x-1"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+                        </svg>
+                    </a>
+                </div>
 
-      <!-- Stats Section -->
-      <div
-        class="stats stats-vertical sm:stats-horizontal shadow-lg mt-12 w-full bg-base-200 text-base-content"
-      >
-        <div class="stat place-items-center sm:place-items-start">
-          <div class="stat-figure text-primary">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="h-8 w-8"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-          <div class="stat-title text-base-content/60">Experience</div>
-          <div class="stat-value text-3xl lg:text-4xl text-primary">
-            {personal.yearsExperience}+
-          </div>
-          <div class="stat-desc text-base-content/60">Years in Tech</div>
-        </div>
+                <!-- Stats Section -->
+                <div
+                    class="stats stats-vertical sm:stats-horizontal shadow-lg mt-12 bg-base-200 text-base-content w-full sm:w-auto"
+                >
+                    <div class="stat place-items-center sm:place-items-start">
+                        <div class="stat-figure text-primary">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="h-8 w-8"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                ></path>
+                            </svg>
+                        </div>
+                        <div class="stat-title text-base-content/60">
+                            Experience
+                        </div>
+                        <div
+                            class="stat-value text-3xl lg:text-4xl text-primary"
+                        >
+                            {personal.yearsExperience}+
+                        </div>
+                        <div class="stat-desc text-base-content/60">
+                            Years in Tech
+                        </div>
+                    </div>
 
-        <!-- <div class="stat place-items-center sm:place-items-start">
+                    <!-- <div class="stat place-items-center sm:place-items-start">
           <div class="stat-figure text-secondary">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
@@ -148,48 +173,63 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
           <div class="stat-desc text-base-content/60">Successfully Delivered</div>
         </div> -->
 
-        <div class="stat place-items-center sm:place-items-start">
-          <div class="stat-figure text-accent">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="h-8 w-8"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"
-              ></path>
-            </svg>
-          </div>
-          <div class="stat-title text-base-content/60">Technologies</div>
-          <div class="stat-value text-3xl lg:text-4xl text-accent">25+</div>
-          <div class="stat-desc text-base-content/60">In Production</div>
-        </div>
-      </div>
+                    <div class="stat place-items-center sm:place-items-start">
+                        <div class="stat-figure text-accent">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="h-8 w-8"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"
+                                ></path>
+                            </svg>
+                        </div>
+                        <div class="stat-title text-base-content/60">
+                            Technologies
+                        </div>
+                        <div
+                            class="stat-value text-3xl lg:text-4xl text-accent"
+                        >
+                            25+
+                        </div>
+                        <div class="stat-desc text-base-content/60">
+                            In Production
+                        </div>
+                    </div>
+                </div>
 
-      <!-- Quick Links -->
-      <div
-        class="flex flex-wrap gap-2 sm:gap-4 mt-8 justify-center lg:justify-start"
-      >
-        {
-          socialLinks.map((link) => (
-            <a
-              href={link.url}
-              target={link.external ? "_blank" : undefined}
-              rel={link.external ? "noopener noreferrer" : undefined}
-              class="btn btn-ghost btn-sm gap-2"
-              aria-label={link.ariaLabel}
-            >
-              <Fragment set:html={getSocialIcon(link.platform)} />
-              <span>{link.name}</span>
-            </a>
-          ))
-        }
-      </div>
+                <!-- Quick Links -->
+                <div
+                    class="flex flex-wrap gap-2 sm:gap-4 mt-8 justify-center lg:justify-start"
+                >
+                    {
+                        socialLinks.map((link) => (
+                            <a
+                                href={link.url}
+                                target={link.external ? "_blank" : undefined}
+                                rel={
+                                    link.external
+                                        ? "noopener noreferrer"
+                                        : undefined
+                                }
+                                class="btn btn-ghost btn-sm gap-2"
+                                aria-label={link.ariaLabel}
+                            >
+                                <Fragment
+                                    set:html={getSocialIcon(link.platform)}
+                                />
+                                <span>{link.name}</span>
+                            </a>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </section>

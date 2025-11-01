@@ -1,97 +1,137 @@
 /* Self-hosted fonts for better performance and privacy */
-@import '@fontsource-variable/inter'; /* Variable font for optimal loading */
-@import '@fontsource/space-grotesk/300.css';
-@import '@fontsource/space-grotesk/400.css';
-@import '@fontsource/space-grotesk/500.css';
-@import '@fontsource/space-grotesk/600.css';
-@import '@fontsource/space-grotesk/700.css';
-@import '@fontsource/playfair-display/400.css';
-@import '@fontsource/playfair-display/500.css';
-@import '@fontsource/playfair-display/600.css';
-@import '@fontsource/playfair-display/700.css';
-@import '@fontsource/jetbrains-mono/300.css';
-@import '@fontsource/jetbrains-mono/400.css';
-@import '@fontsource/jetbrains-mono/500.css';
-@import '@fontsource/jetbrains-mono/600.css';
-@import '@fontsource/poppins/300.css';
-@import '@fontsource/poppins/400.css';
-@import '@fontsource/poppins/500.css';
-@import '@fontsource/poppins/600.css';
-@import '@fontsource/poppins/700.css';
-@import '@fontsource/crimson-text/400.css';
-@import '@fontsource/crimson-text/600.css';
-@import '@fontsource/crimson-text/700.css';
-@import '@fontsource/atkinson-hyperlegible/400.css';
-@import '@fontsource/atkinson-hyperlegible/700.css';
+@import "@fontsource-variable/inter"; /* Variable font for optimal loading */
+@import "@fontsource/space-grotesk/300.css";
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/playfair-display/400.css";
+@import "@fontsource/playfair-display/500.css";
+@import "@fontsource/playfair-display/600.css";
+@import "@fontsource/playfair-display/700.css";
+@import "@fontsource/jetbrains-mono/300.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/600.css";
+@import "@fontsource/poppins/300.css";
+@import "@fontsource/poppins/400.css";
+@import "@fontsource/poppins/500.css";
+@import "@fontsource/poppins/600.css";
+@import "@fontsource/poppins/700.css";
+@import "@fontsource/crimson-text/400.css";
+@import "@fontsource/crimson-text/600.css";
+@import "@fontsource/crimson-text/700.css";
+@import "@fontsource/atkinson-hyperlegible/400.css";
+@import "@fontsource/atkinson-hyperlegible/700.css";
 
-@import 'tailwindcss';
+@import "tailwindcss";
 @plugin "@tailwindcss/typography";
 /* @plugin "tailwindcss-animate"; */
 
 @import "tw-animate-css";
 
 @plugin "daisyui" {
-  themes: light --default, dark --prefersdark, cupcake, bumblebee, emerald, corporate, synthwave, retro, cyberpunk, valentine, halloween, garden, forest, aqua, lofi, pastel, fantasy, wireframe, black, luxury, dracula, cmyk, autumn, business, acid, lemonade, night, coffee, winter, dim, nord, sunset, caramellatte, abyss, silk;
-  root: ":root";
-  include: ;
-  exclude: ;
-  prefix: ;
-  logs: true;
+    themes:
+        light --default,
+        dark --prefersdark,
+        cupcake,
+        bumblebee,
+        emerald,
+        corporate,
+        synthwave,
+        retro,
+        cyberpunk,
+        valentine,
+        halloween,
+        garden,
+        forest,
+        aqua,
+        lofi,
+        pastel,
+        fantasy,
+        wireframe,
+        black,
+        luxury,
+        dracula,
+        cmyk,
+        autumn,
+        business,
+        acid,
+        lemonade,
+        night,
+        coffee,
+        winter,
+        dim,
+        nord,
+        sunset,
+        caramellatte,
+        abyss,
+        silk;
+    root: ":root";
+    include:;
+    exclude:;
+    prefix:;
+    logs: true;
 }
 
 @theme {
-  /* Default fonts */
-  --font-family-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
-  --font-family-serif: "Crimson Text", Georgia, serif;
-  --font-family-mono: "JetBrains Mono", monospace;
+    /* Default fonts */
+    --font-family-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
+    --font-family-serif: "Crimson Text", Georgia, serif;
+    --font-family-mono: "JetBrains Mono", monospace;
 }
 
 /* Custom font utilities that respect theme */
 @layer utilities {
-  .font-display {
-    font-family: var(--font-family-display);
-  }
-  
-  .font-theme-sans {
-    font-family: var(--font-family-sans);
-  }
-  
-  .font-theme-serif {
-    font-family: var(--font-family-serif);
-  }
-  
-  /* Line clamp utilities */
-  .line-clamp-1 {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .line-clamp-4 {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+    /* Site-wide max-width constraint */
+    .container {
+        max-width: 1200px !important;
+    }
+
+    .font-display {
+        font-family: var(--font-family-display);
+    }
+
+    .font-theme-sans {
+        font-family: var(--font-family-sans);
+    }
+
+    .font-theme-serif {
+        font-family: var(--font-family-serif);
+    }
+
+    /* Line clamp utilities */
+    .line-clamp-1 {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .line-clamp-4 {
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
 }
 
 @layer base, starlight, theme, components, utilities;
 
-@import '@astrojs/starlight-tailwind';
-@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/utilities.css' layer(utilities);
+@import "@astrojs/starlight-tailwind";
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
