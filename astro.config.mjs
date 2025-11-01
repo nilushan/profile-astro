@@ -4,46 +4,39 @@ import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import mermaid from 'astro-mermaid';
-// import starlight from '@astrojs/starlight';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://www.nilushansilva.info',
+
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    build: {
+      cssCodeSplit: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'react-vendor': ['react', 'react-dom'],
+            'ui-components': ['@radix-ui/react-dropdown-menu', '@radix-ui/react-slot']
+          }
+        }
+      }
+    }
   },
 
   integrations: [
     react(),
-    // Starlight docs mounted at /docs/
-    // starlight(
-    //   {
-    //     title: "Knowledge Base",
-
-    //     // head: [
-    //     //   // Example: add Fathom analytics script tag.
-    //     //   {
-    //     //     tag: 'script',
-    //     //     attrs: {
-    //     //       src: 'https://cdn.usefathom.com/script.js',
-    //     //       'data-site': 'MY-FATHOM-ID',
-    //     //       defer: true,
-    //     //     },
-    //     //   },
-    //     // ],
-    //     sidebar:[
-    //       {label: 'Home', link: 'docs'},
-    //       {label: 'Welcome' , link: 'welcome' },
-    //       {label: 'Architecture' , autogenerate: { directory: 'kb/architecture'}},
-    //       {label: 'Cloud', autogenerate: {directory: 'kb/cloud'}  },
-    //       {label: 'Guides', autogenerate: { directory: 'kb/guides'}}
-    //     ],
-    //     customCss:['./src/styles/global.css']
-    //   },
-    // ),
     mdx(),
     mermaid({
       // Use base theme for custom theming with DaisyUI colors
       theme: 'base',
+    }),
+    sitemap({
+      filter: (page) => !page.includes('/admin'),
+      changefreq: 'weekly',
+      priority: 0.7,
+      lastmod: new Date(),
     }),
   ]
 });

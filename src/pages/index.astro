@@ -8,13 +8,20 @@ import { portfolioData } from "@/data/portfolio";
 import { getCollection } from "astro:content";
 
 const { personal, experience, skills, skillCategories } = portfolioData;
-// const projects: any[] = await getCollection("projects", (data: any) => {
-//   return data.featured === true;
-// });
 
-const projects: any[] = await getCollection('projects');
-const featuredProjects = projects.slice(0, 3);
-const recentExperience = experience; //.slice(0, 2)
+// Get all projects and filter for featured ones
+const allProjects = await getCollection('projects');
+const featuredProjects = allProjects
+  .filter((project) => project.data.featured === true)
+  .sort((a, b) => {
+    // Sort by date if available, otherwise by title
+    const dateA = a.data.dates?.start || a.data.period;
+    const dateB = b.data.dates?.start || b.data.period;
+    return dateB > dateA ? 1 : -1;
+  })
+  .slice(0, 3);
+
+const recentExperience = experience.slice(0, 2);
 ---
 
 <Layout>

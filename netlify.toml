@@ -1,0 +1,65 @@
+# Netlify Configuration
+# https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  command = "pnpm build"
+  publish = "dist"
+
+[build.environment]
+  # CRITICAL: Enable search engine indexing in production
+  PUBLIC_ALLOW_INDEXING = "true"
+  NODE_VERSION = "18"
+
+# Add custom headers for all production deployments
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "interest-cohort=()"
+
+# Cache static assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Don't cache HTML
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Redirect www to non-www (optional - uncomment if needed)
+# [[redirects]]
+#   from = "https://www.nilushansilva.info/*"
+#   to = "https://nilushansilva.info/:splat"
+#   status = 301
+#   force = true
+
+# Context-specific build settings
+[context.production]
+  [context.production.environment]
+    PUBLIC_ALLOW_INDEXING = "true"
+
+[context.deploy-preview]
+  [context.deploy-preview.environment]
+    # Prevent preview deployments from being indexed
+    PUBLIC_ALLOW_INDEXING = "false"
+
+[context.branch-deploy]
+  [context.branch-deploy.environment]
+    # Prevent branch deployments from being indexed
+    PUBLIC_ALLOW_INDEXING = "false"
