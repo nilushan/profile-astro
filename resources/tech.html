@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-R" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Web Development Tech Stacks</title>
+        <style>
+            /* Basic reset */
+            body,
+            h1,
+            h2,
+            p {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            /* Page styles */
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    Helvetica, Arial, sans-serif;
+                background-color: #f8f9fa;
+                color: #333;
+                line-height: 1.5;
+                padding: 25px; /* Added some padding for the screenshot */
+            }
+
+            header {
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+            header h1 {
+                font-size: 2.2rem;
+                color: #212529;
+            }
+
+            /* --- KEY CHANGE HERE ---
+			  Use CSS Grid to create a multi-column layout.
+			  It will create as many 350px columns as will fit.
+			*/
+            main {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                gap: 20px;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+
+            /* Category section */
+            .category-section {
+                background-color: #ffffff;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                /* The sections will now flow into the grid */
+            }
+
+            .category-section h2 {
+                font-size: 1.4rem;
+                color: #495057;
+                border-bottom: 1px solid #e9ecef;
+                padding-bottom: 8px;
+                margin-bottom: 15px;
+            }
+
+            /* Icon grid layout */
+            .icon-grid {
+                display: grid;
+                /* Use a smaller minmax value to allow more items per row */
+                grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+                gap: 15px;
+            }
+
+            /* Icon card */
+            .icon-card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 10px;
+                border: 1px solid #dee2e6;
+                border-radius: 6px;
+                background-color: #fdfdfd;
+                transition:
+                    transform 0.2s ease,
+                    box-shadow 0.2s ease;
+            }
+
+            .icon-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+            }
+
+            .icon-card p {
+                margin-top: 8px;
+                font-size: 0.8rem;
+                font-weight: 500;
+                color: #555;
+            }
+
+            /* Style for the icon logo */
+            .icon-logo {
+                width: 36px;
+                height: 36px;
+                object-fit: contain; /* Ensures logos aren't stretched */
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Web Development Tools</h1>
+        </header>
+
+        <main>
+            <section class="category-section">
+                <h2>Frontend Frameworks & Libraries</h2>
+                <div class="icon-grid">
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/astro"
+                            alt="Astro logo"
+                            class="icon-logo"
+                        />
+                        <p>Astro</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/nextdotjs"
+                            alt="Next.js logo"
+                            class="icon-logo"
+                        />
+                        <p>Next.js</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/svelte"
+                            alt="SvelteKit logo"
+                            class="icon-logo"
+                        />
+                        <p>SvelteKit</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/nuxtdotjs"
+                            alt="Nuxt.js logo"
+                            class="icon-logo"
+                        />
+                        <p>Nuxt.js</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/remix"
+                            alt="Remix logo"
+                            class="icon-logo"
+                        />
+                        <p>Remix</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/react"
+                            alt="React logo"
+                            class="icon-logo"
+                        />
+                        <p>React</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="category-section">
+                <h2>Styling & UI Components</h2>
+                <div class="icon-grid">
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/tailwindcss"
+                            alt="Tailwind CSS logo"
+                            class="icon-logo"
+                        />
+                        <p>Tailwind CSS</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/daisyui"
+                            alt="DaisyUI logo"
+                            class="icon-logo"
+                        />
+                        <p>DaisyUI</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="category-section">
+                <h2>Content Management Systems (CMS)</h2>
+                <div class="icon-grid">
+                    <div class="icon-card">
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_ZIed4STEH8jz0YZAODu55Cpd4RxCWuQiLw&s"
+                            alt="TinaCMS logo"
+                            class="icon-logo"
+                        />
+
+                        <p>TinaCMS</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://keystatic.com/apple-icon.png?9ccf6330be9ea1d7"
+                            alt="Keystatic logo"
+                            class="icon-logo"
+                        />
+                        <p>Keystatic</p>
+                    </div>
+
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/contentful"
+                            alt="Contentful logo"
+                            class="icon-logo"
+                        />
+                        <p>Contentful</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/strapi"
+                            alt="Strapi logo"
+                            class="icon-logo"
+                        />
+                        <p>Strapi</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/sanity"
+                            alt="Sanity logo"
+                            class="icon-logo"
+                        />
+                        <p>Sanity</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="category-section">
+                <h2>Hosting, Deployment & Cloud</h2>
+                <div class="icon-grid">
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/github"
+                            alt="GitHub Pages logo"
+                            class="icon-logo"
+                        />
+                        <p>GitHub Pages</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/firebase"
+                            alt="Firebase Hosting logo"
+                            class="icon-logo"
+                        />
+                        <p>Firebase Hosting</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/netlify"
+                            alt="Netlify logo"
+                            class="icon-logo"
+                        />
+                        <p>Netlify</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/vercel"
+                            alt="Vercel logo"
+                            class="icon-logo"
+                        />
+                        <p>Vercel</p>
+                    </div>
+
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/googlecloud"
+                            alt="GCP logo"
+                            class="icon-logo"
+                        />
+                        <p>GCP</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/2560px-Amazon_Web_Services_Logo.svg.png"
+                            alt="AWS logo"
+                            class="icon-logo"
+                        />
+                        <p>AWS</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="category-section">
+                <h2>E-commerce</h2>
+                <div class="icon-grid">
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/stripe"
+                            alt="Stripe logo"
+                            class="icon-logo"
+                        />
+                        <p>Stripe</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/woocommerce"
+                            alt="WooCommerce logo"
+                            class="icon-logo"
+                        />
+                        <p>WooCommerce</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/wordpress"
+                            alt="WordPress logo"
+                            class="icon-logo"
+                        />
+                        <p>WordPress</p>
+                    </div>
+                    <div class="icon-card">
+                        <img
+                            src="https://cdn.simpleicons.org/shopify"
+                            alt="Shopify logo"
+                            class="icon-logo"
+                        />
+                        <p>Shopify</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>

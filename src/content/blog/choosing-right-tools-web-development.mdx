@@ -6,6 +6,7 @@ author: "Nilushan Silva"
 tags: ["web development", "technology stack", "static sites", "e-commerce", "tools selection"]
 category: "Development"
 featured: true
+image: "/images/blog/webdevtech/webtech.png"
 ---
 
 ## The Foundation: Understanding Your Requirements
@@ -148,7 +149,7 @@ Move beyond static sites when you need:
 // pages/api/products/[id].js
 export default function handler(req, res) {
   const { id } = req.query;
-  
+
   if (req.method === 'GET') {
     // Fetch product from database
     const product = await getProduct(id);
@@ -225,7 +226,7 @@ app.post('/api/orders', async (req, res) => {
       total: req.body.total,
       status: 'pending'
     });
-    
+
     await sendOrderConfirmation(order);
     res.json(order);
   } catch (error) {

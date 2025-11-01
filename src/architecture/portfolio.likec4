@@ -1,0 +1,274 @@
+// Portfolio Astro Site - Architecture Model in LikeC4
+// Describes the development workflow, GitHub integration, CI/CD, and deployment
+
+specification {
+  element person
+  element repository
+  element local_environment
+  element build_system
+  element ci_pipeline
+  element deployment_platform
+  element website
+  element framework
+  element component
+  element styling_system
+  element content_management
+
+  tag #development
+  tag #production
+  tag #external
+}
+
+model {
+  // Developer
+  developer = person 'Developer' {
+    description 'Software engineer developing and maintaining the portfolio site'
+  }
+
+  // Source Control
+  github = repository 'GitHub' {
+    #external
+    technology 'Git hosting'
+    description 'profile-astro repository hosted on GitHub'
+  }
+
+  // Local Development
+  local_checkout = local_environment 'Local Checkout' {
+    #development
+    description 'Git clone of the repository on developer machine'
+    technology 'File system'
+  }
+
+  dev_server = build_system 'Dev Server' {
+    #development
+    description 'Hot reload development server for testing locally'
+    technology 'Astro dev server with HMR'
+  }
+
+  pnpm_cli = build_system 'pnpm' {
+    #development
+    description 'Package manager for dependencies'
+    technology 'pnpm 10.11.0+'
+  }
+
+  // Build & Framework
+  astro_framework = framework 'Astro 5 Application' {
+    description 'Static site generation framework'
+    technology 'Astro 5.10.1 + React 19'
+  }
+
+  react_components = component 'React Components' {
+    description 'Interactive islands (ModeToggle, UI components)'
+    technology 'React 19.1.0'
+  }
+
+  tailwind_css = styling_system 'Tailwind CSS' {
+    description 'Utility-first CSS framework'
+    technology 'Tailwind CSS v4.1.3'
+  }
+
+  daisyui = styling_system 'DaisyUI' {
+    description 'Component library with 34+ themes'
+    technology 'DaisyUI v5.0.43'
+  }
+
+  theme_manager = component 'Theme Manager' {
+    description 'Dark mode and multi-theme support with localStorage'
+    technology 'TypeScript (src/lib/theme-manager.ts)'
+  }
+
+  content_collections = content_management 'Content Collections' {
+    description 'Blog posts and project case studies'
+    technology 'Astro Content Collections + MDX'
+  }
+
+  portfolio_data = content_management 'Portfolio Data' {
+    description 'Centralized portfolio metadata'
+    technology 'TypeScript (src/data/portfolio.ts)'
+  }
+
+  // Build Output
+  build_output = website 'Build Output (dist/)' {
+    description 'Static HTML, CSS, JS files ready for deployment'
+    technology 'HTML, CSS, JavaScript'
+  }
+
+  // CI/CD Pipeline
+  github_actions = ci_pipeline 'GitHub Actions' {
+    #external
+    description 'Automated build and deployment pipeline'
+    technology 'GitHub Actions workflows'
+  }
+
+  // Deployment
+  firebase_hosting = deployment_platform 'Firebase Hosting' {
+    #external
+    description 'Google Cloud platform for hosting'
+    technology 'Firebase Hosting (nilushandevelopment)'
+  }
+
+  preview_site = website 'Preview Site' {
+    description 'Temporary preview for pull requests'
+    technology 'Firebase preview channel'
+  }
+
+  production_site = website 'Production Site' {
+    #production
+    description 'Live portfolio site'
+    technology 'Firebase live channel'
+  }
+
+  // Relationships - Development Flow
+  developer -> local_checkout 'writes code in' {
+    technology 'Git + text editor'
+  }
+
+  developer -> dev_server 'tests with' {
+    technology 'pnpm dev'
+  }
+
+  pnpm_cli -> astro_framework 'installs deps for' {
+    technology 'pnpm install'
+  }
+
+  dev_server -> astro_framework 'runs' {
+    technology 'Astro CLI'
+  }
+
+  astro_framework -> react_components 'contains'
+
+  astro_framework -> tailwind_css 'uses'
+
+  astro_framework -> daisyui 'uses'
+
+  astro_framework -> theme_manager 'uses'
+
+  astro_framework -> content_collections 'loads content from'
+
+  astro_framework -> portfolio_data 'loads data from'
+
+  astro_framework -> build_output 'compiles to' {
+    technology 'Vite build'
+  }
+
+  // Git to CI/CD Flow
+  developer -> github 'pushes code to' {
+    technology 'git push'
+  }
+
+  github -> github_actions 'triggers on push' {
+    technology 'GitHub webhooks'
+  }
+
+  github_actions -> build_output 'builds' {
+    technology 'pnpm build'
+  }
+
+  // Deployment Flow
+  github_actions -> firebase_hosting 'deploys to' {
+    technology 'Firebase CLI'
+  }
+
+  build_output -> firebase_hosting 'deployed as' {
+    technology 'dist/ directory'
+  }
+
+  firebase_hosting -> preview_site 'serves (PR)'
+
+  firebase_hosting -> production_site 'serves (main)'
+
+  production_site -> developer 'browsable by'
+}
+
+views {
+  // Overall System Landscape
+  view index {
+    title 'Portfolio Site - System Landscape'
+    description 'High-level overview of the entire development and deployment ecosystem'
+
+    include developer, github, local_checkout, dev_server, pnpm_cli
+    include github_actions, firebase_hosting, preview_site, production_site
+  }
+
+  // Development Environment Detail
+  view development_workflow {
+    title 'Local Development Workflow'
+    description 'How developers work locally with the Astro framework'
+
+    include developer, local_checkout, dev_server, pnpm_cli, astro_framework
+    include developer -> local_checkout
+    include developer -> dev_server
+    include pnpm_cli -> astro_framework
+    include dev_server -> astro_framework
+  }
+
+  // Framework & Build Architecture
+  view framework_architecture {
+    title 'Astro Framework Architecture'
+    description 'Framework components, styling system, and content management'
+
+    include astro_framework, react_components, tailwind_css, daisyui, theme_manager
+    include content_collections, portfolio_data, build_output
+    include astro_framework -> react_components
+    include astro_framework -> tailwind_css
+    include astro_framework -> daisyui
+    include astro_framework -> theme_manager
+    include astro_framework -> content_collections
+    include astro_framework -> portfolio_data
+    include astro_framework -> build_output
+  }
+
+  // Build and CI/CD Pipeline
+  view ci_cd_pipeline {
+    title 'CI/CD Pipeline - Build and Deploy'
+    description 'GitHub Actions workflow from code push to deployment'
+
+    include github, github_actions, build_output, firebase_hosting
+    include preview_site, production_site
+    include github -> github_actions
+    include github_actions -> build_output
+    include github_actions -> firebase_hosting
+    include build_output -> firebase_hosting
+    include firebase_hosting -> preview_site
+    include firebase_hosting -> production_site
+  }
+
+  // Complete End-to-End Flow
+  view complete_flow {
+    title 'Complete Development to Production Flow'
+    description 'End-to-end journey from code editing to live deployment'
+
+    include developer, local_checkout, astro_framework, build_output
+    include github, github_actions, firebase_hosting, production_site
+    include developer -> local_checkout
+    include developer -> github
+    include github -> github_actions
+    include github_actions -> build_output
+    include github_actions -> firebase_hosting
+    include firebase_hosting -> production_site
+  }
+
+  // Local Development Detail
+  view local_dev_detail {
+    title 'Local Development in Detail'
+    description 'Development workflow with package management and hot reload'
+
+    include developer, pnpm_cli, dev_server, local_checkout, astro_framework
+    include developer -> local_checkout
+    include developer -> dev_server
+    include pnpm_cli -> astro_framework
+    include dev_server -> astro_framework
+  }
+
+  // Deployment Environments
+  view deployment_environments {
+    title 'Deployment Environments'
+    description 'Firebase hosting with preview (PR) and production (main) channels'
+
+    include firebase_hosting, preview_site, production_site, build_output, github_actions
+    include github_actions -> firebase_hosting
+    include build_output -> firebase_hosting
+    include firebase_hosting -> preview_site
+    include firebase_hosting -> production_site
+  }
+}
