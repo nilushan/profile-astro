@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
 import { portfolioData } from '@/data/portfolio'
+import DynamicImage from '@/components/DynamicImage.astro'
 
 // Get all blog posts from the content collection
 const allPosts = await getCollection('blog')
@@ -51,10 +52,11 @@ const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))]
           <article class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group">
             <figure class="h-48 overflow-hidden">
               {post.data.image ? (
-                <img 
-                  src={post.data.image} 
+                <DynamicImage
+                  src={post.data.image}
                   alt={post.data.title}
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
                 />
               ) : (
                 <div class="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">

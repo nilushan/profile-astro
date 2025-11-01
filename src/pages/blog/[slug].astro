@@ -3,6 +3,8 @@ import { getCollection, getEntry } from 'astro:content'
 import Layout from '@/layouts/Layout.astro'
 import { portfolioData } from '@/data/portfolio'
 import { render } from 'astro:content'
+import DynamicImage from '@/components/DynamicImage.astro'
+import { resolveImage } from '@/lib/image-utils'
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog')
@@ -117,14 +119,15 @@ const relatedPosts = allPosts
   </section>
 
   <!-- Featured Image -->
-  {post.data.image && (
+  {post.data.image && resolveImage(post.data.image) && (
     <section class="py-8">
       <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
-          <img 
-            src={post.data.image} 
+          <DynamicImage
+            src={post.data.image}
             alt={post.data.title}
             class="w-full h-auto rounded-lg shadow-2xl"
+            loading="eager"
           />
         </div>
       </div>
@@ -235,11 +238,12 @@ const relatedPosts = allPosts
             {relatedPosts.map((relatedPost) => (
               <article class="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <figure class="h-32 overflow-hidden">
-                  {relatedPost.data.image ? (
-                    <img 
-                      src={relatedPost.data.image} 
+                  {relatedPost.data.image && resolveImage(relatedPost.data.image) ? (
+                    <DynamicImage
+                      src={relatedPost.data.image}
                       alt={relatedPost.data.title}
                       class="w-full h-full object-cover"
+                      loading="lazy"
                     />
                   ) : (
                     <div class="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
