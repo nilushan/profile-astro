@@ -112,8 +112,12 @@ const categories = [...new Set(allPosts.map(post => post.data.category).filter(B
           </h2>
         </div>
         <div class="flex flex-wrap gap-2">
-          <button class="btn btn-sm btn-primary category-filter" data-category="all">
-            All Posts
+          <button class="btn btn-sm btn-primary category-filter gap-2" data-category="all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <span>All Posts</span>
+            <span class="badge badge-sm">{remainingPosts.length}</span>
           </button>
           {categories.map((category) => (
             <button class="btn btn-sm btn-outline category-filter" data-category={category}>
@@ -254,31 +258,40 @@ const categories = [...new Set(allPosts.map(post => post.data.category).filter(B
 
   // Category filtering
   const filterButtons = document.querySelectorAll('.category-filter')
-  const articles = document.querySelectorAll('[data-category]')
+  const articles = document.querySelectorAll('article[data-category]')
 
   filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const category = button.getAttribute('data-category')
+    button.addEventListener('click', (e) => {
+      // Get the button element even if a child element was clicked
+      const clickedButton = (e.currentTarget as HTMLElement)
+      const category = clickedButton.getAttribute('data-category')
+
+      console.log('Filter clicked:', category) // Debug log
 
       // Update active button
       filterButtons.forEach(btn => {
         btn.classList.remove('btn-primary')
         btn.classList.add('btn-outline')
       })
-      button.classList.add('btn-primary')
-      button.classList.remove('btn-outline')
+      clickedButton.classList.add('btn-primary')
+      clickedButton.classList.remove('btn-outline')
 
       // Filter articles
+      let visibleCount = 0
       articles.forEach(article => {
         const articleCategory = article.getAttribute('data-category')
         const articleElement = article as HTMLElement
         if (category === 'all' || articleCategory === category) {
           articleElement.style.display = ''
-          article.classList.add('animate-fade-in')
+          articleElement.classList.add('animate-fade-in')
+          visibleCount++
         } else {
           articleElement.style.display = 'none'
+          articleElement.classList.remove('animate-fade-in')
         }
       })
+
+      console.log('Visible articles:', visibleCount) // Debug log
     })
   })
 </script>
