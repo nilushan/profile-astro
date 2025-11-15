@@ -66,8 +66,11 @@ const getCategoryIcon = (category: string) => {
   image={project.data.image}
 >
   <!-- Project Hero Section -->
-  <section class="hero min-h-[60vh] bg-gradient-to-r from-primary/10 to-secondary/10 pt-20">
-    <div class="hero-content text-center w-full px-4">
+  <section class="hero min-h-[60vh] relative overflow-hidden tech-grid pt-20">
+    <!-- Animated gradient background -->
+    <div class="absolute inset-0 animated-gradient opacity-30"></div>
+
+    <div class="hero-content text-center w-full px-4 relative z-10">
       <div class="w-full">
         <!-- Breadcrumb -->
         <div class="mb-4">
@@ -108,7 +111,7 @@ const getCategoryIcon = (category: string) => {
           )}
         </div>
 
-        <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold mb-6 text-base-content break-words">
+        <h1 class="text-3xl sm:text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content break-words leading-tight">
           {project.data.title}
         </h1>
         
@@ -167,9 +170,10 @@ const getCategoryIcon = (category: string) => {
           <div class="lg:col-span-1">
             <div class="sticky top-8 space-y-6">
               <!-- Technologies -->
-              <div class="card bg-base-100 shadow-lg">
+              <div class="card bg-base-100 shadow-xl glass border border-primary/10 relative overflow-hidden group">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent"></div>
                 <div class="card-body">
-                  <h3 class="card-title text-sm mb-3">Technologies</h3>
+                  <h3 class="card-title text-sm mb-3 font-display">Technologies</h3>
                   <div class="flex flex-wrap gap-1">
                     {project.data.technologies.map((tech) => (
                       <div class="badge badge-outline badge-sm">{tech}</div>
@@ -180,9 +184,10 @@ const getCategoryIcon = (category: string) => {
 
               <!-- Key Achievements -->
               {project.data.achievements && (
-                <div class="card bg-base-100 shadow-lg">
+                <div class="card bg-base-100 shadow-xl glass border border-secondary/10 relative overflow-hidden group">
+                  <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-secondary via-accent to-primary"></div>
                   <div class="card-body">
-                    <h3 class="card-title text-sm mb-3">Key Achievements</h3>
+                    <h3 class="card-title text-sm mb-3 font-display">Key Achievements</h3>
                     <ul class="space-y-2 text-sm">
                       {project.data.achievements.slice(0, 3).map((achievement) => (
                         <li class="flex items-start gap-2">
@@ -198,9 +203,10 @@ const getCategoryIcon = (category: string) => {
               )}
 
               <!-- Project Links -->
-              <div class="card bg-base-100 shadow-lg">
+              <div class="card bg-base-100 shadow-xl glass border border-accent/10 relative overflow-hidden group">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-secondary"></div>
                 <div class="card-body">
-                  <h3 class="card-title text-sm mb-3">Project Links</h3>
+                  <h3 class="card-title text-sm mb-3 font-display">Project Links</h3>
                   <div class="space-y-2">
                     {project.data.github && (
                       <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm w-full">
@@ -232,8 +238,17 @@ const getCategoryIcon = (category: string) => {
 
           <!-- Main Content -->
           <div class="lg:col-span-3">
-            <!-- <div class="prose prose-lg max-w-none prose-headings:text-base-content prose-p:text-base-content/80 prose-strong:text-base-content prose-code:text-base-content prose-pre:bg-base-200 prose-pre:text-base-content"> -->
-            <div class="prose lg:prose-xl prose-h2:underline">
+            <div class="prose lg:prose-xl max-w-none
+              prose-headings:font-display prose-headings:text-base-content
+              prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl
+              prose-p:text-base-content/80 prose-p:leading-relaxed
+              prose-strong:text-base-content prose-strong:font-semibold
+              prose-code:text-primary prose-code:font-mono prose-code:text-sm
+              prose-pre:bg-base-200 prose-pre:text-base-content prose-pre:border prose-pre:border-base-content/10
+              prose-a:text-primary hover:prose-a:text-primary-focus prose-a:no-underline hover:prose-a:underline
+              prose-li:text-base-content/80
+              prose-blockquote:border-l-primary prose-blockquote:text-base-content/70
+              prose-img:rounded-lg prose-img:shadow-xl">
               <Content />
             </div>
           </div>

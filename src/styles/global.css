@@ -75,10 +75,17 @@
 }
 
 @theme {
-    /* Default fonts */
-    --font-family-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
+    /* Enhanced typography system */
+    --font-family-sans: "Inter Variable", system-ui, sans-serif;
+    --font-family-display: "Space Grotesk", system-ui, sans-serif;
     --font-family-serif: "Crimson Text", Georgia, serif;
-    --font-family-mono: "JetBrains Mono", monospace;
+    --font-family-mono: "JetBrains Mono", "Fira Code", monospace;
+
+    /* Custom spacing for rhythm */
+    --spacing-fluid-1: clamp(0.5rem, 1vw, 1rem);
+    --spacing-fluid-2: clamp(1rem, 2vw, 2rem);
+    --spacing-fluid-3: clamp(1.5rem, 3vw, 3rem);
+    --spacing-fluid-4: clamp(2rem, 4vw, 4rem);
 }
 
 /* Custom font utilities that respect theme */
@@ -88,8 +95,12 @@
         max-width: 1200px !important;
     }
 
+    /* Enhanced typography utilities */
     .font-display {
         font-family: var(--font-family-display);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
     }
 
     .font-theme-sans {
@@ -98,6 +109,12 @@
 
     .font-theme-serif {
         font-family: var(--font-family-serif);
+    }
+
+    .font-mono {
+        font-family: var(--font-family-mono);
+        font-size: 0.9em;
+        letter-spacing: -0.01em;
     }
 
     /* Line clamp utilities */
@@ -127,6 +144,100 @@
         -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
         overflow: hidden;
+    }
+
+    /* Hide scrollbar while maintaining scroll functionality */
+    .scrollbar-hide {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+
+    /* Glass morphism effects */
+    .glass {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Gradient text */
+    .gradient-text {
+        background: linear-gradient(135deg, hsl(var(--p)) 0%, hsl(var(--s)) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Glow effects */
+    .glow {
+        box-shadow: 0 0 20px hsla(var(--p), 0.3);
+    }
+
+    .glow-hover:hover {
+        box-shadow: 0 0 30px hsla(var(--p), 0.5);
+        transition: box-shadow 0.3s ease;
+    }
+
+    /* Animated gradient background */
+    .animated-gradient {
+        background: linear-gradient(
+            -45deg,
+            hsl(var(--p) / 0.1),
+            hsl(var(--s) / 0.1),
+            hsl(var(--a) / 0.1),
+            hsl(var(--p) / 0.1)
+        );
+        background-size: 400% 400%;
+        animation: gradient-shift 15s ease infinite;
+    }
+
+    @keyframes gradient-shift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    /* Staggered reveal animations */
+    .reveal-item {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: reveal-up 0.6s ease forwards;
+    }
+
+    .reveal-item-delay-1 { animation-delay: 0.1s; }
+    .reveal-item-delay-2 { animation-delay: 0.2s; }
+    .reveal-item-delay-3 { animation-delay: 0.3s; }
+    .reveal-item-delay-4 { animation-delay: 0.4s; }
+    .reveal-item-delay-5 { animation-delay: 0.5s; }
+    .reveal-item-delay-6 { animation-delay: 0.6s; }
+
+    @keyframes reveal-up {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Diagonal accent */
+    .diagonal-accent::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, hsl(var(--p)) 0%, hsl(var(--s)) 100%);
+        transform: skewY(-1deg);
+    }
+
+    /* Technical grid background */
+    .tech-grid {
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
     }
 }
 

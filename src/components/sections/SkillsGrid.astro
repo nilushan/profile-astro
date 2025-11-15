@@ -98,28 +98,42 @@ const getIconSvg = (iconName: string) => {
 };
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-  {skillCategories.map((category) => {
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-fr">
+  {skillCategories.map((category, index) => {
     const colors = colorClasses[category.color];
+    // Create bento grid layout with varying sizes
+    const spanClasses = [
+      'lg:col-span-2 lg:row-span-1', // Programming Languages - wide
+      'lg:col-span-1 lg:row-span-1', // Frontend
+      'lg:col-span-1 lg:row-span-1', // Backend
+      'lg:col-span-1 lg:row-span-1', // Cloud
+      'lg:col-span-1 lg:row-span-1', // Databases
+      'lg:col-span-2 lg:row-span-1', // DevOps - wide
+      'lg:col-span-1 lg:row-span-1', // Project Management
+    ];
     return (
-    <div class={`card bg-gradient-to-br ${colors.gradientFrom} ${colors.gradientTo} shadow-lg hover:shadow-xl transition-all duration-300 group`}>
-      <div class="card-body items-center text-center p-6">
-        <!-- Icon -->
-        <div class={`w-16 h-16 ${colors.bg} rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+    <div class={`card bg-gradient-to-br ${colors.gradientFrom} ${colors.gradientTo} shadow-xl hover:shadow-2xl transition-all duration-500 group relative overflow-hidden ${spanClasses[index]} reveal-item reveal-item-delay-${index + 1} border border-base-content/5 hover:border-${category.color}/30 hover:scale-[1.02]`}>
+      <!-- Floating gradient orb -->
+      <div class={`absolute -top-10 -right-10 w-32 h-32 ${colors.bg} opacity-10 rounded-full blur-3xl group-hover:opacity-20 transition-opacity`}></div>
+
+      <div class="card-body items-center text-center p-6 md:p-8 relative z-10">
+        <!-- Enhanced Icon with gradient ring -->
+        <div class={`w-20 h-20 ${colors.bg} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg relative`}>
+          <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent"></div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class={`h-8 w-8 ${colors.text}`}
+            class={`h-10 w-10 ${colors.text} relative z-10`}
             set:html={getIconSvg(category.icon)}
           >
           </svg>
         </div>
-        
-        <!-- Title -->
-        <h3 class="card-title text-xl mb-2 group-hover:text-primary transition-colors">
+
+        <!-- Enhanced Title with display font -->
+        <h3 class="card-title text-xl md:text-2xl mb-2 font-display group-hover:text-primary transition-colors">
           {category.title}
         </h3>
         
@@ -130,25 +144,28 @@ const getIconSvg = (iconName: string) => {
           </p>
         )}
         
-        <!-- Skills -->
-        <div class="flex flex-wrap gap-2 justify-center">
+        <!-- Enhanced Skills with better spacing -->
+        <div class="flex flex-wrap gap-2 justify-center mt-auto">
           {(showAll ? category.skills : category.skills.slice(0, maxSkillsPerCategory)).map((skill) => (
-            <div class={`badge ${colors.badge} badge-sm hover:scale-105 transition-transform cursor-default`}>
+            <div class={`badge ${colors.badge} badge-md font-mono text-xs hover:scale-110 hover:shadow-lg transition-all cursor-default`}>
               {skill}
             </div>
           ))}
           {!showAll && category.skills.length > maxSkillsPerCategory && (
-            <div class={`badge badge-outline badge-sm ${colors.badgeText}`}>
+            <div class={`badge badge-outline badge-md ${colors.badgeText} font-mono font-bold`}>
               +{category.skills.length - maxSkillsPerCategory}
             </div>
           )}
         </div>
-        
-        <!-- Progress Indicator (Optional) -->
-        <div class="w-full mt-4">
-          <div class={`progress ${colors.progress} w-full h-2`} value={Math.min(category.skills.length * 10, 100)} max="100"></div>
-          <div class="text-sm text-base-content/50 mt-1">
-            {category.skills.length} skills
+
+        <!-- Enhanced Progress with animated fill -->
+        <div class="w-full mt-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-mono text-base-content/40 uppercase tracking-wider">Proficiency</span>
+            <span class="text-xs font-mono font-bold text-base-content/60">{category.skills.length} skills</span>
+          </div>
+          <div class="w-full h-2 bg-base-content/10 rounded-full overflow-hidden">
+            <div class={`h-full ${colors.bg} rounded-full transition-all duration-1000 group-hover:animate-pulse`} style={`width: ${Math.min(category.skills.length * 10, 100)}%`}></div>
           </div>
         </div>
       </div>

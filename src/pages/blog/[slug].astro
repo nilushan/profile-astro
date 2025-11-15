@@ -46,8 +46,11 @@ const relatedPosts = allPosts
   image={post.data.image}
 >
   <!-- Blog Post Hero Section -->
-  <section class="hero min-h-[60vh] bg-gradient-to-r from-primary/10 to-secondary/10 pt-20">
-    <div class="hero-content text-center w-full px-4">
+  <section class="hero min-h-[60vh] relative overflow-hidden tech-grid pt-20">
+    <!-- Animated gradient background -->
+    <div class="absolute inset-0 animated-gradient opacity-30"></div>
+
+    <div class="hero-content text-center w-full px-4 relative z-10">
       <div class="w-full">
         <!-- Breadcrumb -->
         <div class="mb-4">
@@ -85,7 +88,7 @@ const relatedPosts = allPosts
           )}
         </div>
 
-        <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold mb-6 text-base-content break-words">
+        <h1 class="text-3xl sm:text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content break-words leading-tight">
           {post.data.title}
         </h1>
         
@@ -140,9 +143,10 @@ const relatedPosts = allPosts
           <div class="lg:col-span-1">
             <div class="sticky top-8 space-y-6">
               <!-- Table of Contents (would need JavaScript to generate) -->
-              <div class="card bg-base-100 shadow-lg">
+              <div class="card bg-base-100 shadow-xl glass border border-primary/10 relative overflow-hidden group">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent"></div>
                 <div class="card-body">
-                  <h3 class="card-title text-base mb-3">In This Article</h3>
+                  <h3 class="card-title text-base mb-3 font-display">In This Article</h3>
                   <div class="text-base space-y-2 text-base-content/80">
                     <p>Use the headings in the article to navigate</p>
                   </div>
@@ -151,9 +155,10 @@ const relatedPosts = allPosts
 
               <!-- Tags -->
               {post.data.tags && post.data.tags.length > 0 && (
-                <div class="card bg-base-100 shadow-lg">
+                <div class="card bg-base-100 shadow-xl glass border border-secondary/10 relative overflow-hidden group">
+                  <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-secondary via-accent to-primary"></div>
                   <div class="card-body">
-                    <h3 class="card-title text-base mb-3">Tags</h3>
+                    <h3 class="card-title text-base mb-3 font-display">Tags</h3>
                     <div class="flex flex-wrap gap-1">
                       {post.data.tags.map((tag) => (
                         <div class="badge badge-outline">{tag}</div>
@@ -164,9 +169,10 @@ const relatedPosts = allPosts
               )}
 
               <!-- Share -->
-              <div class="card bg-base-100 shadow-lg">
+              <div class="card bg-base-100 shadow-xl glass border border-accent/10 relative overflow-hidden group">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-secondary"></div>
                 <div class="card-body">
-                  <h3 class="card-title text-base mb-3">Share</h3>
+                  <h3 class="card-title text-base mb-3 font-display">Share</h3>
                   <div class="space-y-2">
                     <a 
                       href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.data.title)}&url=${encodeURIComponent(Astro.url.href)}`}
@@ -195,9 +201,10 @@ const relatedPosts = allPosts
               </div>
 
               <!-- Contact CTA -->
-              <div class="card bg-base-100 shadow-lg">
+              <div class="card bg-base-100 shadow-xl glass border border-info/10 relative overflow-hidden group">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-info via-accent to-primary"></div>
                 <div class="card-body">
-                  <h3 class="card-title text-base mb-3">Discuss This</h3>
+                  <h3 class="card-title text-base mb-3 font-display">Discuss This</h3>
                   <p class="text-sm text-base-content/70 mb-3">
                     Have questions or want to discuss this topic further?
                   </p>
@@ -214,10 +221,18 @@ const relatedPosts = allPosts
 
           <!-- Main Content -->
           <div class="lg:col-span-3">
-            <div class="prose prose-lg max-w-full prose-headings:text-base-content prose-p:text-base-content/80 prose-strong:text-base-content prose-inline-code:text-base-content prose-pre:bg-base-200 prose-pre:text-base-content prose-a:text-primary hover:prose-a:text-primary-focus prose-pre:overflow-x-auto">
-              <div class="overflow-x-auto">
-                <Content />
-              </div>
+            <div class="prose lg:prose-xl max-w-none
+              prose-headings:font-display prose-headings:text-base-content
+              prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl
+              prose-p:text-base-content/80 prose-p:leading-relaxed
+              prose-strong:text-base-content prose-strong:font-semibold
+              prose-code:text-primary prose-code:font-mono prose-code:text-sm
+              prose-pre:bg-base-200 prose-pre:text-base-content prose-pre:border prose-pre:border-base-content/10 prose-pre:overflow-x-auto
+              prose-a:text-primary hover:prose-a:text-primary-focus prose-a:no-underline hover:prose-a:underline
+              prose-li:text-base-content/80
+              prose-blockquote:border-l-primary prose-blockquote:text-base-content/70
+              prose-img:rounded-lg prose-img:shadow-xl">
+              <Content />
             </div>
           </div>
         </div>
@@ -228,10 +243,11 @@ const relatedPosts = allPosts
   {relatedPosts.length > 0 && (
     <section class="py-16 bg-base-200">
       <div class="container mx-auto px-4">
-          <h2 class="text-2xl font-bold mb-8 text-center">Related Articles</h2>
+          <h2 class="text-3xl lg:text-4xl font-display font-bold mb-8 text-center gradient-text">Related Articles</h2>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {relatedPosts.map((relatedPost) => (
-              <article class="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <article class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-500 group glass border border-base-content/5 hover:border-primary/20 relative overflow-hidden">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent opacity-50 group-hover:opacity-100 transition-opacity"></div>
                 <figure class="h-32 overflow-hidden">
                   {relatedPost.data.image && resolveImage(relatedPost.data.image) ? (
                     <DynamicImage

@@ -24,11 +24,14 @@ const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))]
 
 <Layout title="Blog - Nilushan Silva" description="Technical blog covering full-stack development, cloud architecture, IoT solutions, and software engineering best practices.">
   <!-- Page Header -->
-  <section class="hero bg-gradient-to-r from-primary/10 to-secondary/10 py-20">
-    <div class="hero-content text-center">
+  <section class="hero relative overflow-hidden tech-grid py-20">
+    <!-- Animated gradient background -->
+    <div class="absolute inset-0 animated-gradient opacity-30"></div>
+
+    <div class="hero-content text-center relative z-10">
       <div class="max-w-xl">
-        <h1 class="text-xl lg:text-5xl font-bold mb-6 text-base-content">
-          Technical Blog
+        <h1 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
+          Technical <span class="gradient-text">Blog</span>
         </h1>
         <p class="text-lg text-base-content/70 mb-8">
           Insights on full-stack development, cloud architecture, IoT solutions, and software engineering best practices from 15+ years of experience.
@@ -49,7 +52,8 @@ const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))]
     <div class="container mx-auto px-4">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {sortedPosts.map((post) => (
-          <article class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+          <article class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-500 group glass border border-base-content/5 hover:border-primary/20 relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent opacity-50 group-hover:opacity-100 transition-opacity"></div>
             <figure class="h-48 overflow-hidden">
               {post.data.image ? (
                 <DynamicImage

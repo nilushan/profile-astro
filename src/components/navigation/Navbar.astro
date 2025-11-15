@@ -71,10 +71,19 @@ const navSocialLinks = socialLinks.filter(link => ['github', 'linkedin'].include
     <!-- Logo -->
     <a
       href="/"
-      class="btn btn-ghost text-2xl font-bold text-primary hover:text-primary-focus h-16 flex items-center"
+      class="btn btn-ghost text-xl font-display font-bold hover:bg-transparent h-16 flex items-center gap-2"
       aria-label="Home"
     >
-      <span class="text-primary">N</span><span class="text-secondary">S</span>
+      <!-- Avatar badge -->
+      <div class="avatar placeholder">
+        <div class="bg-gradient-to-br from-primary to-secondary text-primary-content w-10 h-10 rounded-lg">
+          <span class="text-sm font-bold">
+            {portfolioData.personal.name.split(' ').map(n => n[0]).join('')}
+          </span>
+        </div>
+      </div>
+      <!-- Name -->
+      <span class="text-base-content hidden sm:inline">{portfolioData.personal.name}</span>
     </a>
   </div>
 

@@ -64,14 +64,25 @@ const recentExperience = experience.slice(0, 2);
     </div>
   </section> -->
 
-    <!-- Skills Overview Section -->
-  <section class="py-16 lg:py-16">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
-          Technical Skills
+    <!-- Skills Overview Section with Enhanced Design -->
+  <section class="py-16 lg:py-24 relative overflow-hidden">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 bg-gradient-to-b from-base-100 via-base-200 to-base-100"></div>
+    <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center mb-16">
+        <!-- Section label -->
+        <div class="inline-block mb-4">
+          <span class="font-mono text-sm text-primary uppercase tracking-widest px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
+            &lt; Expertise /&gt;
+          </span>
+        </div>
+
+        <h2 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
+          Technical <span class="gradient-text">Skills</span>
         </h2>
-        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+        <p class="text-lg lg:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
           A comprehensive overview of my technical expertise across different
           domains of software development.
         </p>
@@ -85,14 +96,25 @@ const recentExperience = experience.slice(0, 2);
     </div>
   </section>
 
-  <!-- Experience Timeline Section -->
-  <section class="py-16 lg:py-16 bg-base-200">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
-          Professional Experience
+  <!-- Experience Timeline Section with Enhanced Design -->
+  <section class="py-16 lg:py-24 relative overflow-hidden tech-grid">
+    <!-- Atmospheric background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-base-200 via-base-100 to-base-200"></div>
+    <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-secondary to-transparent"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center mb-16">
+        <!-- Section label -->
+        <div class="inline-block mb-4">
+          <span class="font-mono text-sm text-secondary uppercase tracking-widest px-4 py-2 bg-secondary/10 rounded-full border border-secondary/20">
+            &lt; Journey /&gt;
+          </span>
+        </div>
+
+        <h2 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
+          Professional <span class="gradient-text">Experience</span>
         </h2>
-        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+        <p class="text-lg lg:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
           A timeline of my career progression and key achievements in full-stack
           development and cloud engineering.
         </p>
@@ -107,14 +129,25 @@ const recentExperience = experience.slice(0, 2);
     </div>
   </section>
 
-  <!-- Featured Projects Section -->
-  <section class="py-16 lg:py-16">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
-          Featured Projects
+  <!-- Featured Projects Section with Enhanced Design -->
+  <section class="py-16 lg:py-24 relative overflow-hidden">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 bg-gradient-to-b from-base-100 via-base-200/50 to-base-100"></div>
+    <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center mb-16">
+        <!-- Section label -->
+        <div class="inline-block mb-4">
+          <span class="font-mono text-sm text-accent uppercase tracking-widest px-4 py-2 bg-accent/10 rounded-full border border-accent/20">
+            &lt; Portfolio /&gt;
+          </span>
+        </div>
+
+        <h2 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
+          Featured <span class="gradient-text">Projects</span>
         </h2>
-        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+        <p class="text-lg lg:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
           Here are some of my most impactful projects that demonstrate my
           expertise in full-stack development and cloud architecture.
         </p>
@@ -124,7 +157,7 @@ const recentExperience = experience.slice(0, 2);
         projects={featuredProjects}
         showAll={false}
         maxProjects={3}
-        layout="grid"
+        layout="list"
       />
     </div>
   </section>
