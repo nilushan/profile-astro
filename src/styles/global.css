@@ -1,9 +1,8 @@
 /* Self-hosted fonts - Distinctive, characterful choices for a memorable design */
 @import "@fontsource-variable/manrope"; /* Warm, rounded, friendly body font */
 @import "@fontsource-variable/outfit"; /* Modern, geometric display font */
-@import "@fontsource/jetbrains-mono/300.css";
+/* Only load JetBrains Mono weights that are actually used (400, 600, 700) */
 @import "@fontsource/jetbrains-mono/400.css";
-@import "@fontsource/jetbrains-mono/500.css";
 @import "@fontsource/jetbrains-mono/600.css";
 @import "@fontsource/jetbrains-mono/700.css";
 

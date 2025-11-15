@@ -48,12 +48,16 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content={description} />
         <meta name="author" content={portfolioContent.personal.name} />
+        <meta name="keywords" content="Full-Stack Developer, TypeScript, React, Node.js, Google Cloud Platform, GCP, IoT Development, DevOps, Cloud Architecture, Software Engineer, Web Development, Brisbane, Australia" />
         <meta
             name="robots"
             content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
         />
         <meta name="googlebot" content="index, follow" />
         <meta name="theme-color" content="#570df8" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
         <link rel="canonical" href={canonicalURL} />
         <link
@@ -78,6 +82,21 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
         <meta property="twitter:image" content={new URL(image, siteURL).href} />
 
         <!-- Fonts now self-hosted via @fontsource packages for better performance and privacy -->
+        <!-- Preload critical fonts for better performance -->
+        <link
+            rel="preload"
+            href="/_astro/manrope-latin-wght-normal.DHIcAJRg.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="preload"
+            href="/_astro/outfit-latin-wght-normal.Bc-8i84L.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin="anonymous"
+        />
 
         <!-- Structured Data for SEO -->
         <script
@@ -135,7 +154,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
             </div>
 
             <!-- Main Content -->
-            <main class="pt-20">
+            <main class="pt-16 sm:pt-20">
                 <slot />
             </main>
 
@@ -154,7 +173,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
                 <!-- Content -->
                 <div class="relative">
                     <!-- Main Footer Content -->
-                    <div class="px-6 py-16 lg:py-20">
+                    <div class="px-4 sm:px-6 py-12 sm:py-16 lg:py-20">
                         <div class="container mx-auto">
                             <!-- Navigation & Social Section -->
                             <div
