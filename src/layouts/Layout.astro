@@ -451,5 +451,71 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
                 </div>
             </footer>
         </div>
+
+        <!-- Scroll Reveal Animation Script -->
+        <script is:inline>
+            // Initialize scroll reveal animations
+            function initScrollReveal() {
+                const scrollElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right');
+
+                const elementInView = (el, percentageScroll = 100) => {
+                    const elementTop = el.getBoundingClientRect().top;
+                    return (
+                        elementTop <=
+                        (window.innerHeight || document.documentElement.clientHeight) * (percentageScroll / 100)
+                    );
+                };
+
+                const displayScrollElement = (element) => {
+                    element.classList.add('revealed');
+                };
+
+                const handleScrollAnimation = () => {
+                    scrollElements.forEach((el) => {
+                        if (elementInView(el, 85)) {
+                            displayScrollElement(el);
+                        }
+                    });
+                };
+
+                window.addEventListener('scroll', () => {
+                    handleScrollAnimation();
+                });
+
+                // Initial check for elements already in view
+                handleScrollAnimation();
+            }
+
+            // Run on DOM ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initScrollReveal);
+            } else {
+                initScrollReveal();
+            }
+
+            // Re-run on Astro page navigation (for view transitions)
+            document.addEventListener('astro:after-swap', initScrollReveal);
+        </script>
+
+        <!-- Smooth Scroll Behavior -->
+        <script is:inline>
+            // Enable smooth scrolling for anchor links
+            document.addEventListener('click', (e) => {
+                const target = e.target.closest('a[href^="#"]');
+                if (target) {
+                    e.preventDefault();
+                    const id = target.getAttribute('href');
+                    if (id === '#') return;
+
+                    const element = document.querySelector(id);
+                    if (element) {
+                        element.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        </script>
     </body>
 </html>

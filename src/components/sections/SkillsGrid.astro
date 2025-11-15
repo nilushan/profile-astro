@@ -112,7 +112,7 @@ const getIconSvg = (iconName: string) => {
       'lg:col-span-1 lg:row-span-1', // Project Management
     ];
     return (
-    <div class={`card bg-gradient-to-br ${colors.gradientFrom} ${colors.gradientTo} shadow-xl hover:shadow-2xl transition-all duration-500 group relative overflow-hidden ${spanClasses[index]} reveal-item reveal-item-delay-${index + 1} border border-base-content/5 hover:border-${category.color}/30 hover:scale-[1.02]`}>
+    <div class={`card bg-gradient-to-br ${colors.gradientFrom} ${colors.gradientTo} shadow-xl transition-all duration-500 group relative overflow-hidden ${spanClasses[index]} scroll-reveal hover-lift border border-base-content/5 hover:border-${category.color}/30`} data-delay={index % 3 + 1}>
       <!-- Floating gradient orb -->
       <div class={`absolute -top-10 -right-10 w-32 h-32 ${colors.bg} opacity-10 rounded-full blur-3xl group-hover:opacity-20 transition-opacity`}></div>
 

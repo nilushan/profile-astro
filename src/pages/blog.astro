@@ -140,7 +140,7 @@ const categories = [...new Set(allPosts.map(post => post.data.category).filter(B
 
           return (
             <article
-              class={`card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-500 group glass border border-base-content/5 hover:border-primary/20 relative overflow-hidden ${cardClass}`}
+              class={`card bg-base-100 shadow-xl transition-all duration-500 group glass border border-base-content/5 hover:border-primary/20 relative overflow-hidden scroll-reveal hover-lift ${cardClass}`}
               data-category={post.data.category || 'uncategorized'}
             >
               <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent opacity-50 group-hover:opacity-100 transition-opacity"></div>
