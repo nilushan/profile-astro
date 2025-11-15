@@ -75,7 +75,7 @@ const statusColors = {
       card bg-base-100 shadow-2xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 group relative overflow-hidden border border-base-content/5 hover:border-primary/20 glass
       ${project.data.type === 'featured' ? 'ring-2 ring-primary/30 ring-offset-2 ring-offset-base-100' : ''}
       ${layout === 'masonry' ? 'break-inside-avoid mb-8' : ''}
-      ${layout === 'list' ? 'card-side' : ''}
+      ${layout === 'list' ? 'lg:card-side' : ''}
       ${layout === 'horizontal' ? 'flex-shrink-0 w-[calc(100vw-3rem)] sm:w-[500px] lg:w-[600px] snap-start' : ''}
     `}>
       <!-- Gradient accent bar -->
@@ -83,16 +83,16 @@ const statusColors = {
       <!-- Floating gradient orb -->
       <div class="absolute -top-20 -right-20 w-40 h-40 bg-accent/10 rounded-full blur-3xl group-hover:bg-accent/20 transition-all"></div>
       <!-- Project Image/Icon -->
-      <figure class={`${layout === 'list' ? 'w-80 flex-shrink-0' : 'px-6 pt-6'}`}>
+      <figure class={`${layout === 'list' ? 'lg:w-80 lg:flex-shrink-0 px-6 pt-6 lg:pt-0 lg:pl-0' : 'px-6 pt-6'}`}>
         {project.data.image && resolveImage(project.data.image) ? (
           <DynamicImage
             src={project.data.image}
             alt={`${project.data.title} - ${project.data.description}`}
-            class={`${layout === 'list' ? 'h-full object-cover' : 'w-full h-48 object-cover rounded-xl'}`}
+            class={`${layout === 'list' ? 'w-full h-48 object-cover rounded-xl lg:h-full' : 'w-full h-48 object-cover rounded-xl'}`}
             loading="lazy"
           />
         ) : (
-          <div class="w-full h-48 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-secondary/30 transition-all">
+          <div class={`w-full bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-secondary/30 transition-all ${layout === 'list' ? 'h-48 lg:h-full' : 'h-48'}`}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="h-16 w-16 text-primary">
               <path set:html={iconPaths[getProjectIcon(project.data.technologies, index)]} />
             </svg>
