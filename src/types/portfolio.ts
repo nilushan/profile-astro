@@ -209,6 +209,7 @@ export interface PortfolioData {
   experience: Experience[];
   education: Education;
   interests: Interest[];
+  currentLearning: string;
   cta: CallToAction;
   ctas: {
     home: CallToAction;

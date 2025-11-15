@@ -75,10 +75,10 @@ const recentExperience = experience.slice(0, 2);
     <div class="container mx-auto px-4 relative z-10">
       <div class="text-center mb-16">
         <!-- Section label -->
-        <div class="inline-block mb-4">
-          <span class="font-mono text-sm text-primary uppercase tracking-widest px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
-            &lt; Expertise /&gt;
-          </span>
+        <div class="flex items-center gap-3 mb-6 justify-center">
+          <div class="h-px w-12 bg-gradient-to-r from-transparent to-primary"></div>
+          <span class="font-mono text-xs text-primary uppercase tracking-[0.2em]">Expertise</span>
+          <div class="h-px w-12 bg-gradient-to-l from-transparent to-primary"></div>
         </div>
 
         <h2 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
@@ -109,7 +109,7 @@ const recentExperience = experience.slice(0, 2);
         <!-- Section label -->
         <div class="inline-block mb-4">
           <span class="font-mono text-sm text-secondary uppercase tracking-widest px-4 py-2 bg-secondary/10 rounded-full border border-secondary/20">
-            &lt; Journey /&gt;
+            Journey
           </span>
         </div>
 
@@ -142,7 +142,7 @@ const recentExperience = experience.slice(0, 2);
         <!-- Section label -->
         <div class="inline-block mb-4">
           <span class="font-mono text-sm text-accent uppercase tracking-widest px-4 py-2 bg-accent/10 rounded-full border border-accent/20">
-            &lt; Portfolio /&gt;
+            Portfolio
           </span>
         </div>
 
@@ -168,7 +168,7 @@ const recentExperience = experience.slice(0, 2);
   <section class="py-16 lg:py-24">
     <div class="container mx-auto px-4">
       <div class="max-w-4xl mx-auto">
-        <CallToAction cta={cta} />
+        <CallToAction cta={cta} variant="bold" />
       </div>
     </div>
   </section>

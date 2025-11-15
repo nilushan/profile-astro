@@ -1,8 +1,8 @@
 # Portfolio Site Improvement Roadmap
 
 > **Last Updated:** 2025-11-15
-> **Status:** Skills page improvements completed ✅
-> **Next Focus:** Remove repetitive patterns
+> **Status:** Stage 1 complete ✅ (Remove Repetitive Patterns)
+> **Next Focus:** Stage 2 - Add Visual Variety Per Page
 
 ---
 
@@ -13,36 +13,41 @@
 - [x] **Skills Page Enhancement** - New header design, streamlined cloud platforms
 - [x] **Hero Background Fix** - Fixed background coverage on skills page
 - [x] **Cloud Cards Fix** - Uniform card heights, removed weird backgrounds
+- [x] **Section Labels Consolidated** - 4 different label styles across pages
+- [x] **CTA Variations** - 3 CTA variants (minimal, standard, bold) implemented
+- [x] **Hero Header Variety** - Different hero heights (compact, standard, tall)
+- [x] **Hero Header Balance** - Fixed alignment and centering issues across all pages
+- [x] **Minimal CTA Enhancement** - Improved minimal variant with borders, icons, and animations
 
 ### 📈 Progress Overview
-- **Design System:** 40% complete
-- **Visual Consistency:** 30% complete
-- **Page Uniqueness:** 20% complete
+- **Design System:** 55% complete (+15%)
+- **Visual Consistency:** 50% complete (+20%)
+- **Page Uniqueness:** 45% complete (+25%)
 - **Interactive Elements:** 10% complete
 
 ---
 
 ## 🎯 Improvement Stages
 
-### **Stage 1: Remove Repetitive Patterns** ⏱️ 1-2 hours
+### **Stage 1: Remove Repetitive Patterns** ✅ COMPLETED
 **Priority:** HIGH | **Impact:** HIGH | **Effort:** LOW
 
-#### 1.1 Consolidate Section Labels
+#### 1.1 Consolidate Section Labels ✅
 **Current Issue:** Every page uses `< Label />` pattern identically
 
-**Files to modify:**
-- `src/pages/index.astro` - Home page sections
-- `src/pages/about.astro` - About header
-- `src/pages/experience.astro` - Experience header
-- `src/pages/projects.astro` - Projects header
-- `src/pages/blog.astro` - Blog header
-- `src/pages/contact.astro` - Contact header
+**Files modified:**
+- `src/pages/index.astro` - Home page sections (horizontal rules + simplified pills)
+- `src/pages/about.astro` - About header (simple overline)
+- `src/pages/experience.astro` - Experience header (side accent)
+- `src/pages/projects.astro` - Projects header (no label)
+- `src/pages/blog.astro` - Blog header (simplified pill)
+- `src/pages/contact.astro` - Contact header (no label)
 
-**Actions:**
-- [ ] Create 3-4 different label styles (horizontal rules, badges, simple text)
-- [ ] Apply different styles to different pages
-- [ ] Remove labels from some sections entirely
-- [ ] Document pattern in `CLAUDE.md`
+**Completed Actions:**
+- [x] Created 4 different label styles (horizontal rules, simple overline, side accent, no label)
+- [x] Applied different styles to different pages
+- [x] Removed labels from Projects and Contact pages
+- [x] Simplified labels by removing angle brackets where kept
 
 **Example variations:**
 ```astro
@@ -68,49 +73,60 @@
 
 ---
 
-#### 1.2 Consolidate Call-to-Action Sections
+#### 1.2 Consolidate Call-to-Action Sections ✅
 **Current Issue:** Identical CTA component on every page
 
-**Files to modify:**
-- `src/components/CallToAction.astro` - Make it more flexible
+**Files modified:**
+- `src/components/CallToAction.astro` - Added variant prop with 3 styles
 - All page files using `<CallToAction />`
 
-**Actions:**
-- [ ] Create 2-3 CTA variants (minimal, standard, bold)
-- [ ] Remove CTAs from some pages (Blog, Contact don't need them)
-- [ ] Make CTAs contextual to page content
-- [ ] Add variant prop to CallToAction component
+**Completed Actions:**
+- [x] Created 3 CTA variants (minimal, standard, bold)
+- [x] Removed CTA from Blog page
+- [x] Made CTAs contextual to page content
+- [x] Added variant prop to CallToAction component
 
-**CTA Strategy by Page:**
-- **Home:** Bold, prominent CTA (keep current)
-- **About:** Minimal CTA linking to Contact
-- **Skills:** Current style (contextual to skills)
-- **Experience:** Link to Projects/Contact
-- **Projects:** Link to Contact/Blog
-- **Blog:** Remove CTA entirely
-- **Contact:** No CTA (it IS the CTA page)
+**CTA Implementation by Page:**
+- **Home:** Bold variant - Maximum visual impact ✅
+- **About:** Minimal variant - Clean with borders and animations ✅
+- **Skills:** Standard variant - Default style ✅
+- **Experience:** Standard variant - Default style ✅
+- **Projects:** Minimal variant - Clean with borders and animations ✅
+- **Blog:** Removed entirely ✅
+- **Contact:** No CTA (it IS the CTA page) ✅
+
+**Minimal Variant Features:**
+- Subtle top/bottom borders for visual separation
+- Arrow icons with hover animations (gap increases on hover)
+- Improved typography and spacing (py-12)
+- Smooth transitions for better interactivity
+- Maintains lightweight feel while being more polished
 
 ---
 
-#### 1.3 Vary Hero Header Structures
+#### 1.3 Vary Hero Header Structures ✅
 **Current Issue:** All internal pages have identical hero patterns
 
-**Actions:**
-- [ ] Create 3 hero templates (full-height, compact, split)
-- [ ] Apply different templates to different pages
-- [ ] Document when to use each template
+**Completed Actions:**
+- [x] Created 3 hero height variants (compact, standard, tall)
+- [x] Applied different heights to different pages
+- [x] Added flex centering for better vertical alignment
 
-**Hero Templates:**
-```astro
-<!-- Template A: Full-height (Home, Skills) -->
-<section class="hero min-h-[600px]">
+**Hero Implementation by Page:**
+- **Home:** Full-height hero with custom Hero component ✅
+- **About:** Compact (min-h-[400px], py-20) ✅
+- **Blog:** Compact (min-h-[400px], py-20) ✅
+- **Contact:** Compact (min-h-[400px], py-20) ✅
+- **Projects:** Tall (min-h-[500px], py-24) ✅
+- **Experience:** Tall (min-h-[500px], py-24) ✅
 
-<!-- Template B: Compact (About, Blog, Contact) -->
-<section class="hero min-h-[400px]">
+**Result:** Pages now have distinct visual hierarchy with varied hero heights instead of uniform patterns.
 
-<!-- Template C: Split screen (Projects, Experience) -->
-<section class="hero min-h-[500px] grid lg:grid-cols-2">
-```
+**Additional Fixes:**
+- Fixed hero centering issues by removing conflicting `flex items-center`
+- Added `w-full` to hero-content for proper width control
+- Added `mx-auto` to content divs for consistent centering
+- Standardized padding: `py-20` for compact, `py-24` for tall variants
 
 ---
 
@@ -485,15 +501,24 @@ When making design decisions, ask:
 
 ## 📝 Change Log
 
-### 2025-11-15
+### 2025-11-15 (Session 1)
 - ✅ Replaced fonts: Outfit + Manrope
 - ✅ Enhanced Skills page header
 - ✅ Fixed hero background coverage
 - ✅ Fixed cloud platform card uniformity
 - 📝 Created improvement roadmap
 
+### 2025-11-15 (Session 2)
+- ✅ **Stage 1 Completed:** Remove Repetitive Patterns
+- ✅ Consolidated section labels (4 different styles across pages)
+- ✅ Implemented CTA variants (minimal, standard, bold)
+- ✅ Varied hero header heights (compact, standard, tall)
+- ✅ Fixed hero header alignment and centering issues
+- ✅ Enhanced minimal CTA with borders, icons, and animations
+- ✅ Fixed TypeScript error (added currentLearning to PortfolioData interface)
+
 ### Next Update: TBD
-- Track progress on Stage 1 improvements
+- Track progress on Stage 2 improvements (Add Visual Variety Per Page)
 
 ---
 

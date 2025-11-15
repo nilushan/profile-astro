@@ -23,20 +23,13 @@ const sortedProjects = allProjects.sort((a, b) => {
 ---
 
 <Layout title="Projects - Nilushan Silva" description="Explore my portfolio of full-stack development and cloud engineering projects, featuring IoT platforms, voice control systems, and web applications.">
-  <!-- Page Header -->
-  <section class="hero relative overflow-hidden tech-grid py-20">
+  <!-- Page Header - Tall -->
+  <section class="hero min-h-[500px] relative overflow-hidden tech-grid">
     <!-- Animated gradient background -->
     <div class="absolute inset-0 animated-gradient opacity-30"></div>
 
-    <div class="container mx-auto px-4 relative z-10">
-      <div class="text-center">
-        <!-- Section label -->
-        <div class="inline-block mb-4">
-          <span class="font-mono text-sm text-accent uppercase tracking-widest px-4 py-2 bg-accent/10 rounded-full border border-accent/20">
-            &lt; Portfolio /&gt;
-          </span>
-        </div>
-
+    <div class="hero-content text-center relative z-10 w-full py-24">
+      <div class="max-w-3xl mx-auto">
         <h1 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
           Featured <span class="text-accent">Projects</span>
         </h1>
@@ -55,10 +48,10 @@ const sortedProjects = allProjects.sort((a, b) => {
         showAll={true}
         layout="list"
       />
-      
+
       <!-- Call to Action Section -->
       <div class="mt-16">
-        <CallToAction cta={cta} />
+        <CallToAction cta={cta} variant="minimal" />
       </div>
     </div>
   </section>

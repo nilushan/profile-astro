@@ -1,12 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
-import { portfolioData } from '@/data/portfolio'
 import DynamicImage from '@/components/DynamicImage.astro'
-import CallToAction from '@/components/CallToAction.astro'
-
-const { ctas } = portfolioData
-const cta = ctas.blog
 
 // Get all blog posts from the content collection
 const allPosts = await getCollection('blog')
@@ -27,17 +22,17 @@ const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))]
 ---
 
 <Layout title="Blog - Nilushan Silva" description="Technical blog covering full-stack development, cloud architecture, IoT solutions, and software engineering best practices.">
-  <!-- Page Header -->
-  <section class="hero relative overflow-hidden tech-grid py-20">
+  <!-- Page Header - Compact -->
+  <section class="hero min-h-[400px] relative overflow-hidden tech-grid">
     <!-- Animated gradient background -->
     <div class="absolute inset-0 animated-gradient opacity-30"></div>
 
-    <div class="hero-content text-center relative z-10">
-      <div class="max-w-xl">
+    <div class="hero-content text-center relative z-10 w-full py-20">
+      <div class="max-w-3xl mx-auto">
         <!-- Section label -->
         <div class="inline-block mb-4">
           <span class="font-mono text-sm text-primary uppercase tracking-widest px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
-            &lt; Insights /&gt;
+            Insights
           </span>
         </div>
 
@@ -140,11 +135,6 @@ const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))]
             </div>
           </article>
         ))}
-      </div>
-      
-      <!-- Call to Action Section -->
-      <div class="mt-16">
-        <CallToAction cta={cta} />
       </div>
     </div>
   </section>
