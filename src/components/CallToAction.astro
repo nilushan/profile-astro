@@ -1,0 +1,67 @@
+---
+import type { CallToAction } from '@/types/portfolio'
+
+interface Props {
+  cta: CallToAction
+}
+
+const { cta } = Astro.props
+---
+
+<!-- Elegant CTA Card -->
+<div class="relative group">
+  <!-- Gradient border effect -->
+  <div class="absolute -inset-0.5 bg-gradient-to-r from-primary via-secondary to-accent rounded-3xl opacity-20 group-hover:opacity-30 blur transition duration-500"></div>
+
+  <!-- Card content -->
+  <div class="relative bg-base-100 rounded-3xl shadow-2xl border border-base-300 overflow-hidden">
+    <!-- Subtle background pattern -->
+    <div class="absolute inset-0 opacity-5">
+      <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0); background-size: 24px 24px;"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative p-8 lg:p-12">
+      <!-- Label -->
+      <div class="flex justify-center mb-6">
+        <span class="inline-flex items-center gap-2 font-mono text-xs text-primary uppercase tracking-wider px-4 py-2 bg-primary/5 rounded-full border border-primary/10">
+          <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+          {cta.label}
+        </span>
+      </div>
+
+      <!-- Title -->
+      <h2 class="text-3xl lg:text-5xl font-display font-bold mb-6 text-center text-base-content leading-tight">
+        {cta.title}
+      </h2>
+
+      <!-- Description -->
+      <p class="text-base lg:text-lg text-base-content/70 mb-8 text-center max-w-2xl mx-auto leading-relaxed">
+        {cta.description}
+      </p>
+
+      <!-- Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a
+          href={cta.primaryButton.href}
+          class="group/btn btn btn-primary btn-lg gap-2 font-display shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+        >
+          <span>{cta.primaryButton.text}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 transition-transform group-hover/btn:translate-x-1">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+
+        <a
+          href={cta.secondaryButton.href}
+          class="group/btn btn btn-ghost btn-lg gap-2 font-display hover:bg-base-200 transition-all duration-300"
+        >
+          <span>{cta.secondaryButton.text}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 transition-transform group-hover/btn:translate-x-1">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
