@@ -98,13 +98,14 @@ const technologies = Array.from(allTechnologies).sort()
 
           // Filter projects
           projectCards.forEach(card => {
+            const cardElement = card as HTMLElement
             const technologies = card.getAttribute('data-technologies')?.split(',') || []
 
-            if (filter === 'all' || technologies.includes(filter)) {
-              card.style.display = ''
+            if (filter === 'all' || (filter && technologies.includes(filter))) {
+              cardElement.style.display = ''
               card.classList.add('animate-fade-in')
             } else {
-              card.style.display = 'none'
+              cardElement.style.display = 'none'
             }
           })
         })
