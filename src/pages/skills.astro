@@ -30,13 +30,13 @@ const cta = ctas.skills
           <div class="h-px w-8 sm:w-12 bg-gradient-to-l from-transparent to-primary"></div>
         </div>
 
-        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-display font-bold mb-6 sm:mb-8 text-base-content text-center leading-none">
+        <h1 class="text-display-xl font-display mb-6 sm:mb-8 text-base-content text-center">
           Skills &
-          <span class="block text-primary mt-1 sm:mt-2">Expertise</span>
+          <span class="block text-primary mt-2">Expertise</span>
         </h1>
 
         <p class="text-base sm:text-lg lg:text-2xl text-base-content/60 max-w-2xl mx-auto text-center leading-relaxed font-light">
-          {skillCategories.reduce((total, cat) => total + cat.skills.length, 0)}+ technologies mastered across {skillCategories.length} domains
+          <span class="number-highlight">{skillCategories.reduce((total, cat) => total + cat.skills.length, 0)}+</span> technologies mastered across <span class="number-highlight">{skillCategories.length}</span> domains
         </p>
       </div>
     </div>
