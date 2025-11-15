@@ -18,7 +18,7 @@ const initials = personal.name
 const socialLinks = generateSocialLinksWithMetadata(personal);
 ---
 
-<section class="hero min-h-[calc(100vh-5rem)] relative overflow-hidden tech-grid">
+<section class="hero min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)] relative overflow-hidden tech-grid">
     <!-- Animated gradient background -->
     <div class="absolute inset-0 animated-gradient opacity-50"></div>
 
@@ -27,7 +27,7 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
 
     <div class="container mx-auto px-4 relative z-10">
         <div
-            class="flex flex-col lg:flex-row-reverse gap-8 lg:gap-16 items-center py-8 lg:py-20"
+            class="flex flex-col lg:flex-row-reverse gap-6 sm:gap-8 lg:gap-16 items-center py-6 sm:py-8 lg:py-20"
         >
             <!-- Avatar Section with Enhanced Design -->
             <div class="flex-shrink-0 flex flex-col items-center reveal-item reveal-item-delay-1">
@@ -37,10 +37,10 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
 
                     <div class="avatar placeholder relative z-10">
                         <div
-                            class="bg-gradient-to-br from-primary to-secondary text-primary-content w-48 sm:w-56 lg:w-72 rounded-3xl ring-4 ring-primary/30 ring-offset-base-100 ring-offset-4 flex items-center shadow-2xl glow-hover transition-all duration-500 hover:scale-105"
+                            class="bg-gradient-to-br from-primary to-secondary text-primary-content w-32 sm:w-48 md:w-56 lg:w-72 rounded-3xl ring-4 ring-primary/30 ring-offset-base-100 ring-offset-4 flex items-center shadow-2xl glow-hover transition-all duration-500 hover:scale-105"
                         >
                             <div
-                                class="text-6xl sm:text-7xl lg:text-8xl font-display items-center justify-around flex h-full w-full"
+                                class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display items-center justify-around flex h-full w-full"
                             >
                                 {initials}
                             </div>
@@ -83,18 +83,18 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
                 </p>
 
                 <div
-                    class="flex flex-wrap justify-center gap-3 mb-8 lg:justify-start reveal-item reveal-item-delay-6"
+                    class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 lg:justify-start reveal-item reveal-item-delay-6"
                 >
-                    <div class="badge badge-primary badge-lg font-mono shadow-lg hover:scale-110 transition-transform cursor-default glow">
+                    <div class="badge badge-primary badge-md sm:badge-lg font-mono shadow-lg hover:scale-110 transition-transform cursor-default glow">
                         TypeScript Expert
                     </div>
-                    <div class="badge badge-secondary badge-lg font-mono shadow-lg hover:scale-110 transition-transform cursor-default">
+                    <div class="badge badge-secondary badge-md sm:badge-lg font-mono shadow-lg hover:scale-110 transition-transform cursor-default">
                         GCP Architect
                     </div>
-                    <div class="badge badge-accent badge-lg font-mono shadow-lg hover:scale-110 transition-transform cursor-default">
+                    <div class="badge badge-accent badge-md sm:badge-lg font-mono shadow-lg hover:scale-110 transition-transform cursor-default">
                         IoT Specialist
                     </div>
-                    <div class="badge badge-info badge-lg font-mono shadow-lg hover:scale-110 transition-transform cursor-default">DevOps Engineer</div>
+                    <div class="badge badge-info badge-md sm:badge-lg font-mono shadow-lg hover:scale-110 transition-transform cursor-default">DevOps Engineer</div>
                 </div>
 
                 <!-- Enhanced CTA Buttons -->
@@ -138,7 +138,7 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
 
                 <!-- Enhanced Stats Section with Glass Effect -->
                 <div
-                    class="stats stats-vertical sm:stats-horizontal shadow-2xl mt-12 glass text-base-content w-full sm:w-auto reveal-item reveal-item-delay-8 border border-primary/20"
+                    class="stats stats-vertical sm:stats-horizontal shadow-2xl mt-6 sm:mt-8 lg:mt-12 glass text-base-content w-full sm:w-auto reveal-item reveal-item-delay-8 border border-primary/20"
                 >
                     <div class="stat place-items-center sm:place-items-start hover:bg-primary/5 transition-colors">
                         <div class="stat-figure text-primary">
@@ -226,7 +226,7 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
                                         ? "noopener noreferrer"
                                         : undefined
                                 }
-                                class={`btn btn-ghost btn-sm gap-2 glass border border-base-content/10 hover:border-primary hover:bg-primary/10 transition-all duration-300 hover:scale-110 font-mono reveal-item reveal-item-delay-${index + 1}`}
+                                class={`btn btn-ghost h-11 min-h-11 gap-2 glass border border-base-content/10 hover:border-primary hover:bg-primary/10 transition-all duration-300 hover:scale-110 font-mono text-sm reveal-item reveal-item-delay-${index + 1}`}
                                 aria-label={link.ariaLabel}
                             >
                                 <Fragment

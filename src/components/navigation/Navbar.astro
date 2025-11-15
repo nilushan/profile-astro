@@ -16,7 +16,7 @@ const navSocialLinks = socialLinks.filter(link => ['github', 'linkedin'].include
 ---
 
 <div
-  class="navbar bg-base-100 fixed top-0 z-50 shadow-sm border-b border-base-content/10 h-20 min-h-20 items-center w-full max-w-full px-2 sm:px-4"
+  class="navbar bg-base-100 fixed top-0 z-50 shadow-sm border-b border-base-content/10 h-16 sm:h-20 min-h-16 sm:min-h-20 items-center w-full max-w-full px-2 sm:px-4"
 >
   <div class="navbar-start items-center">
     <!-- Mobile menu -->
@@ -214,7 +214,7 @@ const navSocialLinks = socialLinks.filter(link => ['github', 'linkedin'].include
         href={link.url}
         target={link.external ? "_blank" : undefined}
         rel={link.external ? "noopener noreferrer" : undefined}
-        class={`btn btn-ghost btn-circle btn-sm text-base-content hover:text-primary hover:bg-primary/10 ${index > 0 ? 'hidden sm:flex' : ''}`}
+        class={`btn btn-ghost btn-circle h-12 w-12 min-h-12 min-w-12 text-base-content hover:text-primary hover:bg-primary/10 ${index > 0 ? 'hidden sm:flex' : ''}`}
         aria-label={link.ariaLabel}
       >
         <Fragment set:html={getSocialIcon(link.platform)} />

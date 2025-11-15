@@ -1,8 +1,8 @@
 # Portfolio Site Improvement Roadmap
 
 > **Last Updated:** 2025-11-15
-> **Status:** Stage 2 completed ✅ (Add Visual Variety Per Page) - 100% complete
-> **Next Focus:** Stage 3 - Break Card Dependency
+> **Status:** Stage 6 in progress ⏱️ (Mobile Optimization) - 40% complete
+> **Next Focus:** Complete Stage 6 mobile optimization for all pages
 
 ---
 
@@ -13,11 +13,14 @@
 - [x] **Skills Page Enhancement** - New header design, streamlined cloud platforms
 - [x] **Hero Background Fix** - Fixed background coverage on skills page
 - [x] **Cloud Cards Fix** - Uniform card heights, removed weird backgrounds
-- [x] **Section Labels Consolidated** - 4 different label styles across pages
-- [x] **CTA Variations** - 3 CTA variants (minimal, standard, bold) implemented
-- [x] **Hero Header Variety** - Different hero heights (compact, standard, tall)
-- [x] **Hero Header Balance** - Fixed alignment and centering issues across all pages
-- [x] **Minimal CTA Enhancement** - Improved minimal variant with borders, icons, and animations
+- [x] **Stage 1 Complete** - Section labels, CTA variations, hero header variety
+- [x] **Stage 2 Complete** - All 6 pages with unique visual personalities
+  - Home: Animated counters, visual separators
+  - Projects: Masonry layout, technology filtering
+  - Experience: Visual timeline, expandable sections
+  - Blog: Editorial style, reading time, category filtering
+  - About: Journey timeline, fun facts, emojis
+  - Contact: Simplified contacts, visual FAQ cards
 
 ### 📈 Progress Overview
 - **Design System:** 85% complete (+15%)
