@@ -31,7 +31,7 @@ const displayedProjects = showAll ? projects : projects.slice(0, maxProjects);
 
 
 // Function to get project icon based on technologies
-const getProjectIcon = (technologies: string[], index: number) => {
+const getProjectIcon = (technologies: string[]) => {
   if (technologies?.some(tech => tech.toLowerCase().includes('iot') || tech.toLowerCase().includes('mqtt'))) {
     return 'iot';
   }
@@ -70,9 +70,12 @@ const statusColors = {
   ${layout === 'list' ? 'space-y-8' : ''}
   ${layout === 'horizontal' ? 'flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scroll-smooth scrollbar-hide' : ''}
 `}>
-  {displayedProjects.map((project, index) => (
-    <div class={`
-      card bg-base-100 shadow-2xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 group relative overflow-hidden border border-base-content/5 hover:border-primary/20 glass
+  {displayedProjects.map((project) => (
+    <div
+      data-project-card
+      data-technologies={project.data.technologies?.join(',')}
+      class={`
+      card bg-base-100 shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 group relative overflow-hidden border border-base-content/5 hover:border-primary/20 glass
       ${project.data.type === 'featured' ? 'ring-2 ring-primary/30 ring-offset-2 ring-offset-base-100' : ''}
       ${layout === 'masonry' ? 'break-inside-avoid mb-8' : ''}
       ${layout === 'list' ? 'lg:card-side' : ''}
@@ -94,7 +97,7 @@ const statusColors = {
         ) : (
           <div class={`w-full bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-secondary/30 transition-all ${layout === 'list' ? 'h-48 lg:h-full' : 'h-48'}`}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="h-16 w-16 text-primary">
-              <path set:html={iconPaths[getProjectIcon(project.data.technologies, index)]} />
+              <path set:html={iconPaths[getProjectIcon(project.data.technologies)]} />
             </svg>
           </div>
         )}
@@ -110,8 +113,21 @@ const statusColors = {
             </div>
           </div>
         )}
+        <!-- Hover Overlay with Quick Info -->
+        <div class="absolute inset-0 bg-gradient-to-t from-base-300/95 via-base-300/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6 z-10">
+          <div class="text-center space-y-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+            <p class="font-mono text-sm text-primary">
+              {project.data.technologies?.slice(0, 3).join(' • ')}
+            </p>
+            {project.data.achievements && project.data.achievements.length > 0 && (
+              <p class="text-sm text-base-content/80">
+                {project.data.achievements[0]}
+              </p>
+            )}
+          </div>
+        </div>
       </figure>
-      
+
       <div class="card-body relative z-10">
         <!-- Enhanced Header -->
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">

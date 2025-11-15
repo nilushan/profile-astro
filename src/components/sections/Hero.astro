@@ -4,6 +4,7 @@ import {
     generateSocialLinksWithMetadata,
     getSocialIcon,
 } from "@/lib/social-links";
+import CountUp from "@/components/interactive/CountUp";
 
 const { personal } = portfolioData;
 
@@ -71,7 +72,7 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
                 </div>
 
                 <h1
-                    class="text-4xl sm:text-5xl lg:text-7xl font-display font-bold text-base-content reveal-item reveal-item-delay-3 leading-tight mb-6"
+                    class="text-4xl sm:text-6xl lg:text-8xl xl:text-9xl font-display font-bold text-base-content reveal-item reveal-item-delay-3 leading-tight mb-6"
                 >
                     {personal.title}
                 </h1>
@@ -162,7 +163,7 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
                         <div
                             class="stat-value text-4xl lg:text-5xl font-display gradient-text"
                         >
-                            {personal.yearsExperience}+
+                            <CountUp client:visible end={personal.yearsExperience} suffix="+" />
                         </div>
                         <div class="stat-desc text-base-content/60 font-mono text-sm">
                             Years in Tech
@@ -203,7 +204,7 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
                         <div
                             class="stat-value text-4xl lg:text-5xl font-display text-accent"
                         >
-                            25+
+                            <CountUp client:visible end={25} suffix="+" />
                         </div>
                         <div class="stat-desc text-base-content/60 font-mono text-sm">
                             In Production
