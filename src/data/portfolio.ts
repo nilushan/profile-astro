@@ -300,6 +300,101 @@ export const portfolioData: PortfolioData = {
   certifications: [],
 
   currentLearning: "Currently studying AWS architecture and services with the aim of obtaining certification",
+
+  cta: {
+    label: "Let's Collaborate",
+    title: "Ready to Build Something Amazing?",
+    description: "I'm always interested in hearing about new projects, opportunities, and collaborations. Let's turn your ideas into reality.",
+    primaryButton: {
+      text: "Get in Touch",
+      href: "/contact",
+    },
+    secondaryButton: {
+      text: "View All Projects",
+      href: "/projects",
+    },
+  },
+
+  ctas: {
+    home: {
+      label: "Discover More",
+      title: "Want to Know More About Me?",
+      description: "Explore my journey, skills, and the projects I've built over 15+ years of software development. Let's start with my story.",
+      primaryButton: {
+        text: "About Me",
+        href: "/about",
+      },
+      secondaryButton: {
+        text: "View My Work",
+        href: "/projects",
+      },
+    },
+    about: {
+      label: "Explore Skills",
+      title: "Curious About What I Can Do?",
+      description: "Discover my comprehensive technical skill set spanning full-stack development, cloud architecture, and modern development practices.",
+      primaryButton: {
+        text: "Explore My Skills",
+        href: "/skills",
+      },
+      secondaryButton: {
+        text: "View Projects",
+        href: "/projects",
+      },
+    },
+    skills: {
+      label: "See Experience",
+      title: "Where Have I Applied These Skills?",
+      description: "Explore my professional journey and see how I've used these technologies to deliver impactful solutions across different industries.",
+      primaryButton: {
+        text: "View My Experience",
+        href: "/experience",
+      },
+      secondaryButton: {
+        text: "See Projects",
+        href: "/projects",
+      },
+    },
+    experience: {
+      label: "Explore Projects",
+      title: "Ready to See the Results?",
+      description: "From IoT platforms handling 55,000+ devices to cloud migrations with zero downtime - explore the projects that showcase my expertise in action.",
+      primaryButton: {
+        text: "View My Projects",
+        href: "/projects",
+      },
+      secondaryButton: {
+        text: "Read My Blog",
+        href: "/blog",
+      },
+    },
+    projects: {
+      label: "Read Insights",
+      title: "Want to Learn From My Experience?",
+      description: "Dive into technical articles and insights on full-stack development, cloud architecture, and software engineering best practices.",
+      primaryButton: {
+        text: "Read My Blog",
+        href: "/blog",
+      },
+      secondaryButton: {
+        text: "View on GitHub",
+        href: `https://github.com/nilushan`,
+      },
+    },
+    blog: {
+      label: "Let's Connect",
+      title: "Ready to Work Together?",
+      description: "I'm always interested in new opportunities, collaborations, and meaningful conversations about technology. Let's connect!",
+      primaryButton: {
+        text: "Get in Touch",
+        href: "/contact",
+      },
+      secondaryButton: {
+        text: "Follow on LinkedIn",
+        href: `https://linkedin.com/in/nilushan-silva-27235310`,
+      },
+    },
+  },
 };
 
 // Theme configurations

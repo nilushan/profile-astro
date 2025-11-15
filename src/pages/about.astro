@@ -2,7 +2,8 @@
 import Layout from '@/layouts/Layout.astro'
 import { portfolioData } from '@/data/portfolio'
 
-const { personal, education, interests, currentLearning } = portfolioData
+const { personal, education, interests, currentLearning, ctas } = portfolioData
+const cta = ctas.about
 const startYear = 2008
 const currentYear = new Date().getFullYear()
 const yearsExperience = currentYear - startYear
@@ -10,13 +11,23 @@ const yearsExperience = currentYear - startYear
 
 <Layout title={`About ${personal.name}`} description="Learn more about my background, journey, and interests in software development and cloud engineering.">
   <!-- Page Header -->
-  <section class="hero bg-gradient-to-r from-primary/10 to-secondary/10 py-20">
-    <div class="hero-content text-center">
+  <section class="hero relative overflow-hidden tech-grid py-20">
+    <!-- Animated gradient background -->
+    <div class="absolute inset-0 animated-gradient opacity-30"></div>
+
+    <div class="hero-content text-center relative z-10">
       <div class="max-w-3xl">
-        <h1 class="text-4xl lg:text-5xl font-bold mb-6 text-base-content">
-          About Me
+        <!-- Section label -->
+        <div class="inline-block mb-4">
+          <span class="font-mono text-sm text-secondary uppercase tracking-widest px-4 py-2 bg-secondary/10 rounded-full border border-secondary/20">
+            &lt; Profile /&gt;
+          </span>
+        </div>
+
+        <h1 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
+          About <span class="text-secondary">Me</span>
         </h1>
-        <p class="text-lg text-base-content/70">
+        <p class="text-lg lg:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
           Get to know more about my journey, background, and what drives me as a software engineer.
         </p>
       </div>
@@ -187,23 +198,52 @@ const yearsExperience = currentYear - startYear
         </div>
 
         <!-- Contact CTA -->
-        <div class="text-center mt-12">
-          <div class="card bg-gradient-to-r from-primary to-secondary text-primary-content shadow-xl">
-            <div class="card-body">
-              <h3 class="text-2xl font-bold mb-4">Let's Connect</h3>
-              <p class="text-lg mb-6 opacity-90">
-                I'm always interested in discussing new opportunities, sharing knowledge, or collaborating on interesting projects.
-              </p>
-              <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/contact" class="btn btn-accent">
-                  Get In Touch
-                </a>
-                <a href="/projects" class="btn btn-outline text-primary-content border-primary-content hover:bg-primary-content hover:text-primary">
-                  View My Work
-                </a>
+        <div class="mt-12">
+          <section class="py-24 lg:py-32 relative overflow-hidden rounded-3xl">
+            <!-- Animated gradient background -->
+            <div class="absolute inset-0 animated-gradient opacity-20"></div>
+            <!-- Tech grid overlay -->
+            <div class="absolute inset-0 tech-grid opacity-30"></div>
+
+            <div class="relative z-10">
+              <div class="max-w-4xl mx-auto text-center px-4">
+                <!-- Section label -->
+                <div class="inline-block mb-6">
+                  <span class="font-mono text-sm text-primary uppercase tracking-widest px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
+                    &lt; {cta.label} /&gt;
+                  </span>
+                </div>
+
+                <h2 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
+                  {cta.title.split(' ').slice(0, -1).join(' ')} <span class="text-primary">{cta.title.split(' ').slice(-1)}</span>
+                </h2>
+
+                <p class="text-lg lg:text-2xl text-base-content/80 mb-12 leading-relaxed max-w-3xl mx-auto">
+                  {cta.description}
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                  <a href={cta.primaryButton.href} class="btn btn-primary btn-lg font-display shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 glow-hover group">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 mr-2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                    </svg>
+                    <span>{cta.primaryButton.text}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </a>
+
+                  <a href={cta.secondaryButton.href} class="btn btn-outline btn-lg font-display shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group border-2">
+                    <span>{cta.secondaryButton.text}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
+          </section>
         </div>
     </div>
   </section>
