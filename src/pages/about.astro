@@ -8,152 +8,156 @@ const cta = ctas.about
 const startYear = 2008
 const currentYear = new Date().getFullYear()
 const yearsExperience = currentYear - startYear
+
+// Journey milestones
+const journeyMilestones = [
+  { year: '2008', title: 'Started Journey', description: 'Began studying Computer Science at University of Colombo', icon: 'graduation' },
+  { year: '2010', title: 'First Role', description: 'Started professional career in software development', icon: 'code' },
+  { year: '2015', title: 'Cloud Era', description: 'Specialized in cloud architecture and DevOps', icon: 'cloud' },
+  { year: '2020', title: 'IoT Focus', description: 'Led large-scale IoT platform development', icon: 'devices' },
+  { year: currentYear.toString(), title: 'Current', description: 'Building scalable systems at scale', icon: 'rocket' }
+]
+
+// Personal facts
+const funFacts = [
+  { icon: 'location', label: 'Based in', value: personal.location },
+  { icon: 'code', label: 'Years Coding', value: `${yearsExperience}+` },
+  { icon: 'coffee', label: 'Favorite Fuel', value: 'Coffee ☕' },
+  { icon: 'time', label: 'Timezone', value: 'AEST (GMT+10)' }
+]
 ---
 
 <Layout title={`About ${personal.name}`} description="Learn more about my background, journey, and interests in software development and cloud engineering.">
-  <!-- Page Header - Compact -->
-  <section class="hero min-h-[400px] relative overflow-hidden tech-grid">
-    <!-- Animated gradient background -->
-    <div class="absolute inset-0 animated-gradient opacity-30"></div>
+  <!-- Hero Section with Personal Touch -->
+  <section class="hero min-h-[500px] relative overflow-hidden">
+    <!-- Animated background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10"></div>
+    <div class="absolute inset-0 tech-grid opacity-30"></div>
 
     <div class="hero-content text-center relative z-10 w-full py-20">
-      <div class="max-w-3xl mx-auto">
-        <!-- Section label -->
-        <p class="font-mono text-xs text-secondary uppercase tracking-wider mb-4">Profile</p>
+      <div class="max-w-4xl mx-auto">
+        <!-- Avatar -->
+        <div class="avatar placeholder mb-8">
+          <div class="bg-gradient-to-br from-primary to-secondary text-primary-content w-32 h-32 rounded-3xl ring-4 ring-primary/30 ring-offset-base-100 ring-offset-4 shadow-2xl">
+            <span class="text-4xl">{personal.name.split(' ').map(n => n[0]).join('')}</span>
+          </div>
+        </div>
 
-        <h1 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
-          About <span class="text-secondary">Me</span>
+        <h1 class="text-5xl lg:text-7xl font-display font-bold mb-6 text-base-content leading-tight">
+          About <span class="text-primary">Me</span>
         </h1>
-        <p class="text-lg lg:text-xl text-base-content/70 leading-relaxed">
-          Get to know more about my journey, background, and what drives me as a software engineer.
+        <p class="text-xl lg:text-2xl text-base-content/80 leading-relaxed max-w-3xl mx-auto">
+          {personal.tagline || "Building scalable systems and crafting digital experiences that make a difference."}
         </p>
+
+        <!-- Fun Facts Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-2xl mx-auto">
+          {funFacts.map(fact => (
+            <div class="card bg-base-100/80 backdrop-blur-sm shadow-lg border border-base-content/10">
+              <div class="card-body p-4 text-center">
+                <p class="text-xs text-base-content/60 uppercase tracking-wider mb-1">{fact.label}</p>
+                <p class="font-bold text-base-content">{fact.value}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- About Content -->
+  <!-- Main Content -->
   <section class="py-16 lg:py-24">
-    <div class="container mx-auto px-4">
-        <!-- Introduction -->
-        <div class="card bg-base-100 shadow-xl mb-12">
+    <div class="container mx-auto px-4 max-w-6xl">
+      <!-- Introduction -->
+      <div class="prose lg:prose-xl max-w-none mb-16">
+        <div class="card bg-base-100 shadow-xl">
           <div class="card-body">
-            <div class="flex flex-col lg:flex-row gap-8 items-start">
-              <div class="flex-shrink-0">
-                <div class="avatar placeholder">
-                  <div class="bg-primary text-primary-content w-32 h-32 rounded-full">
-                    <span class="text-3xl items-center justify-around flex h-full w-full">{personal.name.split(' ').map(n => n[0]).join('')}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="flex-1">
-                <h2 class="text-2xl font-bold mb-4 text-base-content">
-                  Hello, I'm {personal.name}
-                </h2>
-                <p class="text-lg text-base-content/80 leading-relaxed mb-6">
-                  {personal.summary}
-                </p>
-                <div class="stats stats-vertical lg:stats-horizontal shadow">
-                  <div class="stat">
-                    <div class="stat-title">Years of Experience</div>
-                    <div class="stat-value text-primary">{yearsExperience}+</div>
-                    <div class="stat-desc">Since {startYear}</div>
-                  </div>
-                  <div class="stat">
-                    <div class="stat-title">Location</div>
-                    <div class="stat-value text-secondary text-lg">QLD</div>
-                    <div class="stat-desc">{personal.location}</div>
-                  </div>
-                  <div class="stat">
-                    <div class="stat-title">Focus Areas</div>
-                    <div class="stat-value text-accent text-lg">Full Stack</div>
-                    <div class="stat-desc">& Cloud Engineering</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <h2 class="text-3xl font-display font-bold text-base-content mb-6">
+              Hello, I'm {personal.name} 👋
+            </h2>
+            <p class="text-lg text-base-content/80 leading-relaxed">
+              {personal.summary}
+            </p>
           </div>
         </div>
+      </div>
 
-        <!-- Professional Journey -->
-        <div class="grid lg:grid-cols-2 gap-8 mb-12">
-          <div class="card bg-gradient-to-br from-primary/5 to-transparent shadow-lg">
-            <div class="card-body">
-              <h3 class="card-title text-xl mb-4 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-primary">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
-                </svg>
-                My Journey
-              </h3>
-              <p class="text-base text-base-content/80 leading-relaxed">
-                My journey in technology began during my computer science studies at the University of Colombo. 
-                What started as curiosity about how software works has evolved into a passion for building 
-                scalable, robust systems that solve real-world problems. Over the years, I've had the privilege 
-                of working on everything from military simulation software to large-scale IoT platforms serving 
-                tens of thousands of devices.
-              </p>
-            </div>
-          </div>
+      <!-- Journey Timeline -->
+      <div class="mb-16">
+        <h2 class="text-3xl font-display font-bold text-center mb-12">
+          My <span class="text-secondary">Journey</span>
+        </h2>
 
-          <div class="card bg-gradient-to-br from-secondary/5 to-transparent shadow-lg">
-            <div class="card-body">
-              <h3 class="card-title text-xl mb-4 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-secondary">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189 6.01 6.01 0 001.041-.297 4.5 4.5 0 00.75-.602.375.375 0 00.093-.267.375.375 0 00-.093-.267c-.089-.072-.357-.279-.75-.602a6.01 6.01 0 00-1.041-.297A6.01 6.01 0 0012 10.5a6.01 6.01 0 00-1.5-.189 6.01 6.01 0 00-1.041.297c-.393.323-.661.53-.75.602a.375.375 0 00-.093.267c0 .102.026.17.056.217.022.035.063.084.118.138a4.75 4.75 0 00.576.464c.328.22.694.406 1.089.567A6.01 6.01 0 0012 12.75zM12 12.75a6.01 6.01 0 001.5.189 6.01 6.01 0 001.041-.297 4.5 4.5 0 00.75-.602.375.375 0 00.093-.267c0-.102-.026-.17-.056-.217a.378.378 0 00-.118-.138 4.75 4.75 0 00-.576-.464A6.01 6.01 0 0012.75 11c-.394.161-.76.347-1.089.567a4.75 4.75 0 00-.576.464.378.378 0 00-.118.138.375.375 0 00-.056.217.375.375 0 00.093.267c.089.072.357.279.75.602.324.267.69.499 1.041.297A6.01 6.01 0 0012 12.75z" />
-                </svg>
-                What Drives Me
-              </h3>
-              <p class="text-base text-base-content/80 leading-relaxed">
-                I'm passionate about creating technology that makes a difference. Whether it's optimizing 
-                cloud infrastructure to reduce costs by 50%, building real-time systems that handle thousands 
-                of concurrent users, or designing intuitive interfaces that delight users, I'm driven by the 
-                impact of well-crafted software. I believe in continuous learning and staying at the forefront 
-                of technology trends.
-              </p>
-            </div>
+        <!-- Timeline -->
+        <div class="relative">
+          <!-- Timeline line -->
+          <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary via-secondary to-accent hidden md:block"></div>
+
+          <div class="space-y-12">
+            {journeyMilestones.map((milestone, index) => {
+              const isEven = index % 2 === 0
+              return (
+                <div class={`flex items-center gap-8 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                  <!-- Content -->
+                  <div class={`flex-1 ${isEven ? 'md:text-right' : 'md:text-left'}`}>
+                    <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+                      <div class="card-body">
+                        <div class="badge badge-primary mb-2">{milestone.year}</div>
+                        <h3 class="text-xl font-bold text-base-content">{milestone.title}</h3>
+                        <p class="text-base-content/70">{milestone.description}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Timeline node -->
+                  <div class="flex-shrink-0 relative z-10">
+                    <div class="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-xl border-4 border-base-100">
+                      <span class="text-2xl">
+                        {milestone.icon === 'graduation' && '🎓'}
+                        {milestone.icon === 'code' && '💻'}
+                        {milestone.icon === 'cloud' && '☁️'}
+                        {milestone.icon === 'devices' && '📱'}
+                        {milestone.icon === 'rocket' && '🚀'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Spacer for alignment -->
+                  <div class="flex-1 hidden md:block"></div>
+                </div>
+              )
+            })}
           </div>
         </div>
+      </div>
 
-        <!-- Education -->
-        <div class="card bg-base-100 shadow-xl mb-12">
+      <!-- What Drives Me -->
+      <div class="grid md:grid-cols-2 gap-8 mb-16">
+        <div class="card bg-gradient-to-br from-primary/10 to-transparent shadow-xl">
           <div class="card-body">
-            <h3 class="card-title text-2xl mb-6 flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-7 w-7 text-primary">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+            <h3 class="card-title text-2xl mb-4">
+              <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
               </svg>
-              Education
+              What Drives Me
             </h3>
-            <div class="flex flex-col lg:flex-row gap-6 items-start">
-              <div class="flex-shrink-0">
-                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8 text-primary">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                  </svg>
-                </div>
-              </div>
-              <div class="flex-1">
-                <h4 class="text-xl font-semibold mb-2">{education.degree}</h4>
-                <p class="text-base-content/70 mb-2">{education.institution}, {education.location}</p>
-                <div class="badge badge-primary">{education.period}</div>
-                <p class="text-base text-base-content/80 mt-4">
-                  My computer science education provided me with a strong foundation in algorithms, data structures, 
-                  software engineering principles, and system design. This academic background, combined with hands-on 
-                  project experience, prepared me well for the challenges of real-world software development.
-                </p>
-              </div>
-            </div>
+            <p class="text-base-content/80 leading-relaxed">
+              I'm passionate about creating technology that makes a real difference. Whether it's optimizing cloud infrastructure, building real-time systems, or designing intuitive interfaces, I'm driven by the impact of well-crafted software.
+            </p>
           </div>
         </div>
 
-        <!-- Current Learning -->
-        <div class="card bg-gradient-to-br from-accent/10 to-transparent shadow-lg mb-12">
+        <div class="card bg-gradient-to-br from-secondary/10 to-transparent shadow-xl">
           <div class="card-body">
-            <h3 class="card-title text-xl mb-4 flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-accent">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+            <h3 class="card-title text-2xl mb-4">
+              <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
               </svg>
               Continuous Learning
             </h3>
-            <p class="text-base text-base-content/80 mb-4">{currentLearning}</p>
+            <p class="text-base-content/80 leading-relaxed mb-4">
+              {currentLearning}
+            </p>
             <div class="flex flex-wrap gap-2">
               <div class="badge badge-outline">AWS Architecture</div>
               <div class="badge badge-outline">Cloud Certifications</div>
@@ -161,43 +165,67 @@ const yearsExperience = currentYear - startYear
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Interests -->
-        <div class="card bg-base-100 shadow-xl">
-          <div class="card-body">
-            <h3 class="card-title text-2xl mb-6 flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-7 w-7 text-primary">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.847a4.5 4.5 0 003.09 3.09L15.75 12l-2.847.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-              </svg>
-              Professional Interests & Expertise
-            </h3>
-            <div class="grid lg:grid-cols-2 gap-6">
-              {interests.map((interest) => (
-                <div class="card bg-gradient-to-br from-base-200 to-transparent">
-                  <div class="card-body">
-                    <h4 class="text-lg font-semibold mb-2 text-primary">{interest.title}</h4>
-                    <p class="text-base-content/80 text-base mb-3">{interest.description}</p>
-                    {interest.items && (
-                      <ul class="space-y-2">
-                        {interest.items.map((item) => (
-                          <li class="flex items-start gap-2 text-base">
-                            <div class="w-1 h-1 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                            <span class="text-base-content/70">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
+      <!-- Interests - Visual Cards -->
+      <div class="mb-16">
+        <h2 class="text-3xl font-display font-bold text-center mb-12">
+          Professional <span class="text-accent">Interests</span>
+        </h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {interests.map((interest, index) => {
+            const icons = ['🎯', '☁️', '📱', '⚡', '🔒', '🚀']
+            return (
+              <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-base-content/5">
+                <div class="card-body">
+                  <div class="text-4xl mb-4">{icons[index % icons.length]}</div>
+                  <h3 class="card-title text-xl text-primary mb-3">{interest.title}</h3>
+                  <p class="text-base-content/70 text-sm mb-4">{interest.description}</p>
+                  {interest.items && interest.items.length > 0 && (
+                    <div class="flex flex-wrap gap-1">
+                      {interest.items.slice(0, 3).map(item => (
+                        <div class="badge badge-sm badge-outline">{item}</div>
+                      ))}
+                      {interest.items.length > 3 && (
+                        <div class="badge badge-sm badge-ghost">+{interest.items.length - 3}</div>
+                      )}
+                    </div>
+                  )}
                 </div>
-              ))}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="card bg-gradient-to-br from-primary/5 to-secondary/5 shadow-xl mb-16">
+        <div class="card-body">
+          <div class="flex flex-col md:flex-row gap-6 items-start">
+            <div class="flex-shrink-0">
+              <div class="w-20 h-20 bg-primary/20 rounded-2xl flex items-center justify-center">
+                <span class="text-4xl">🎓</span>
+              </div>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-2xl font-bold text-base-content mb-2">{education.degree}</h3>
+              <p class="text-base-content/70 text-lg mb-3">{education.institution}</p>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <div class="badge badge-primary">{education.period}</div>
+                <div class="badge badge-outline">{education.location}</div>
+              </div>
+              <p class="text-base-content/80 leading-relaxed">
+                Strong foundation in algorithms, data structures, software engineering principles, and system design that continues to guide my approach to building robust, scalable systems.
+              </p>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Contact CTA -->
-        <div class="mt-12">
-          <CallToAction cta={cta} variant="minimal" />
-        </div>
+      <!-- CTA -->
+      <div class="text-center">
+        <CallToAction cta={cta} variant="minimal" />
+      </div>
     </div>
   </section>
 </Layout>
