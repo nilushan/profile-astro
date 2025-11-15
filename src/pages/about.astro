@@ -176,16 +176,33 @@ const funFacts = [
           {interests.map((interest, index) => {
             const icons = ['🎯', '☁️', '📱', '⚡', '🔒', '🚀']
             return (
-              <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-base-content/5">
-                <div class="card-body">
-                  <div class="text-4xl mb-4">{icons[index % icons.length]}</div>
-                  <h3 class="card-title text-xl text-primary mb-3">{interest.title}</h3>
-                  <p class="text-base-content/70 text-sm mb-4">{interest.description}</p>
-                  {interest.items && interest.items.length > 0 && (
+              <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-base-content/5 flex flex-col min-h-[350px]">
+                <div class="card-body flex flex-col justify-between">
+                  <div>
+                    <div class="text-4xl mb-4">{icons[index % icons.length]}</div>
+                    <h3 class="card-title text-xl text-primary mb-3">{interest.title}</h3>
+                    {interest.description ? (
+                      <p class="text-base-content/70 text-sm mb-4 leading-relaxed">{interest.description}</p>
+                    ) : interest.items && interest.items.length > 0 ? (
+                      <ul class="space-y-2 mb-4">
+                        {interest.items.map(item => (
+                          <li class="text-base-content/70 text-sm flex items-start gap-2">
+                            <span class="text-primary mt-0.5">•</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+                  {interest.description && interest.items && interest.items.length > 0 && (
                     <div class="flex flex-wrap gap-1">
-                      {interest.items.slice(0, 3).map(item => (
-                        <div class="badge badge-sm badge-outline">{item}</div>
-                      ))}
+                      {interest.items.slice(0, 3).map(item => {
+                        // Extract just the technology name (before the colon if present)
+                        const displayName = item.includes(':') ? item.split(':')[0].trim() : item;
+                        return (
+                          <div class="badge badge-sm badge-outline" title={item}>{displayName}</div>
+                        );
+                      })}
                       {interest.items.length > 3 && (
                         <div class="badge badge-sm badge-ghost">+{interest.items.length - 3}</div>
                       )}
