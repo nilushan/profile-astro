@@ -10,32 +10,32 @@ const cta = ctas.skills
 
 <Layout title="Skills - Nilushan Silva" description="Explore my comprehensive technical skill set including programming languages, frameworks, cloud platforms, and development tools.">
   <!-- Page Header - Bold, Distinctive Design -->
-  <section class="hero min-h-[600px] relative overflow-hidden bg-base-100">
+  <section class="hero min-h-[450px] sm:min-h-[550px] lg:min-h-[600px] relative overflow-hidden bg-base-100">
     <!-- Dynamic tech grid background -->
     <div class="absolute inset-0 tech-grid opacity-40"></div>
     <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"></div>
 
     <!-- Geometric accent shapes -->
-    <div class="absolute top-20 right-10 w-32 h-32 border-2 border-primary/20 rotate-12 rounded-3xl"></div>
-    <div class="absolute bottom-20 left-10 w-24 h-24 bg-secondary/10 -rotate-12 rounded-2xl"></div>
+    <div class="absolute top-20 right-10 w-32 h-32 border-2 border-primary/20 rotate-12 rounded-3xl hidden sm:block"></div>
+    <div class="absolute bottom-20 left-10 w-24 h-24 bg-secondary/10 -rotate-12 rounded-2xl hidden sm:block"></div>
 
-    <div class="hero-content text-center relative z-10 py-20 lg:py-32">
+    <div class="hero-content text-center relative z-10 py-12 sm:py-16 lg:py-20 xl:py-32">
       <div class="max-w-4xl">
         <!-- Overline with different style -->
-        <div class="flex items-center gap-3 mb-6 justify-center">
-          <div class="h-px w-12 bg-gradient-to-r from-transparent to-primary"></div>
+        <div class="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 justify-center">
+          <div class="h-px w-8 sm:w-12 bg-gradient-to-r from-transparent to-primary"></div>
           <span class="font-mono text-xs text-primary uppercase tracking-[0.2em] font-semibold">
             Tech Stack
           </span>
-          <div class="h-px w-12 bg-gradient-to-l from-transparent to-primary"></div>
+          <div class="h-px w-8 sm:w-12 bg-gradient-to-l from-transparent to-primary"></div>
         </div>
 
-        <h1 class="text-5xl sm:text-6xl lg:text-8xl font-display font-bold mb-8 text-base-content text-center leading-none">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-display font-bold mb-6 sm:mb-8 text-base-content text-center leading-none">
           Skills &
-          <span class="block text-primary mt-2">Expertise</span>
+          <span class="block text-primary mt-1 sm:mt-2">Expertise</span>
         </h1>
 
-        <p class="text-lg lg:text-2xl text-base-content/60 max-w-2xl mx-auto text-center leading-relaxed font-light">
+        <p class="text-base sm:text-lg lg:text-2xl text-base-content/60 max-w-2xl mx-auto text-center leading-relaxed font-light">
           {skillCategories.reduce((total, cat) => total + cat.skills.length, 0)}+ technologies mastered across {skillCategories.length} domains
         </p>
       </div>

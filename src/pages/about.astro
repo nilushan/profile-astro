@@ -29,29 +29,29 @@ const funFacts = [
 
 <Layout title={`About ${personal.name}`} description="Learn more about my background, journey, and interests in software development and cloud engineering.">
   <!-- Hero Section with Personal Touch -->
-  <section class="hero min-h-[500px] relative overflow-hidden">
+  <section class="hero min-h-[400px] sm:min-h-[500px] relative overflow-hidden">
     <!-- Animated background -->
     <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10"></div>
     <div class="absolute inset-0 tech-grid opacity-30"></div>
 
-    <div class="hero-content text-center relative z-10 w-full py-20">
+    <div class="hero-content text-center relative z-10 w-full py-12 sm:py-16 lg:py-20">
       <div class="max-w-4xl mx-auto">
         <!-- Avatar -->
-        <div class="avatar placeholder mb-8">
-          <div class="bg-gradient-to-br from-primary to-secondary text-primary-content w-32 h-32 rounded-3xl ring-4 ring-primary/30 ring-offset-base-100 ring-offset-4 shadow-2xl">
-            <span class="text-4xl">{personal.name.split(' ').map(n => n[0]).join('')}</span>
+        <div class="avatar placeholder mb-6 sm:mb-8">
+          <div class="bg-gradient-to-br from-primary to-secondary text-primary-content w-24 h-24 sm:w-32 sm:h-32 rounded-3xl ring-4 ring-primary/30 ring-offset-base-100 ring-offset-4 shadow-2xl">
+            <span class="text-3xl sm:text-4xl">{personal.name.split(' ').map(n => n[0]).join('')}</span>
           </div>
         </div>
 
-        <h1 class="text-5xl lg:text-7xl font-display font-bold mb-6 text-base-content leading-tight">
+        <h1 class="text-4xl sm:text-5xl lg:text-7xl font-display font-bold mb-4 sm:mb-6 text-base-content leading-tight">
           About <span class="text-primary">Me</span>
         </h1>
-        <p class="text-xl lg:text-2xl text-base-content/80 leading-relaxed max-w-3xl mx-auto">
+        <p class="text-lg sm:text-xl lg:text-2xl text-base-content/80 leading-relaxed max-w-3xl mx-auto">
           {personal.tagline || "Building scalable systems and crafting digital experiences that make a difference."}
         </p>
 
         <!-- Fun Facts Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-2xl mx-auto">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-8 sm:mt-10 lg:mt-12 max-w-2xl mx-auto">
           {funFacts.map(fact => (
             <div class="card bg-base-100/80 backdrop-blur-sm shadow-lg border border-base-content/10">
               <div class="card-body p-4 text-center">
@@ -66,10 +66,10 @@ const funFacts = [
   </section>
 
   <!-- Main Content -->
-  <section class="py-16 lg:py-24">
+  <section class="py-12 sm:py-16 lg:py-24">
     <div class="container mx-auto px-4 max-w-6xl">
       <!-- Introduction -->
-      <div class="prose lg:prose-xl max-w-none mb-16">
+      <div class="prose lg:prose-xl max-w-none mb-10 sm:mb-12 lg:mb-16">
         <div class="card bg-base-100 shadow-xl">
           <div class="card-body">
             <h2 class="text-3xl font-display font-bold text-base-content mb-6">

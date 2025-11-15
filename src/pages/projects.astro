@@ -31,16 +31,16 @@ const technologies = Array.from(allTechnologies).sort()
 
 <Layout title="Projects - Nilushan Silva" description="Explore my portfolio of full-stack development and cloud engineering projects, featuring IoT platforms, voice control systems, and web applications.">
   <!-- Page Header - Tall -->
-  <section class="hero min-h-[500px] relative overflow-hidden tech-grid">
+  <section class="hero min-h-[400px] sm:min-h-[500px] relative overflow-hidden tech-grid">
     <!-- Animated gradient background -->
     <div class="absolute inset-0 animated-gradient opacity-30"></div>
 
-    <div class="hero-content text-center relative z-10 w-full py-24">
+    <div class="hero-content text-center relative z-10 w-full py-12 sm:py-16 lg:py-24">
       <div class="max-w-3xl mx-auto">
-        <h1 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
+        <h1 class="text-3xl sm:text-4xl lg:text-6xl font-display font-bold mb-4 sm:mb-6 text-base-content">
           Featured <span class="text-accent">Projects</span>
         </h1>
-        <p class="text-lg lg:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
+        <p class="text-base sm:text-lg lg:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
           A showcase of my most impactful work in full-stack development, cloud architecture, and IoT solutions.
         </p>
       </div>
@@ -48,15 +48,15 @@ const technologies = Array.from(allTechnologies).sort()
   </section>
 
   <!-- Projects Grid -->
-  <section class="py-16 lg:py-24">
+  <section class="py-12 sm:py-16 lg:py-24">
     <div class="container mx-auto px-4">
       <!-- Filter buttons -->
-      <div class="flex flex-wrap gap-2 justify-center mb-12">
-        <button class="btn btn-sm btn-primary filter-btn" data-filter="all">
+      <div class="flex flex-wrap gap-2 justify-center mb-8 sm:mb-10 lg:mb-12">
+        <button class="btn h-11 min-h-11 btn-primary filter-btn text-sm" data-filter="all">
           All Projects
         </button>
         {technologies.slice(0, 8).map(tech => (
-          <button class="btn btn-sm btn-outline filter-btn" data-filter={tech}>
+          <button class="btn h-11 min-h-11 btn-outline filter-btn text-sm" data-filter={tech}>
             {tech}
           </button>
         ))}

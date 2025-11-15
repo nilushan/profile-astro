@@ -10,11 +10,11 @@ const cta = ctas.experience
 
 <Layout title="Experience - Nilushan Silva" description="Explore my professional journey spanning 15+ years in software development, from junior developer to senior cloud engineer.">
   <!-- Page Header - Tall -->
-  <section class="hero min-h-[500px] relative overflow-hidden tech-grid">
+  <section class="hero min-h-[400px] sm:min-h-[500px] relative overflow-hidden tech-grid">
     <!-- Animated gradient background -->
     <div class="absolute inset-0 animated-gradient opacity-30"></div>
 
-    <div class="hero-content text-center relative z-10 w-full py-24">
+    <div class="hero-content text-center relative z-10 w-full py-12 sm:py-16 lg:py-24">
       <div class="max-w-3xl mx-auto">
         <!-- Section label -->
         <div class="flex items-center gap-2 mb-4 justify-center">
@@ -22,10 +22,10 @@ const cta = ctas.experience
           <span class="font-bold text-sm uppercase">Journey</span>
         </div>
 
-        <h1 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
+        <h1 class="text-3xl sm:text-4xl lg:text-6xl font-display font-bold mb-4 sm:mb-6 text-base-content">
           Professional <span class="text-secondary">Experience</span>
         </h1>
-        <p class="text-lg lg:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
+        <p class="text-base sm:text-lg lg:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
           My journey through the world of software development, cloud engineering, and technical leadership.
         </p>
       </div>
@@ -33,7 +33,7 @@ const cta = ctas.experience
   </section>
 
   <!-- Experience Timeline -->
-  <section class="py-16 lg:py-24">
+  <section class="py-12 sm:py-16 lg:py-24">
     <div class="container mx-auto px-4">
       <ExperienceTimeline 
         experiences={experience} 
