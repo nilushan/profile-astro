@@ -14,7 +14,9 @@ const {
     title = portfolioContent.personal.name +
         " - " +
         portfolioContent.personal.title,
-    description = portfolioContent.personal.summary,
+    description = Array.isArray(portfolioContent.personal.summary)
+        ? portfolioContent.personal.summary.join(' ')
+        : portfolioContent.personal.summary,
     image = "/og-image.png",
 } = Astro.props;
 
@@ -100,6 +102,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
 
         <!-- Structured Data for SEO -->
         <script
+            is:inline
             type="application/ld+json"
             set:html={JSON.stringify({
                 "@context": "https://schema.org",
@@ -110,8 +113,8 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
                 url: siteURL.href,
                 image: new URL("/og-image.png", siteURL).href,
                 sameAs: [
-                    `https://github.com/${portfolioContent.personal.social?.github || portfolioContent.personal.github}`,
-                    `https://linkedin.com/in/${portfolioContent.personal.social?.linkedin || portfolioContent.personal.linkedin}`,
+                    portfolioContent.personal.social?.github ? `https://github.com/${portfolioContent.personal.social.github}` : null,
+                    portfolioContent.personal.social?.linkedin ? `https://linkedin.com/in/${portfolioContent.personal.social.linkedin}` : null,
                 ].filter(Boolean),
                 knowsAbout: [
                     "TypeScript",
