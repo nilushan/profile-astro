@@ -1,26 +1,10 @@
 ---
 import DynamicImage from '@/components/DynamicImage.astro'
 import { resolveImage } from '@/lib/image-utils'
-
-export interface ProjectItem {
-
-  id: string;
-  data: {
-  title: string;
-  period: string;
-  description: string;
-  achievements: string[];
-  technologies: string[];
-  image?: string;
-  link?: string;
-  github?: string;
-  type?: 'featured' | 'regular';
-  status?: 'completed' | 'in-progress' | 'planning';
-  }
-}
+import type { CollectionEntry } from 'astro:content'
 
 export interface Props {
-  projects: ProjectItem[];
+  projects: CollectionEntry<'projects'>[];
   showAll?: boolean;
   maxProjects?: number;
   layout?: 'grid' | 'masonry' | 'list' | 'horizontal';

@@ -8,7 +8,7 @@ import CallToAction from "@/components/CallToAction.astro";
 import { portfolioData } from "@/data/portfolio";
 import { getCollection } from "astro:content";
 
-const { personal, experience, skills, skillCategories, ctas } = portfolioData;
+const { experience, skillCategories, ctas } = portfolioData;
 const cta = ctas.home;
 
 // Get all projects and filter for featured ones
@@ -16,10 +16,8 @@ const allProjects = await getCollection('projects');
 const featuredProjects = allProjects
   .filter((project) => project.data.featured === true)
   .sort((a, b) => {
-    // Sort by date if available, otherwise by title
-    const dateA = a.data.dates?.start || a.data.period;
-    const dateB = b.data.dates?.start || b.data.period;
-    return dateB > dateA ? 1 : -1;
+    // Sort by publish date (newest first)
+    return new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime();
   })
   .slice(0, 3);
 
