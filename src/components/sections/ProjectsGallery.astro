@@ -1,29 +1,13 @@
 ---
 import DynamicImage from '@/components/DynamicImage.astro'
 import { resolveImage } from '@/lib/image-utils'
-
-export interface ProjectItem {
-
-  id: string;
-  data: {
-  title: string;
-  period: string;
-  description: string;
-  achievements: string[];
-  technologies: string[];
-  image?: string;
-  link?: string;
-  github?: string;
-  type?: 'featured' | 'regular';
-  status?: 'completed' | 'in-progress' | 'planning';
-  }
-}
+import type { CollectionEntry } from 'astro:content'
 
 export interface Props {
-  projects: ProjectItem[];
+  projects: CollectionEntry<'projects'>[];
   showAll?: boolean;
   maxProjects?: number;
-  layout?: 'grid' | 'masonry' | 'list';
+  layout?: 'grid' | 'masonry' | 'list' | 'horizontal';
 }
 
 const { projects, showAll = false, maxProjects = 6, layout = 'grid' } = Astro.props;
@@ -31,7 +15,7 @@ const displayedProjects = showAll ? projects : projects.slice(0, maxProjects);
 
 
 // Function to get project icon based on technologies
-const getProjectIcon = (technologies: string[], index: number) => {
+const getProjectIcon = (technologies: string[]) => {
   if (technologies?.some(tech => tech.toLowerCase().includes('iot') || tech.toLowerCase().includes('mqtt'))) {
     return 'iot';
   }
@@ -59,8 +43,8 @@ const iconPaths = {
 // Status badge colors
 const statusColors = {
   completed: 'success',
-  'in-progress': 'warning',
-  planning: 'info',
+  ongoing: 'warning',
+  archived: 'neutral',
 };
 ---
 
@@ -68,33 +52,42 @@ const statusColors = {
   ${layout === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8' : ''}
   ${layout === 'masonry' ? 'columns-1 md:columns-2 lg:columns-3 gap-8' : ''}
   ${layout === 'list' ? 'space-y-8' : ''}
+  ${layout === 'horizontal' ? 'flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scroll-smooth scrollbar-hide' : ''}
 `}>
-  {displayedProjects.map((project, index) => (
-    <div class={`
-      card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group
-      ${project.data.type === 'featured' ? 'ring-2 ring-primary ring-offset-2 ring-offset-base-100' : ''}
+  {displayedProjects.map((project) => (
+    <div
+      data-project-card
+      data-technologies={project.data.technologies?.join(',')}
+      class={`
+      card bg-base-100 shadow-xl transition-all duration-500 group relative overflow-hidden border border-base-content/5 hover:border-primary/20 glass scroll-reveal hover-lift
+      ${project.data.featured ? 'ring-2 ring-primary/30 ring-offset-2 ring-offset-base-100' : ''}
       ${layout === 'masonry' ? 'break-inside-avoid mb-8' : ''}
-      ${layout === 'list' ? 'card-side' : ''}
+      ${layout === 'list' ? 'lg:card-side' : ''}
+      ${layout === 'horizontal' ? 'flex-shrink-0 w-[calc(100vw-3rem)] sm:w-[500px] lg:w-[600px] snap-start' : ''}
     `}>
+      <!-- Gradient accent bar -->
+      <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent opacity-50 group-hover:opacity-100 transition-opacity"></div>
+      <!-- Floating gradient orb -->
+      <div class="absolute -top-20 -right-20 w-40 h-40 bg-accent/10 rounded-full blur-3xl group-hover:bg-accent/20 transition-all"></div>
       <!-- Project Image/Icon -->
-      <figure class={`${layout === 'list' ? 'w-48' : 'px-6 pt-6'}`}>
+      <figure class={`${layout === 'list' ? 'lg:w-80 lg:flex-shrink-0 px-6 pt-6 lg:pt-0 lg:pl-0' : 'px-6 pt-6'}`}>
         {project.data.image && resolveImage(project.data.image) ? (
           <DynamicImage
             src={project.data.image}
             alt={`${project.data.title} - ${project.data.description}`}
-            class={`${layout === 'list' ? 'h-full object-cover' : 'w-full h-48 object-cover rounded-xl'}`}
+            class={`${layout === 'list' ? 'w-full h-48 object-cover rounded-xl lg:h-full' : 'w-full h-48 object-cover rounded-xl'}`}
             loading="lazy"
           />
         ) : (
-          <div class="w-full h-48 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-secondary/30 transition-all">
+          <div class={`w-full bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-secondary/30 transition-all ${layout === 'list' ? 'h-48 lg:h-full' : 'h-48'}`}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="h-16 w-16 text-primary">
-              <path set:html={iconPaths[getProjectIcon(project.data.technologies, index)]} />
+              <path set:html={iconPaths[getProjectIcon(project.data.technologies)]} />
             </svg>
           </div>
         )}
         
         <!-- Featured Badge -->
-        {project.data.type === 'featured' && (
+        {project.data.featured && (
           <div class="absolute top-2 left-2">
             <div class="badge badge-primary gap-1">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
@@ -105,15 +98,15 @@ const statusColors = {
           </div>
         )}
       </figure>
-      
-      <div class="card-body">
-        <!-- Header -->
-        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+
+      <div class="card-body relative z-10">
+        <!-- Enhanced Header -->
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
           <div class="flex-1">
-            <h3 class="card-title text-xl lg:text-2xl group-hover:text-primary transition-colors">
+            <h3 class="card-title text-2xl lg:text-3xl font-display group-hover:text-primary transition-colors leading-tight">
               {project.data.title}
             </h3>
-            <p class="text-base-content/70 text-lg font-medium">
+            <p class="text-base-content/60 font-mono text-sm mt-2">
               {project.data.period}
             </p>
           </div>
@@ -121,7 +114,7 @@ const statusColors = {
           <!-- Status Badge -->
           {project.data.status && (
             <div class={`badge badge-${statusColors[project.data.status]} gap-1`}>
-              {project.data.status === 'in-progress' && (
+              {project.data.status === 'ongoing' && (
                 <div class="w-2 h-2 bg-current rounded-full animate-pulse"></div>
               )}
               {project.data.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
@@ -154,24 +147,25 @@ const statusColors = {
           </div>
         )}
         
-        <!-- Technologies -->
-        <div class="mb-4">
-          <div class="flex flex-wrap gap-1.5">
+        <!-- Enhanced Technologies -->
+        <div class="mb-6">
+          <h4 class="font-mono text-xs uppercase tracking-wider text-base-content/50 mb-3">Tech Stack</h4>
+          <div class="flex flex-wrap gap-2">
             {project.data.technologies?.slice(0, 6).map((tech) => (
-              <div class="badge badge-outline hover:badge-primary transition-colors">
+              <div class="badge badge-outline hover:badge-primary hover:scale-110 transition-all font-mono text-xs shadow-sm">
                 {tech}
               </div>
             ))}
             {project.data.technologies?.length > 6 && (
-              <div class="badge badge-outline">
+              <div class="badge badge-outline font-mono font-bold">
                 +{project.data.technologies.length - 6}
               </div>
             )}
           </div>
         </div>
         
-        <!-- Actions -->
-        <div class="card-actions justify-end">
+        <!-- Enhanced Actions -->
+        <div class="card-actions justify-end gap-3 mt-auto">
           {project.data.github && (
             <a
               href={project.data.github}
@@ -188,9 +182,9 @@ const statusColors = {
             </a>
           )}
 
-          {project.data.link && (
+          {project.data.demo && (
             <a
-              href={project.data.link}
+              href={project.data.demo}
               target="_blank"
               rel="noopener noreferrer"
               class="btn btn-outline btn-sm track-project-cta"
@@ -204,15 +198,15 @@ const statusColors = {
             </a>
           )}
 
-          <!-- Always show View Details link -->
+          <!-- Always show View Details link with enhanced styling -->
           <a
             href={`/projects/${project.id}`}
-            class="btn btn-primary btn-sm track-project-cta"
+            class="btn btn-primary btn-sm track-project-cta font-display shadow-lg hover:shadow-xl hover:scale-105 transition-all group/btn"
             data-project-name={project.data.title}
             data-cta-type="details"
           >
             <span>View Details</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 transition-transform group-hover/btn:translate-x-1">
               <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>
           </a>

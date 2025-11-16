@@ -1,0 +1,217 @@
+---
+/**
+ * OverlappingCards Component
+ * Overlapping element design pattern for depth and visual interest
+ * Features: Stacked, cascaded, and floating overlap patterns
+ */
+export interface OverlapItem {
+  title: string;
+  subtitle?: string;
+  description?: string;
+  content?: string;
+  index?: number;
+  color?: 'primary' | 'secondary' | 'accent' | 'info' | 'success';
+  icon?: string;
+}
+
+export interface Props {
+  items: OverlapItem[];
+  pattern?: 'stack' | 'cascade' | 'float' | 'diagonal';
+  maxVisible?: number;
+}
+
+const { items, pattern = 'cascade', maxVisible = items.length } = Astro.props;
+const displayedItems = items.slice(0, maxVisible);
+
+// Color classes
+const colorClasses = {
+  primary: { bg: 'bg-primary', text: 'text-primary-content', border: 'border-primary' },
+  secondary: { bg: 'bg-secondary', text: 'text-secondary-content', border: 'border-secondary' },
+  accent: { bg: 'bg-accent', text: 'text-accent-content', border: 'border-accent' },
+  info: { bg: 'bg-info', text: 'text-info-content', border: 'border-info' },
+  success: { bg: 'bg-success', text: 'text-success-content', border: 'border-success' },
+};
+
+// Pattern-specific styles
+const getPatternClass = (pattern: string, index: number) => {
+  switch (pattern) {
+    case 'stack':
+      return {
+        transform: `translateY(${index * 8}px) scale(${1 - index * 0.02})`,
+        zIndex: displayedItems.length - index,
+        opacity: 1 - index * 0.1,
+      };
+    case 'cascade':
+      return {
+        transform: `translateX(${index * 40}px) translateY(${index * 20}px) rotate(${index * 2}deg)`,
+        zIndex: displayedItems.length - index,
+        opacity: 1,
+      };
+    case 'float':
+      return {
+        transform: `translateX(${index * 30}px) translateY(${index * -15}px)`,
+        zIndex: index + 1,
+        opacity: 1,
+      };
+    case 'diagonal':
+      return {
+        transform: `translateX(${index * 60}px) translateY(${index * 40}px)`,
+        zIndex: displayedItems.length - index,
+        opacity: 1,
+      };
+    default:
+      return {
+        transform: 'none',
+        zIndex: 1,
+        opacity: 1,
+      };
+  }
+};
+---
+
+{/* Stack Pattern - Cards stacked on top of each other */}
+{pattern === 'stack' && (
+  <div class="relative h-[500px] w-full max-w-lg mx-auto">
+    {displayedItems.map((item, index) => {
+      const color = item.color || 'primary';
+      const colors = colorClasses[color];
+      const style = getPatternClass('stack', index);
+
+      return (
+        <div
+          class={`absolute inset-x-0 top-0 card ${colors.bg} shadow-2xl transition-all duration-500 hover:scale-105`}
+          style={`transform: ${style.transform}; z-index: ${style.zIndex}; opacity: ${style.opacity};`}
+        >
+          <div class={`card-body ${colors.text}`}>
+            <h3 class="card-title text-2xl font-display">
+              {item.title}
+            </h3>
+            {item.subtitle && (
+              <p class="font-mono text-sm opacity-80">{item.subtitle}</p>
+            )}
+            {item.description && (
+              <p class="opacity-90 leading-relaxed">{item.description}</p>
+            )}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+)}
+
+{/* Cascade Pattern - Cards cascading down and to the right */}
+{pattern === 'cascade' && (
+  <div class="relative min-h-[600px] w-full">
+    {displayedItems.map((item, index) => {
+      const color = item.color || 'primary';
+      const colors = colorClasses[color];
+      const style = getPatternClass('cascade', index);
+
+      return (
+        <div
+          class={`absolute top-0 left-0 card ${colors.bg} shadow-2xl w-80 transition-all duration-500 hover:scale-105 hover:rotate-0 hover:shadow-3xl`}
+          style={`transform: ${style.transform}; z-index: ${style.zIndex};`}
+        >
+          <div class={`card-body ${colors.text}`}>
+            {item.index !== undefined && (
+              <div class="text-6xl font-display font-bold opacity-20 absolute top-4 right-4">
+                {String(item.index).padStart(2, '0')}
+              </div>
+            )}
+            <h3 class="card-title text-2xl font-display mb-2">
+              {item.title}
+            </h3>
+            {item.subtitle && (
+              <p class="font-mono text-sm opacity-80 mb-4">{item.subtitle}</p>
+            )}
+            {item.description && (
+              <p class="opacity-90 leading-relaxed">{item.description}</p>
+            )}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+)}
+
+{/* Float Pattern - Cards floating upward with offset */}
+{pattern === 'float' && (
+  <div class="relative min-h-[400px] w-full">
+    {displayedItems.map((item, index) => {
+      const color = item.color || 'primary';
+      const colors = colorClasses[color];
+      const style = getPatternClass('float', index);
+
+      return (
+        <div
+          class={`absolute bottom-0 left-0 card ${colors.bg} shadow-2xl w-72 transition-all duration-500 hover:scale-110 hover:-translate-y-4`}
+          style={`transform: ${style.transform}; z-index: ${style.zIndex};`}
+        >
+          <div class={`card-body ${colors.text} p-6`}>
+            <h3 class="card-title text-xl font-display">
+              {item.title}
+            </h3>
+            {item.description && (
+              <p class="opacity-90 text-sm leading-relaxed">{item.description}</p>
+            )}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+)}
+
+{/* Diagonal Pattern - Cards arranged diagonally */}
+{pattern === 'diagonal' && (
+  <div class="relative min-h-[700px] w-full">
+    {displayedItems.map((item, index) => {
+      const color = item.color || 'primary';
+      const colors = colorClasses[color];
+      const style = getPatternClass('diagonal', index);
+
+      return (
+        <div
+          class={`absolute top-0 left-0 card bg-base-100 border-4 ${colors.border} shadow-2xl w-96 transition-all duration-500 hover:scale-105 hover:shadow-3xl group`}
+          style={`transform: ${style.transform}; z-index: ${style.zIndex};`}
+        >
+          <div class="card-body">
+            {/* Color accent bar */}
+            <div class={`absolute top-0 left-0 right-0 h-2 ${colors.bg}`}></div>
+
+            <h3 class={`card-title text-2xl font-display mb-2 ${colors.text.replace('-content', '')} group-hover:scale-105 transition-transform`}>
+              {item.title}
+            </h3>
+            {item.subtitle && (
+              <p class="font-mono text-sm text-base-content/60 mb-4">{item.subtitle}</p>
+            )}
+            {item.description && (
+              <p class="text-base-content/80 leading-relaxed">{item.description}</p>
+            )}
+            {item.content && (
+              <div class="mt-4 text-sm text-base-content/60">
+                {item.content}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+)}
+
+<style>
+  /* Add depth with shadows */
+  .shadow-3xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Smooth transitions for all patterns */
+  .card {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Hover lift effect */
+  .card:hover {
+    filter: brightness(1.05);
+  }
+</style>

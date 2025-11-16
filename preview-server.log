@@ -1,0 +1,13 @@
+
+> astro-app@0.0.1 preview /Users/nilushansilva/Development/Projects/personal/profile-astro
+> astro preview --port 4444
+
+23:32:53 [astro-mermaid] Setting up Mermaid integration
+23:32:53 [astro-mermaid] Existing rehype plugins:
+23:32:53 [astro-mermaid] Skipping ELK support
+
+ astro  v5.10.1 ready in 6 ms
+
+┃ Local    http://localhost:4444/
+┃ Network  use --host to expose
+

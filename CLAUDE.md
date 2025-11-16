@@ -16,6 +16,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Use **pnpm** for all package management
 - Lock file: `pnpm-lock.yaml`
 
+### Design System
+- **Typography**: Outfit Variable (display), Manrope Variable (body), JetBrains Mono (code)
+- **Improved from**: Space Grotesk + Inter (removed for being too common)
+- **See**: `IMPROVEMENTS.md` for comprehensive UI/UX enhancement roadmap
+
 ## File Structure & Conventions
 
 ### Directory Organization

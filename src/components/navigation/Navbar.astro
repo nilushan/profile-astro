@@ -16,7 +16,7 @@ const navSocialLinks = socialLinks.filter(link => ['github', 'linkedin'].include
 ---
 
 <div
-  class="navbar bg-base-100 fixed top-0 z-50 shadow-sm border-b border-base-content/10 h-20 min-h-20 items-center w-full max-w-full px-2 sm:px-4"
+  class="navbar bg-base-100 fixed top-0 z-50 shadow-sm border-b border-base-content/10 h-16 sm:h-20 min-h-16 sm:min-h-20 items-center w-full max-w-full px-2 sm:px-4"
 >
   <div class="navbar-start items-center">
     <!-- Mobile menu -->
@@ -71,10 +71,19 @@ const navSocialLinks = socialLinks.filter(link => ['github', 'linkedin'].include
     <!-- Logo -->
     <a
       href="/"
-      class="btn btn-ghost text-2xl font-bold text-primary hover:text-primary-focus h-16 flex items-center"
+      class="btn btn-ghost text-xl font-display font-bold hover:bg-transparent h-16 flex items-center gap-2"
       aria-label="Home"
     >
-      <span class="text-primary">N</span><span class="text-secondary">S</span>
+      <!-- Avatar badge -->
+      <div class="avatar placeholder">
+        <div class="bg-gradient-to-br from-primary to-secondary text-primary-content w-10 h-10 rounded-lg">
+          <span class="text-sm font-bold">
+            {portfolioData.personal.name.split(' ').map(n => n[0]).join('')}
+          </span>
+        </div>
+      </div>
+      <!-- Name -->
+      <span class="text-base-content hidden sm:inline">{portfolioData.personal.name}</span>
     </a>
   </div>
 
@@ -205,7 +214,7 @@ const navSocialLinks = socialLinks.filter(link => ['github', 'linkedin'].include
         href={link.url}
         target={link.external ? "_blank" : undefined}
         rel={link.external ? "noopener noreferrer" : undefined}
-        class={`btn btn-ghost btn-circle btn-sm text-base-content hover:text-primary hover:bg-primary/10 ${index > 0 ? 'hidden sm:flex' : ''}`}
+        class={`btn btn-ghost btn-circle h-12 w-12 min-h-12 min-w-12 text-base-content hover:text-primary hover:bg-primary/10 ${index > 0 ? 'hidden sm:flex' : ''}`}
         aria-label={link.ariaLabel}
       >
         <Fragment set:html={getSocialIcon(link.platform)} />

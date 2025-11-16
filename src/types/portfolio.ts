@@ -186,6 +186,21 @@ export interface SEOData {
   twitter_card?: 'summary' | 'summary_large_image' | 'app' | 'player';
 }
 
+// Call to Action Type
+export interface CallToAction {
+  label: string;
+  title: string;
+  description: string;
+  primaryButton: {
+    text: string;
+    href: string;
+  };
+  secondaryButton: {
+    text: string;
+    href: string;
+  };
+}
+
 // Main Portfolio Data Interface
 export interface PortfolioData {
   personal: PersonalInfo;
@@ -194,6 +209,16 @@ export interface PortfolioData {
   experience: Experience[];
   education: Education;
   interests: Interest[];
+  currentLearning: string;
+  cta: CallToAction;
+  ctas: {
+    home: CallToAction;
+    experience: CallToAction;
+    skills: CallToAction;
+    about: CallToAction;
+    blog: CallToAction;
+    projects: CallToAction;
+  };
 }
 
 // Component Props Types

@@ -1,0 +1,225 @@
+---
+/**
+ * TableLayout Component
+ * Alternative to card-based layouts for experience display
+ * Features: Structured table format with expandable rows for details
+ */
+export interface ExperienceItem {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  period: string;
+  type: string;
+  description?: string;
+  highlights: Array<{
+    title: string;
+    description: string;
+  }>;
+  technologies: string[];
+}
+
+export interface Props {
+  experiences: ExperienceItem[];
+}
+
+const { experiences } = Astro.props;
+
+// Function to determine if position is current
+const isCurrent = (period: string) => {
+  return period.toLowerCase().includes('present') || period.toLowerCase().includes('current');
+};
+---
+
+<div class="overflow-x-auto">
+  <table class="table table-zebra w-full">
+    <!-- Table Head -->
+    <thead>
+      <tr class="bg-base-200">
+        <th class="font-display text-base">Position</th>
+        <th class="font-display text-base hidden md:table-cell">Company</th>
+        <th class="font-display text-base hidden lg:table-cell">Period</th>
+        <th class="font-display text-base hidden lg:table-cell">Location</th>
+        <th class="font-display text-base">Technologies</th>
+        <th class="font-display text-base text-center">Details</th>
+      </tr>
+    </thead>
+
+    <!-- Table Body -->
+    <tbody>
+      {experiences.map((experience, index) => (
+        <>
+          <!-- Main Row -->
+          <tr class="hover group transition-all" id={`exp-${experience.id}`}>
+            <!-- Position -->
+            <td class="font-semibold">
+              <div class="flex items-center gap-2">
+                <span class="text-base-content group-hover:text-primary transition-colors">
+                  {experience.title}
+                </span>
+                {isCurrent(experience.period) && (
+                  <div class="badge badge-success badge-sm gap-1">
+                    <div class="w-2 h-2 bg-current rounded-full animate-pulse"></div>
+                    Now
+                  </div>
+                )}
+              </div>
+              <!-- Mobile: Show company below title -->
+              <div class="md:hidden text-sm text-base-content/60 mt-1">
+                {experience.company}
+              </div>
+            </td>
+
+            <!-- Company (Desktop only) -->
+            <td class="hidden md:table-cell">
+              <span class="font-medium text-base-content/80">
+                {experience.company}
+              </span>
+            </td>
+
+            <!-- Period (Desktop only) -->
+            <td class="hidden lg:table-cell">
+              <div class="badge badge-outline font-mono text-xs">
+                {experience.period}
+              </div>
+            </td>
+
+            <!-- Location (Desktop only) -->
+            <td class="hidden lg:table-cell">
+              <span class="text-sm text-base-content/60 font-mono">
+                {experience.location}
+              </span>
+            </td>
+
+            <!-- Technologies (Compact) -->
+            <td>
+              <div class="flex flex-wrap gap-1 max-w-xs">
+                {experience.technologies.slice(0, 3).map((tech) => (
+                  <div class="badge badge-sm badge-primary font-mono text-[10px]">
+                    {tech}
+                  </div>
+                ))}
+                {experience.technologies.length > 3 && (
+                  <div class="badge badge-sm badge-ghost font-mono text-[10px]">
+                    +{experience.technologies.length - 3}
+                  </div>
+                )}
+              </div>
+            </td>
+
+            <!-- Expand Button -->
+            <td class="text-center">
+              <button
+                class="btn btn-ghost btn-sm btn-circle"
+                onclick={`document.getElementById('details-${experience.id}').classList.toggle('hidden'); this.querySelector('svg').classList.toggle('rotate-180')`}
+                aria-label="Toggle details"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  class="w-5 h-5 transition-transform duration-300"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+              </button>
+            </td>
+          </tr>
+
+          <!-- Expandable Details Row -->
+          <tr id={`details-${experience.id}`} class="hidden bg-base-200/50">
+            <td colspan="6" class="p-6">
+              <div class="max-w-4xl">
+                <!-- Description -->
+                {experience.description && (
+                  <div class="mb-6">
+                    <h4 class="font-display font-bold text-lg mb-2 text-primary">Overview</h4>
+                    <p class="text-base-content/70 leading-relaxed">
+                      {experience.description}
+                    </p>
+                  </div>
+                )}
+
+                <!-- Highlights -->
+                {experience.highlights.length > 0 && (
+                  <div class="mb-6">
+                    <h4 class="font-display font-bold text-lg mb-3 text-secondary">Key Achievements</h4>
+                    <div class="grid gap-4 md:grid-cols-2">
+                      {experience.highlights.map((highlight) => (
+                        <div class="bg-base-100 p-4 rounded-lg border-l-4 border-secondary shadow-sm">
+                          <h5 class="font-semibold text-base mb-1">{highlight.title}</h5>
+                          <p class="text-sm text-base-content/60">{highlight.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <!-- Full Technology Stack -->
+                <div>
+                  <h4 class="font-display font-bold text-lg mb-3 text-accent">Full Tech Stack</h4>
+                  <div class="flex flex-wrap gap-2">
+                    {experience.technologies.map((tech) => (
+                      <div class="badge badge-outline badge-md hover:badge-primary transition-all font-mono">
+                        {tech}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <!-- Mobile: Period and Location -->
+                <div class="lg:hidden mt-6 flex flex-wrap gap-4 text-sm">
+                  <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-base-content/60">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                    </svg>
+                    <span class="font-mono text-base-content/70">{experience.period}</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-base-content/60">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                    </svg>
+                    <span class="font-mono text-base-content/70">{experience.location}</span>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<!-- Responsive Note -->
+<div class="mt-6 text-center">
+  <p class="text-xs text-base-content/40 font-mono">
+    💡 Click the expand button to view full details for each position
+  </p>
+</div>
+
+<style>
+  /* Smooth transitions for expand/collapse */
+  tr[id^="details-"] {
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Hover effect on table rows */
+  tbody tr.hover:hover {
+    background-color: hsl(var(--b2) / 0.7);
+  }
+
+  /* Zebra striping */
+  .table-zebra tbody tr:nth-child(4n + 1),
+  .table-zebra tbody tr:nth-child(4n + 2) {
+    background-color: transparent;
+  }
+
+  .table-zebra tbody tr:nth-child(4n + 3),
+  .table-zebra tbody tr:nth-child(4n + 4) {
+    background-color: hsl(var(--b2) / 0.3);
+  }
+</style>

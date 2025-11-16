@@ -4,20 +4,20 @@ import Hero from "@/components/sections/Hero.astro";
 import ExperienceTimeline from "@/components/sections/ExperienceTimeline.astro";
 import ProjectsGallery from "@/components/sections/ProjectsGallery.astro";
 import SkillsGrid from "@/components/sections/SkillsGrid.astro";
+import CallToAction from "@/components/CallToAction.astro";
 import { portfolioData } from "@/data/portfolio";
 import { getCollection } from "astro:content";
 
-const { personal, experience, skills, skillCategories } = portfolioData;
+const { experience, skillCategories, ctas } = portfolioData;
+const cta = ctas.home;
 
 // Get all projects and filter for featured ones
 const allProjects = await getCollection('projects');
 const featuredProjects = allProjects
   .filter((project) => project.data.featured === true)
   .sort((a, b) => {
-    // Sort by date if available, otherwise by title
-    const dateA = a.data.dates?.start || a.data.period;
-    const dateB = b.data.dates?.start || b.data.period;
-    return dateB > dateA ? 1 : -1;
+    // Sort by publish date (newest first)
+    return new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime();
   })
   .slice(0, 3);
 
@@ -64,14 +64,33 @@ const recentExperience = experience.slice(0, 2);
     </div>
   </section> -->
 
-    <!-- Skills Overview Section -->
-  <section class="py-16 lg:py-16">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
-          Technical Skills
+    <!-- Diagonal separator -->
+  <div class="relative h-24 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 transform -skew-y-2"></div>
+    <svg class="absolute bottom-0 left-0 w-full h-full" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,0 L1200,60 L1200,120 L0,120 Z" class="fill-base-100"></path>
+    </svg>
+  </div>
+
+  <!-- Skills Overview Section with Enhanced Design -->
+  <section class="py-16 lg:py-32 relative overflow-hidden">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 bg-gradient-to-b from-base-100 via-base-200 to-base-100"></div>
+    <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center mb-16">
+        <!-- Section label -->
+        <div class="flex items-center gap-3 mb-6 justify-center">
+          <div class="h-px w-12 bg-gradient-to-r from-transparent to-primary"></div>
+          <span class="font-mono text-xs text-primary uppercase tracking-[0.2em]">Expertise</span>
+          <div class="h-px w-12 bg-gradient-to-l from-transparent to-primary"></div>
+        </div>
+
+        <h2 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
+          Technical <span class="text-primary">Skills</span>
         </h2>
-        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+        <p class="text-lg lg:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
           A comprehensive overview of my technical expertise across different
           domains of software development.
         </p>
@@ -85,16 +104,35 @@ const recentExperience = experience.slice(0, 2);
     </div>
   </section>
 
-  <!-- Experience Timeline Section -->
-  <section class="py-16 lg:py-16 bg-base-200">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
-          Professional Experience
+  <!-- Geometric separator with shapes -->
+  <div class="relative h-32 overflow-hidden">
+    <div class="absolute inset-0 flex items-center justify-center gap-8">
+      <div class="h-2 w-2 bg-primary/20 rounded-full animate-pulse"></div>
+      <div class="h-3 w-3 bg-secondary/30 rounded-full animate-pulse" style="animation-delay: 0.2s"></div>
+      <div class="h-2 w-2 bg-accent/20 rounded-full animate-pulse" style="animation-delay: 0.4s"></div>
+    </div>
+  </div>
+
+  <!-- Experience Timeline Section - Summary -->
+  <section class="py-16 lg:py-24 relative overflow-hidden">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 bg-gradient-to-br from-base-200/50 via-base-100 to-base-200/50"></div>
+    <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-secondary to-transparent"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center mb-16">
+        <!-- Section label -->
+        <div class="inline-block mb-4">
+          <span class="font-mono text-sm text-secondary uppercase tracking-widest px-4 py-2 bg-secondary/10 rounded-full border border-secondary/20">
+            Journey
+          </span>
+        </div>
+
+        <h2 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
+          Professional <span class="text-secondary">Experience</span>
         </h2>
-        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-          A timeline of my career progression and key achievements in full-stack
-          development and cloud engineering.
+        <p class="text-lg lg:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
+          A snapshot of my recent career progression in full-stack development and cloud engineering.
         </p>
       </div>
 
@@ -104,17 +142,48 @@ const recentExperience = experience.slice(0, 2);
         maxItems={2}
         summary={true}
       />
+
+      <!-- View More Link -->
+      <div class="text-center mt-12">
+        <a href="/experience" class="btn btn-outline btn-lg group">
+          <span>View Full Experience</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 transition-transform group-hover:translate-x-1">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
     </div>
   </section>
 
-  <!-- Featured Projects Section -->
-  <section class="py-16 lg:py-16">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl lg:text-4xl font-bold mb-4 text-base-content">
-          Featured Projects
+  <!-- Decorative Wave Separator -->
+  <div class="relative h-24 overflow-hidden">
+    <svg class="absolute bottom-0 left-0 w-full h-full" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,0 C300,80 600,40 900,60 L1200,80 L1200,120 L0,120 Z" class="fill-base-100"></path>
+    </svg>
+  </div>
+
+  <!-- Featured Projects Section with Enhanced Design -->
+  <section class="py-16 lg:py-32 relative overflow-hidden">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 bg-gradient-to-b from-base-100 via-base-200/50 to-base-100"></div>
+    <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+    <!-- Decorative corner accent -->
+    <div class="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center mb-16">
+        <!-- Section label -->
+        <div class="inline-block mb-4">
+          <span class="font-mono text-sm text-accent uppercase tracking-widest px-4 py-2 bg-accent/10 rounded-full border border-accent/20">
+            Portfolio
+          </span>
+        </div>
+
+        <h2 class="text-4xl lg:text-6xl font-display font-bold mb-6 text-base-content">
+          Featured <span class="text-accent">Projects</span>
         </h2>
-        <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+        <p class="text-lg lg:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
           Here are some of my most impactful projects that demonstrate my
           expertise in full-stack development and cloud architecture.
         </p>
@@ -124,8 +193,17 @@ const recentExperience = experience.slice(0, 2);
         projects={featuredProjects}
         showAll={false}
         maxProjects={3}
-        layout="grid"
+        layout="list"
       />
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="py-16 lg:py-24">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <CallToAction cta={cta} variant="bold" />
+      </div>
     </div>
   </section>
 </Layout>
