@@ -1,0 +1,274 @@
+---
+/**
+ * Layout Alternatives Demo Page
+ * Showcases all the new layout patterns as alternatives to card-based designs
+ */
+import Layout from '@/layouts/Layout.astro';
+import ListLayout from '@/components/layouts/ListLayout.astro';
+import TableLayout from '@/components/layouts/TableLayout.astro';
+import SplitScreen from '@/components/layouts/SplitScreen.astro';
+import BentoGrid from '@/components/layouts/BentoGrid.astro';
+import OverlappingCards from '@/components/layouts/OverlappingCards.astro';
+import { portfolioData } from '@/data/portfolio';
+
+const { skillCategories, experience } = portfolioData;
+
+// Sample data for demonstrations
+const sampleProjects = [
+  {
+    title: "Cloud Infrastructure Modernization",
+    description: "Led the migration of legacy systems to modern cloud-native architecture, resulting in improved scalability and reduced operational costs.",
+    period: "2023 - 2024",
+    technologies: ["Google Cloud", "Kubernetes", "Terraform", "Docker", "CI/CD"],
+    achievements: [
+      "Reduced infrastructure costs by 40%",
+      "Improved deployment frequency by 5x",
+      "Achieved 99.99% uptime SLA"
+    ],
+    status: "Completed",
+    category: "Cloud Architecture"
+  },
+  {
+    title: "Mobile Banking Platform",
+    description: "Developed a secure and scalable mobile banking application serving over 1 million users.",
+    period: "2022 - 2023",
+    technologies: ["React Native", "Node.js", "PostgreSQL", "Redis", "Firebase"],
+    achievements: [
+      "Processed $50M+ in transactions monthly",
+      "Maintained 4.8★ rating on app stores",
+      "Zero security incidents"
+    ],
+    status: "In Production",
+    category: "Mobile Development"
+  }
+];
+
+const bentoItems = [
+  {
+    title: "Years Experience",
+    stat: { value: "10+", label: "Years in Tech" },
+    color: "primary" as const,
+    size: "small" as const,
+    icon: "rocket"
+  },
+  {
+    title: "Technologies Mastered",
+    description: "From frontend frameworks to cloud platforms, continuously expanding expertise",
+    stat: { value: "50+", label: "Tools & Frameworks" },
+    color: "secondary" as const,
+    size: "medium" as const,
+    icon: "code"
+  },
+  {
+    title: "Projects Delivered",
+    stat: { value: "100+", label: "Successful Projects" },
+    color: "accent" as const,
+    size: "small" as const,
+    icon: "chart"
+  },
+  {
+    title: "Continuous Learning",
+    description: "Always staying current with emerging technologies and best practices",
+    tags: ["AWS", "Kubernetes", "AI/ML"],
+    color: "info" as const,
+    size: "wide" as const,
+    icon: "lightbulb"
+  },
+  {
+    title: "Client Satisfaction",
+    stat: { value: "98%", label: "Happy Clients" },
+    color: "success" as const,
+    size: "small" as const,
+    icon: "heart"
+  }
+];
+
+const overlapItems = [
+  {
+    title: "Innovation",
+    subtitle: "Cutting-edge Solutions",
+    description: "Leveraging the latest technologies to build future-proof applications",
+    color: "primary" as const,
+    index: 1
+  },
+  {
+    title: "Quality",
+    subtitle: "Excellence First",
+    description: "Maintaining high standards through rigorous testing and code review",
+    color: "secondary" as const,
+    index: 2
+  },
+  {
+    title: "Collaboration",
+    subtitle: "Team Success",
+    description: "Working effectively with cross-functional teams to achieve goals",
+    color: "accent" as const,
+    index: 3
+  }
+];
+---
+
+<Layout
+  title="Layout Alternatives Demo"
+  description="Demonstration of alternative layout patterns to break card dependency"
+>
+  <!-- Hero -->
+  <section class="hero min-h-[400px] bg-gradient-to-br from-primary/10 via-base-100 to-accent/10">
+    <div class="hero-content text-center">
+      <div class="max-w-3xl">
+        <h1 class="text-6xl font-display font-bold mb-6">
+          Layout <span class="text-primary">Alternatives</span>
+        </h1>
+        <p class="text-xl text-base-content/70">
+          Breaking the card dependency with diverse layout patterns
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ListLayout Demo -->
+  <section class="py-24 bg-base-100">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto mb-12">
+        <div class="badge badge-primary badge-lg mb-4">Layout #1</div>
+        <h2 class="text-4xl font-display font-bold mb-4">List Layout</h2>
+        <p class="text-lg text-base-content/70 mb-2">
+          Alternative to card grids: Clean, scannable list format with visual hierarchy
+        </p>
+        <p class="text-sm text-base-content/50 font-mono">
+          Use case: Skills display, technology stacks, feature lists
+        </p>
+      </div>
+      <ListLayout skillCategories={skillCategories.slice(0, 4)} showMeters={true} />
+    </div>
+  </section>
+
+  <!-- TableLayout Demo -->
+  <section class="py-24 bg-base-200/50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto mb-12">
+        <div class="badge badge-secondary badge-lg mb-4">Layout #2</div>
+        <h2 class="text-4xl font-display font-bold mb-4">Table Layout</h2>
+        <p class="text-lg text-base-content/70 mb-2">
+          Alternative to timeline cards: Structured, expandable data table
+        </p>
+        <p class="text-sm text-base-content/50 font-mono">
+          Use case: Experience history, project listings, data comparison
+        </p>
+      </div>
+      <TableLayout experiences={experience.slice(0, 3)} />
+    </div>
+  </section>
+
+  <!-- SplitScreen Demo -->
+  <section class="py-24 bg-base-100">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto mb-12">
+        <div class="badge badge-accent badge-lg mb-4">Layout #3</div>
+        <h2 class="text-4xl font-display font-bold mb-4">Split Screen Layout</h2>
+        <p class="text-lg text-base-content/70 mb-2">
+          Alternative to masonry grids: Asymmetric two-column with sticky navigation
+        </p>
+        <p class="text-sm text-base-content/50 font-mono">
+          Use case: Project showcases, case studies, detailed portfolios
+        </p>
+      </div>
+      <SplitScreen projects={sampleProjects} direction="left" />
+    </div>
+  </section>
+
+  <!-- BentoGrid Demo -->
+  <section class="py-24 bg-base-200/50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto mb-12">
+        <div class="badge badge-info badge-lg mb-4">Layout #4</div>
+        <h2 class="text-4xl font-display font-bold mb-4">Bento Grid Layout</h2>
+        <p class="text-lg text-base-content/70 mb-2">
+          Alternative to uniform grids: Pinterest-style irregular sizing
+        </p>
+        <p class="text-sm text-base-content/50 font-mono">
+          Use case: Mixed content, stats dashboards, feature highlights
+        </p>
+      </div>
+      <BentoGrid items={bentoItems} columns={4} />
+    </div>
+  </section>
+
+  <!-- OverlappingCards Demo -->
+  <section class="py-24 bg-base-100">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto mb-12">
+        <div class="badge badge-success badge-lg mb-4">Pattern #5</div>
+        <h2 class="text-4xl font-display font-bold mb-4">Overlapping Elements</h2>
+        <p class="text-lg text-base-content/70 mb-2">
+          Alternative to flat layouts: Layered, depth-based compositions
+        </p>
+        <p class="text-sm text-base-content/50 font-mono">
+          Use case: Hero sections, feature highlights, visual storytelling
+        </p>
+      </div>
+
+      <!-- Show different overlap patterns -->
+      <div class="space-y-24">
+        <!-- Cascade Pattern -->
+        <div>
+          <h3 class="text-2xl font-display font-bold mb-8 text-center">Cascade Pattern</h3>
+          <OverlappingCards items={overlapItems} pattern="cascade" />
+        </div>
+
+        <!-- Stack Pattern -->
+        <div>
+          <h3 class="text-2xl font-display font-bold mb-8 text-center">Stack Pattern</h3>
+          <OverlappingCards items={overlapItems} pattern="stack" />
+        </div>
+
+        <!-- Diagonal Pattern -->
+        <div>
+          <h3 class="text-2xl font-display font-bold mb-8 text-center">Diagonal Pattern</h3>
+          <OverlappingCards items={overlapItems} pattern="diagonal" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Summary Section -->
+  <section class="py-24 bg-gradient-to-br from-primary/10 via-base-100 to-secondary/10">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl font-display font-bold mb-6">
+          Breaking the Card Dependency
+        </h2>
+        <p class="text-xl text-base-content/70 mb-8">
+          These layout alternatives provide visual variety while maintaining consistency.
+          Each pattern serves specific use cases and can be mixed throughout the site.
+        </p>
+        <div class="grid md:grid-cols-2 gap-6 text-left mt-12">
+          <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+              <h3 class="card-title text-primary">Benefits</h3>
+              <ul class="space-y-2 text-base-content/70">
+                <li>✓ Reduced visual monotony</li>
+                <li>✓ Better content hierarchy</li>
+                <li>✓ Improved scannability</li>
+                <li>✓ Distinct page personalities</li>
+                <li>✓ Enhanced user engagement</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+              <h3 class="card-title text-secondary">Implementation</h3>
+              <ul class="space-y-2 text-base-content/70">
+                <li>→ Use ListLayout for skills</li>
+                <li>→ Use TableLayout for experience</li>
+                <li>→ Use SplitScreen for projects</li>
+                <li>→ Use BentoGrid for stats</li>
+                <li>→ Use Overlapping for heroes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
