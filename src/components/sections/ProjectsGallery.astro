@@ -65,10 +65,8 @@ const statusColors = {
       ${layout === 'list' ? 'lg:card-side' : ''}
       ${layout === 'horizontal' ? 'flex-shrink-0 w-[calc(100vw-3rem)] sm:w-[500px] lg:w-[600px] snap-start' : ''}
     `}>
-      <!-- Gradient accent bar -->
-      <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent opacity-50 group-hover:opacity-100 transition-opacity"></div>
-      <!-- Floating gradient orb -->
-      <div class="absolute -top-20 -right-20 w-40 h-40 bg-accent/10 rounded-full blur-3xl group-hover:bg-accent/20 transition-all"></div>
+      <!-- Minimal accent bar -->
+      <div class="absolute top-0 left-0 right-0 h-0.5 bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
       <!-- Project Image/Icon -->
       <figure class={`${layout === 'list' ? 'lg:w-80 lg:flex-shrink-0 px-6 pt-6 lg:pt-0 lg:pl-0' : 'px-6 pt-6'}`}>
         {project.data.image && resolveImage(project.data.image) ? (

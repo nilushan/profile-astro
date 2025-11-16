@@ -48,6 +48,7 @@ export const portfolioData: PortfolioData = {
   },
 
   // Organized skills for the SkillsGrid component
+  // Refined minimalism: Using primary only for key emphasis, neutral for everything else
   skillCategories: [
     {
       title: "Programming Languages",
@@ -59,42 +60,42 @@ export const portfolioData: PortfolioData = {
     {
       title: "Frontend Development",
       icon: "frontend",
-      color: "secondary",
+      color: "primary",
       description: "Modern frontend technologies and frameworks",
       skills: ["React", "Redux", "Next.js", "Astro", "Bootstrap", "HTML5", "CSS3", "Chart.js", "Socket.IO"]
     },
     {
       title: "Backend Development",
       icon: "backend",
-      color: "accent",
+      color: "primary",
       description: "Server-side technologies and architectural patterns",
       skills: ["Express", "Fastify", "REST APIs", "Event-Driven Architecture", "Service-Oriented Architecture", "OAuth2", "JWT"]
     },
     {
       title: "Cloud Platforms",
       icon: "cloud",
-      color: "info",
+      color: "primary",
       description: "Cloud services and infrastructure",
       skills: ["Google Cloud Platform", "AWS", "Azure", "Kubernetes", "Cloud Functions", "IoT Core", "PubSub", "Firebase"]
     },
     {
       title: "Databases",
       icon: "database",
-      color: "success",
+      color: "primary",
       description: "Database technologies and data storage solutions",
       skills: ["PostgreSQL", "MySQL", "Firestore", "MongoDB", "Redis", "TimescaleDB", "ClickHouse", "BigQuery"]
     },
     {
       title: "DevOps & Tools",
       icon: "devops",
-      color: "warning",
+      color: "primary",
       description: "Development operations and productivity tools",
       skills: ["Docker", "Kubernetes", "CI/CD", "GitHub Actions", "Cloud Build", "Git", "Terraform", "Monitoring"]
     },
     {
       title: "Project Management",
       icon: "tools",
-      color: "error",
+      color: "primary",
       description: "Tools for project management and documentation",
       skills: ["Jira", "Confluence", "ClickUp", "Draw.io", "Lucid Charts", "Mermaid", "C4 Diagrams", "Agile", "Scrum"]
     }

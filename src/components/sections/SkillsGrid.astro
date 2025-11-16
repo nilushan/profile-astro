@@ -112,21 +112,17 @@ const getIconSvg = (iconName: string) => {
       'lg:col-span-1 lg:row-span-1', // Project Management
     ];
     return (
-    <div class={`card bg-gradient-to-br ${colors.gradientFrom} ${colors.gradientTo} shadow-xl transition-all duration-500 group relative overflow-hidden ${spanClasses[index]} scroll-reveal hover-lift border border-base-content/5 hover:border-${category.color}/30`} data-delay={index % 3 + 1}>
-      <!-- Floating gradient orb -->
-      <div class={`absolute -top-10 -right-10 w-32 h-32 ${colors.bg} opacity-10 rounded-full blur-3xl group-hover:opacity-20 transition-opacity`}></div>
-
+    <div class={`card bg-base-100 shadow-lg transition-all duration-300 group relative overflow-hidden ${spanClasses[index]} scroll-reveal border-2 border-base-content/10 hover:border-primary/40 hover:shadow-xl`} data-delay={index % 3 + 1}>
       <div class="card-body items-center text-center p-6 md:p-8 relative z-10">
-        <!-- Enhanced Icon with gradient ring -->
-        <div class={`w-20 h-20 ${colors.bg} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg relative`}>
-          <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent"></div>
+        <!-- Minimal icon with primary accent -->
+        <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-all duration-300 border border-primary/20">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class={`h-10 w-10 ${colors.text} relative z-10`}
+            class="h-8 w-8 text-primary"
             set:html={getIconSvg(category.icon)}
           >
           </svg>
@@ -144,28 +140,24 @@ const getIconSvg = (iconName: string) => {
           </p>
         )}
         
-        <!-- Enhanced Skills with better spacing -->
+        <!-- Minimal skills display -->
         <div class="flex flex-wrap gap-2 justify-center mt-auto">
           {(showAll ? category.skills : category.skills.slice(0, maxSkillsPerCategory)).map((skill) => (
-            <div class={`badge ${colors.badge} badge-md font-mono text-xs hover:scale-110 hover:shadow-lg transition-all cursor-default`}>
+            <div class="badge badge-outline badge-sm font-mono text-xs hover:badge-primary hover:scale-105 transition-all cursor-default">
               {skill}
             </div>
           ))}
           {!showAll && category.skills.length > maxSkillsPerCategory && (
-            <div class={`badge badge-outline badge-md ${colors.badgeText} font-mono font-bold`}>
+            <div class="badge badge-outline badge-sm font-mono text-xs text-primary">
               +{category.skills.length - maxSkillsPerCategory}
             </div>
           )}
         </div>
 
-        <!-- Enhanced Progress with animated fill -->
-        <div class="w-full mt-6">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-mono text-base-content/40 uppercase tracking-wider">Proficiency</span>
-            <span class="text-xs font-mono font-bold text-base-content/60">{category.skills.length} skills</span>
-          </div>
-          <div class="w-full h-2 bg-base-content/10 rounded-full overflow-hidden">
-            <div class={`h-full ${colors.bg} rounded-full transition-all duration-1000 group-hover:animate-pulse`} style={`width: ${Math.min(category.skills.length * 10, 100)}%`}></div>
+        <!-- Simplified skill count -->
+        <div class="w-full mt-4">
+          <div class="text-center">
+            <span class="text-xs font-mono text-base-content/50">{category.skills.length} technologies</span>
           </div>
         </div>
       </div>
