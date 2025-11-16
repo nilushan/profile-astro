@@ -19,11 +19,11 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
 ---
 
 <section class="hero min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-5rem)] relative overflow-hidden tech-grid">
-    <!-- Animated gradient background -->
+    <!-- Subtle animated gradient background -->
     <div class="absolute inset-0 animated-gradient opacity-50"></div>
 
-    <!-- Diagonal accent line -->
-    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-secondary to-accent"></div>
+    <!-- Minimal accent line -->
+    <div class="absolute top-0 left-0 w-full h-0.5 bg-primary opacity-30"></div>
 
     <div class="container mx-auto px-4 relative z-10">
         <div
@@ -85,16 +85,16 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
                 <div
                     class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 lg:justify-start reveal-item reveal-item-delay-6"
                 >
-                    <div class="badge badge-primary badge-md sm:badge-lg font-mono shadow-lg hover:scale-110 transition-transform cursor-default glow">
+                    <div class="badge badge-outline badge-md sm:badge-lg font-mono shadow-sm hover:badge-primary hover:scale-110 transition-all cursor-default">
                         TypeScript Expert
                     </div>
-                    <div class="badge badge-secondary badge-md sm:badge-lg font-mono shadow-lg hover:scale-110 transition-transform cursor-default">
+                    <div class="badge badge-outline badge-md sm:badge-lg font-mono shadow-sm hover:badge-primary hover:scale-110 transition-all cursor-default">
                         GCP Architect
                     </div>
-                    <div class="badge badge-accent badge-md sm:badge-lg font-mono shadow-lg hover:scale-110 transition-transform cursor-default">
+                    <div class="badge badge-outline badge-md sm:badge-lg font-mono shadow-sm hover:badge-primary hover:scale-110 transition-all cursor-default">
                         IoT Specialist
                     </div>
-                    <div class="badge badge-info badge-md sm:badge-lg font-mono shadow-lg hover:scale-110 transition-transform cursor-default">DevOps Engineer</div>
+                    <div class="badge badge-outline badge-md sm:badge-lg font-mono shadow-sm hover:badge-primary hover:scale-110 transition-all cursor-default">DevOps Engineer</div>
                 </div>
 
                 <!-- Enhanced CTA Buttons -->
