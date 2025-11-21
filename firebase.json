@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist",
+    "public": "dist/client",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -65,6 +65,10 @@
 
     "rewrites": [
       {
+        "source": "/api/**",
+        "function": "api"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
@@ -72,5 +76,13 @@
 
     "cleanUrls": true,
     "trailingSlash": false
+  },
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs20",
+    "predeploy": [
+      "pnpm run build",
+      "rm -rf functions/dist && cp -r dist functions/dist"
+    ]
   }
 }

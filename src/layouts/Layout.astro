@@ -3,6 +3,7 @@ import "../styles/global.css";
 import { portfolioData as portfolioContent } from "@/data/portfolio";
 import Navbar from "@/components/navigation/Navbar.astro";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics.astro";
+import Chatbot from "@/components/Chatbot";
 
 export interface Props {
     title?: string;
@@ -160,6 +161,9 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href;
             <main class="pt-16 sm:pt-20">
                 <slot />
             </main>
+
+            <!-- Chatbot Widget -->
+            <Chatbot client:load />
 
             <!-- Footer -->
             <footer class="relative overflow-hidden">

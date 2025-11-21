@@ -5,13 +5,21 @@ import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import mermaid from 'astro-mermaid';
 import sitemap from '@astrojs/sitemap';
+import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.nilushansilva.info',
+  output: 'server', // Server mode with adapter for API routes
+  adapter: node({
+    mode: 'standalone' // Self-contained Node.js server
+  }),
 
   vite: {
     plugins: [tailwindcss()],
+    ssr: {
+      noExternal: ['html-escaper', 'cookie', 'kleur'] // Bundle specific Astro dependencies
+    },
     build: {
       cssCodeSplit: true,
       rollupOptions: {
