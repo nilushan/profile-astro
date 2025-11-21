@@ -6,13 +6,22 @@
  */
 
 const { onRequest } = require('firebase-functions/v2/https');
+const { defineSecret } = require('firebase-functions/params');
+
+// Define the secret
+const geminiApiKey = defineSecret('GEMINI_API_KEY');
 
 // Dynamic import of the Astro server entry
 let handler;
 
 exports.api = onRequest(
-  { region: 'australia-southeast1' }, // Deploy to Sydney region
+  {
+    region: 'australia-southeast1', // Deploy to Sydney region
+    secrets: [geminiApiKey] // Make secret available to function
+  },
   async (req, res) => {
+    // Set environment variable from secret
+    process.env.GEMINI_API_KEY = geminiApiKey.value();
   // Lazy load the handler on first request (reduces cold start time)
   if (!handler) {
     try {
