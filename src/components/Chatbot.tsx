@@ -9,6 +9,35 @@ import { useState, useRef, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 
 /**
+ * Mobile keyboard detection hook using Visual Viewport API
+ * Returns the current viewport height adjusted for keyboard presence
+ */
+function useViewportHeight() {
+  const [viewportHeight, setViewportHeight] = useState<number>(() => {
+    if (typeof window === 'undefined') return 0;
+    return window.visualViewport?.height || window.innerHeight;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.visualViewport) return;
+
+    const handleResize = () => {
+      setViewportHeight(window.visualViewport!.height);
+    };
+
+    window.visualViewport.addEventListener('resize', handleResize);
+    window.visualViewport.addEventListener('scroll', handleResize);
+
+    return () => {
+      window.visualViewport?.removeEventListener('resize', handleResize);
+      window.visualViewport?.removeEventListener('scroll', handleResize);
+    };
+  }, []);
+
+  return viewportHeight;
+}
+
+/**
  * Simple markdown-to-HTML converter for chat messages
  * Supports: links, bold, italic, code blocks, inline code
  * Output is sanitized with DOMPurify for XSS protection
@@ -50,6 +79,20 @@ export default function Chatbot() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const viewportHeight = useViewportHeight();
+
+  // Detect if we're on mobile (screen width < 640px, which is Tailwind's 'sm' breakpoint)
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Initialize messages from localStorage or default welcome message
   const [messages, setMessages] = useState<Message[]>(() => {
@@ -97,12 +140,27 @@ export default function Chatbot() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Focus input when chat opens
+  // Focus input when chat opens and scroll into view on mobile
   useEffect(() => {
     if (isOpen) {
-      inputRef.current?.focus();
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        inputRef.current?.focus();
+
+        // On mobile, scroll input into view when keyboard opens
+        if (isMobile && inputRef.current) {
+          inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 100);
     }
-  }, [isOpen]);
+  }, [isOpen, isMobile]);
+
+  // Re-scroll to bottom when viewport height changes (keyboard opens/closes)
+  useEffect(() => {
+    if (isOpen && isMobile) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [viewportHeight, isOpen, isMobile]);
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -219,7 +277,23 @@ export default function Chatbot() {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="card bg-base-100 shadow-2xl fixed bottom-20 right-4 sm:bottom-24 sm:right-6 w-full sm:w-96 max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-3rem)] z-40 border border-base-300">
+        <div
+          className="card bg-base-100 shadow-2xl fixed w-full sm:w-96 max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-3rem)] z-40 border border-base-300"
+          style={
+            isMobile
+              ? {
+                  bottom: '80px', // Space for floating button
+                  maxHeight: `${viewportHeight - 100}px`, // Adjust for keyboard
+                  right: '0.5rem',
+                  left: '0.5rem',
+                  width: 'calc(100% - 1rem)',
+                }
+              : {
+                  bottom: '6rem',
+                  right: '1.5rem',
+                }
+          }
+        >
           {/* Header */}
           <div className="card-body p-0">
             <div className="bg-primary text-primary-content px-3 py-2.5 sm:px-4 sm:py-3 rounded-t-2xl flex justify-between items-center">
@@ -251,7 +325,20 @@ export default function Chatbot() {
             </div>
 
             {/* Messages */}
-            <div className="flex flex-col gap-3 p-3 sm:p-4 h-[60vh] sm:h-96 max-h-[500px] overflow-y-auto">
+            <div
+              className="flex flex-col gap-3 p-3 sm:p-4 overflow-y-auto"
+              style={
+                isMobile
+                  ? {
+                      height: `${Math.min(viewportHeight - 280, viewportHeight * 0.6)}px`,
+                      maxHeight: `${viewportHeight - 280}px`, // Subtract header + input area + margins
+                    }
+                  : {
+                      height: '24rem', // 384px (sm:h-96)
+                      maxHeight: '500px',
+                    }
+              }
+            >
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
