@@ -13,7 +13,8 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { aggregatePortfolioContext, generateSystemPrompt } from '@/lib/chatbot-context';
 
 // Initialize Gemini with API key from environment
-const GEMINI_API_KEY = import.meta.env.GEMINI_API_KEY;
+// In Cloud Functions, use process.env; in dev/build, use import.meta.env
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
 
 if (!GEMINI_API_KEY) {
   console.error('GEMINI_API_KEY not found in environment variables');
