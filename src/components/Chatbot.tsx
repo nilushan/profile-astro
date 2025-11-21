@@ -185,7 +185,7 @@ export default function Chatbot() {
       {/* Floating Chat Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="btn btn-circle btn-primary btn-lg fixed bottom-6 right-6 z-50 shadow-lg hover:shadow-xl transition-all"
+        className="btn btn-circle btn-primary btn-lg fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 shadow-lg hover:shadow-xl transition-all"
         aria-label="Toggle chat"
       >
         {isOpen ? (
@@ -219,13 +219,13 @@ export default function Chatbot() {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="card bg-base-100 shadow-2xl fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] z-40 border border-base-300">
+        <div className="card bg-base-100 shadow-2xl fixed bottom-20 right-4 sm:bottom-24 sm:right-6 w-full sm:w-96 max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-3rem)] z-40 border border-base-300">
           {/* Header */}
           <div className="card-body p-0">
-            <div className="bg-primary text-primary-content px-4 py-3 rounded-t-2xl flex justify-between items-center">
+            <div className="bg-primary text-primary-content px-3 py-2.5 sm:px-4 sm:py-3 rounded-t-2xl flex justify-between items-center">
               <div>
-                <h3 className="font-semibold text-lg">Ask About Nilushan</h3>
-                <p className="text-xs opacity-90">Powered by AI</p>
+                <h3 className="font-semibold text-base sm:text-lg">Ask About Nilushan</h3>
+                <p className="text-xs sm:text-sm opacity-90">Powered by AI</p>
               </div>
               <button
                 onClick={clearHistory}
@@ -251,14 +251,14 @@ export default function Chatbot() {
             </div>
 
             {/* Messages */}
-            <div className="flex flex-col gap-3 p-4 h-96 overflow-y-auto">
+            <div className="flex flex-col gap-3 p-3 sm:p-4 h-[60vh] sm:h-96 max-h-[500px] overflow-y-auto">
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
                   className={`chat ${msg.role === 'user' ? 'chat-end' : 'chat-start'}`}
                 >
                   <div className="chat-image avatar">
-                    <div className="w-8 rounded-full bg-base-300 flex items-center justify-center">
+                    <div className="w-7 sm:w-8 h-7 sm:h-8 rounded-full bg-base-300 flex items-center justify-center">
                       {msg.role === 'user' ? (
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -297,7 +297,7 @@ export default function Chatbot() {
                       msg.role === 'user'
                         ? 'chat-bubble-primary'
                         : 'bg-base-200 text-base-content'
-                    } max-w-xs`}
+                    } max-w-[75%] sm:max-w-xs text-sm sm:text-base`}
                     dangerouslySetInnerHTML={{
                       __html: msg.role === 'user' ? msg.content : parseMarkdown(msg.content),
                     }}
@@ -308,11 +308,11 @@ export default function Chatbot() {
               {isLoading && (
                 <div className="chat chat-start">
                   <div className="chat-image avatar">
-                    <div className="w-8 rounded-full bg-base-300 flex items-center justify-center">
+                    <div className="w-7 sm:w-8 h-7 sm:h-8 rounded-full bg-base-300 flex items-center justify-center">
                       <span className="loading loading-dots loading-xs"></span>
                     </div>
                   </div>
-                  <div className="chat-bubble bg-base-200 text-base-content">
+                  <div className="chat-bubble bg-base-200 text-base-content text-sm sm:text-base">
                     <span className="loading loading-dots loading-sm"></span>
                   </div>
                 </div>
@@ -322,7 +322,7 @@ export default function Chatbot() {
             </div>
 
             {/* Input */}
-            <div className="px-4 pb-4 pt-2 border-t border-base-300">
+            <div className="px-3 pb-3 pt-2 sm:px-4 sm:pb-4 border-t border-base-300">
               <div className="flex gap-2">
                 <input
                   ref={inputRef}
@@ -331,13 +331,13 @@ export default function Chatbot() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Ask a question..."
-                  className="input input-bordered flex-1 input-sm"
+                  className="input input-bordered flex-1 input-sm sm:input-md text-sm sm:text-base"
                   disabled={isLoading}
                 />
                 <button
                   onClick={sendMessage}
                   disabled={!input.trim() || isLoading}
-                  className="btn btn-primary btn-sm"
+                  className="btn btn-primary btn-sm sm:btn-md px-3 sm:px-4"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -355,7 +355,7 @@ export default function Chatbot() {
                   </svg>
                 </button>
               </div>
-              <p className="text-xs text-base-content/60 mt-2">
+              <p className="text-xs sm:text-sm text-base-content/60 mt-1.5 sm:mt-2">
                 AI responses may not always be accurate
               </p>
             </div>
