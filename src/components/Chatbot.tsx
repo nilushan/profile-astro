@@ -41,19 +41,56 @@ interface Message {
   timestamp: Date;
 }
 
+const CHAT_STORAGE_KEY = 'portfolio-chatbot-history';
+const MAX_STORED_MESSAGES = 50; // Limit storage size
+
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'assistant',
-      content: "Hi! I'm here to help you learn about Nilushan Silva's background, skills, and projects. What would you like to know?",
-      timestamp: new Date(),
-    },
-  ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Initialize messages from localStorage or default welcome message
+  const [messages, setMessages] = useState<Message[]>(() => {
+    if (typeof window === 'undefined') return [];
+
+    try {
+      const stored = localStorage.getItem(CHAT_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        // Convert timestamp strings back to Date objects
+        return parsed.map((msg: Message) => ({
+          ...msg,
+          timestamp: new Date(msg.timestamp),
+        }));
+      }
+    } catch (error) {
+      console.error('Failed to load chat history:', error);
+    }
+
+    // Default welcome message
+    return [
+      {
+        role: 'assistant',
+        content: "Hi! I'm here to help you learn about Nilushan Silva's background, skills, and projects. What would you like to know?",
+        timestamp: new Date(),
+      },
+    ];
+  });
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      // Keep only the last MAX_STORED_MESSAGES to prevent localStorage from getting too large
+      const messagesToStore = messages.slice(-MAX_STORED_MESSAGES);
+      localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messagesToStore));
+    } catch (error) {
+      console.error('Failed to save chat history:', error);
+    }
+  }, [messages]);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -131,6 +168,18 @@ export default function Chatbot() {
     }
   };
 
+  const clearHistory = () => {
+    if (confirm('Clear all chat history? This cannot be undone.')) {
+      const welcomeMessage: Message = {
+        role: 'assistant',
+        content: "Hi! I'm here to help you learn about Nilushan Silva's background, skills, and projects. What would you like to know?",
+        timestamp: new Date(),
+      };
+      setMessages([welcomeMessage]);
+      localStorage.removeItem(CHAT_STORAGE_KEY);
+    }
+  };
+
   return (
     <>
       {/* Floating Chat Button */}
@@ -173,9 +222,32 @@ export default function Chatbot() {
         <div className="card bg-base-100 shadow-2xl fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] z-40 border border-base-300">
           {/* Header */}
           <div className="card-body p-0">
-            <div className="bg-primary text-primary-content px-4 py-3 rounded-t-2xl">
-              <h3 className="font-semibold text-lg">Ask About Nilushan</h3>
-              <p className="text-xs opacity-90">Powered by AI</p>
+            <div className="bg-primary text-primary-content px-4 py-3 rounded-t-2xl flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold text-lg">Ask About Nilushan</h3>
+                <p className="text-xs opacity-90">Powered by AI</p>
+              </div>
+              <button
+                onClick={clearHistory}
+                className="btn btn-ghost btn-xs btn-circle text-primary-content opacity-70 hover:opacity-100"
+                title="Clear chat history"
+                aria-label="Clear chat history"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                  />
+                </svg>
+              </button>
             </div>
 
             {/* Messages */}
