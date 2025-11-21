@@ -56,6 +56,9 @@ importers:
       '@fontsource/space-grotesk':
         specifier: ^5.2.10
         version: 5.2.10
+      '@google/generative-ai':
+        specifier: ^0.24.1
+        version: 0.24.1
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.1.15
         version: 2.1.15(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -86,6 +89,9 @@ importers:
       daisyui:
         specifier: ^5.0.43
         version: 5.0.43
+      dompurify:
+        specifier: ^3.3.0
+        version: 3.3.0
       lucide-react:
         specifier: ^0.523.0
         version: 0.523.0(react@19.1.0)
@@ -108,6 +114,9 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.16
         version: 0.5.16(tailwindcss@4.1.10)
+      '@types/dompurify':
+        specifier: ^3.2.0
+        version: 3.2.0
       lighthouse:
         specifier: ^13.0.1
         version: 13.0.1
@@ -514,6 +523,10 @@ packages:
 
   '@formatjs/intl-localematcher@0.6.2':
     resolution: {integrity: sha512-XOMO2Hupl0wdd172Y06h6kLpBz6Dv+J4okPLl4LPtzbr8f66WbIoy4ev98EBuZ6ZK4h5ydTN6XneT4QVpD7cdA==}
+
+  '@google/generative-ai@0.24.1':
+    resolution: {integrity: sha512-MqO+MLfM6kjxcKoy0p1wRzG3b4ZZXtPI+z2IE26UogS2Cm/XHO+7gGRBh6gcJsOiIVoH93UwKvW4HdgiOZCy9Q==}
+    engines: {node: '>=18.0.0'}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -1652,6 +1665,10 @@ packages:
 
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
+
+  '@types/dompurify@3.2.0':
+    resolution: {integrity: sha512-Fgg31wv9QbLDA0SpTOXO3MaxySc4DKGLi8sna4/Utjo4r3ZRPdCt4UQee8BWr+Q5z21yifghREPJGYaEOEIACg==}
+    deprecated: This is a stub types definition. dompurify provides its own type definitions, so you do not need this installed.
 
   '@types/estree-jsx@1.0.5':
     resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
@@ -3655,6 +3672,9 @@ packages:
   third-party-web@0.27.0:
     resolution: {integrity: sha512-h0JYX+dO2Zr3abCQpS6/uFjujaOjA1DyDzGQ41+oFn9VW/ARiq9g5ln7qEP9+BTzDpOMyIfsfj4OvfgXAsMUSA==}
 
+  third-party-web@0.28.0:
+    resolution: {integrity: sha512-4P798O67JmIKRJfJ1HSOkIsZrx2+FuaN2jTQX+imHXFPbGp17KSMDabYxrRT011B3gBzaoHFhUkBlEkNZN8vuQ==}
+
   tiny-inflate@1.0.3:
     resolution: {integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==}
 
@@ -4526,6 +4546,8 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  '@google/generative-ai@0.24.1': {}
+
   '@iconify/types@2.0.0': {}
 
   '@iconify/utils@3.0.2':
@@ -5023,7 +5045,7 @@ snapshots:
   '@paulirish/trace_engine@0.0.61':
     dependencies:
       legacy-javascript: 0.0.1
-      third-party-web: 0.27.0
+      third-party-web: 0.28.0
 
   '@prisma/instrumentation@6.11.1(@opentelemetry/api@1.9.0)':
     dependencies:
@@ -5684,6 +5706,10 @@ snapshots:
   '@types/debug@4.1.12':
     dependencies:
       '@types/ms': 2.1.0
+
+  '@types/dompurify@3.2.0':
+    dependencies:
+      dompurify: 3.3.0
 
   '@types/estree-jsx@1.0.5':
     dependencies:
@@ -8398,6 +8424,8 @@ snapshots:
       - react-native-b4a
 
   third-party-web@0.27.0: {}
+
+  third-party-web@0.28.0: {}
 
   tiny-inflate@1.0.3: {}
 

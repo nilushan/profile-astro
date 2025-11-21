@@ -9,6 +9,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.nilushansilva.info',
+  // output: 'static' is default - API routes use prerender: false for SSR
 
   vite: {
     plugins: [tailwindcss()],
