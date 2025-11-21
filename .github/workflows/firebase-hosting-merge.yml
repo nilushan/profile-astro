@@ -30,7 +30,17 @@ jobs:
         run: npm ci
 
       # Deploy both hosting and functions
-      - name: Deploy to Firebase
-        run: npx firebase-tools deploy --only hosting,functions --project nilushandevelopment
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NILUSHANDEVELOPMENT }}
+          channelId: live
+          projectId: nilushandevelopment
+          target: nilushansilva
+
+      - name: Deploy Functions
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only functions --project nilushandevelopment
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NILUSHANDEVELOPMENT }}

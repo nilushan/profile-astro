@@ -31,11 +31,10 @@ jobs:
         working-directory: ./functions
         run: npm ci
 
-      # Deploy preview with both hosting and functions
+      # Deploy preview hosting only (functions stay in production)
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NILUSHANDEVELOPMENT }}
           projectId: nilushandevelopment
-          # Note: Functions are deployed to production even on PR previews
-          # Only hosting gets a preview channel
+          target: nilushansilva
