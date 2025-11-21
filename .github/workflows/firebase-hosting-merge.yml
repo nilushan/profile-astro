@@ -21,15 +21,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
 
-      # Prepare functions directory
-      - name: Copy dist to functions
-        run: rm -rf functions/dist && cp -r dist functions/dist
-
-      - name: Install functions dependencies
-        working-directory: ./functions
-        run: npm ci
-
-      # Deploy both hosting and functions
+      # Deploy hosting only (functions deployed manually)
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
@@ -37,10 +29,3 @@ jobs:
           channelId: live
           projectId: nilushandevelopment
           target: nilushansilva
-
-      - name: Deploy Functions
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only functions --project nilushandevelopment
-        env:
-          GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NILUSHANDEVELOPMENT }}
