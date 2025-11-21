@@ -79,10 +79,6 @@
   },
   "functions": {
     "source": "functions",
-    "runtime": "nodejs20",
-    "predeploy": [
-      "pnpm run build",
-      "rm -rf functions/dist && cp -r dist functions/dist"
-    ]
+    "runtime": "nodejs20"
   }
 }
