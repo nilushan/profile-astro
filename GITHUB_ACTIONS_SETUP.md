@@ -111,7 +111,17 @@ Make sure `firebase.json` has the predeploy script:
 
 ✅ **Manual deployment working**: Functions deployed to australia-southeast1
 ✅ **Chatbot API working**: https://www.nilushansilva.info/api/chat
-⏳ **GitHub Actions**: Needs `FIREBASE_TOKEN` secret to be added
+✅ **GitHub Actions configured**: Ready after adding `FIREBASE_TOKEN` secret
+
+## How the Deployment Works
+
+The workflow uses two separate actions:
+1. **Hosting**: `FirebaseExtended/action-hosting-deploy` (uses service account)
+2. **Functions**: `jsryudev/deploy-firebase-functions` (uses FIREBASE_TOKEN)
+
+This approach combines the best of both:
+- Hosting uses the existing service account (no extra setup)
+- Functions uses a simple token-based deployment (no IAM role changes needed)
 
 ## Cost Implications
 
