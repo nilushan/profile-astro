@@ -103,7 +103,8 @@ export async function getImage(imagePath: string | undefined): Promise<ImageMeta
 
   try {
     // Try to import from src/assets
-    const imageModule = await import(`../assets/${normalizedPath}`);
+    // @ts-ignore - Dynamic import for backward compatibility (deprecated, use resolveImage instead)
+    const imageModule = await import(/* @vite-ignore */ `../assets/${normalizedPath}`);
     return imageModule.default;
   } catch (error) {
     console.warn(`Failed to load image: ${imagePath}`, error);

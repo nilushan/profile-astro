@@ -18,7 +18,10 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     ssr: {
-      noExternal: ['html-escaper', 'cookie', 'kleur'] // Bundle specific Astro dependencies
+      // For production builds, bundle these packages
+      noExternal: import.meta.env.PROD ? ['html-escaper', 'cookie', 'kleur'] : [],
+      // For dev mode, externalize packages with CommonJS/ESM issues
+      external: import.meta.env.DEV ? [] : undefined
     },
     build: {
       cssCodeSplit: true,
