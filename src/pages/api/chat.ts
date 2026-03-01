@@ -64,7 +64,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Initialize Gemini
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash-exp', // Ultra-cheap: $0.075/1M tokens input
+      model: 'gemini-flash-lite-latest', // Ultra-cheap: $0.075/1M tokens input
       systemInstruction: systemPrompt,
     });
 
@@ -104,7 +104,7 @@ export const POST: APIRoute = async ({ request }) => {
       JSON.stringify({
         response: responseText,
         metadata: {
-          model: 'gemini-2.0-flash-exp',
+          model: 'gemini-flash-lite-latest',
           contextSize: contextData.metadata.totalCharacters,
           sources: contextData.metadata.contentSources,
           timestamp: new Date().toISOString(),
