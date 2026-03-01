@@ -6,7 +6,8 @@
     "dev": "astro dev --host",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy": "pnpm build && rm -rf functions/dist && mkdir -p functions/dist && cp -r dist/server functions/dist/server && firebase deploy"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
