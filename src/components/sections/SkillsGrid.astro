@@ -15,77 +15,11 @@ export interface Props {
 
 const { skillCategories, showAll = false, maxSkillsPerCategory = 6 } = Astro.props;
 
-// Color class mapping for Tailwind (must be static strings)
-const colorClasses = {
-  primary: {
-    gradientFrom: 'from-primary/10',
-    gradientTo: 'to-primary/5',
-    bg: 'bg-primary',
-    text: 'text-primary-content',
-    badge: 'badge-primary',
-    badgeText: 'text-primary',
-    progress: 'progress-primary'
-  },
-  secondary: {
-    gradientFrom: 'from-secondary/10',
-    gradientTo: 'to-secondary/5',
-    bg: 'bg-secondary',
-    text: 'text-secondary-content',
-    badge: 'badge-secondary',
-    badgeText: 'text-secondary',
-    progress: 'progress-secondary'
-  },
-  accent: {
-    gradientFrom: 'from-accent/10',
-    gradientTo: 'to-accent/5',
-    bg: 'bg-accent',
-    text: 'text-accent-content',
-    badge: 'badge-accent',
-    badgeText: 'text-accent',
-    progress: 'progress-accent'
-  },
-  info: {
-    gradientFrom: 'from-info/10',
-    gradientTo: 'to-info/5',
-    bg: 'bg-info',
-    text: 'text-info-content',
-    badge: 'badge-info',
-    badgeText: 'text-info',
-    progress: 'progress-info'
-  },
-  success: {
-    gradientFrom: 'from-success/10',
-    gradientTo: 'to-success/5',
-    bg: 'bg-success',
-    text: 'text-success-content',
-    badge: 'badge-success',
-    badgeText: 'text-success',
-    progress: 'progress-success'
-  },
-  warning: {
-    gradientFrom: 'from-warning/10',
-    gradientTo: 'to-warning/5',
-    bg: 'bg-warning',
-    text: 'text-warning-content',
-    badge: 'badge-warning',
-    badgeText: 'text-warning',
-    progress: 'progress-warning'
-  },
-  error: {
-    gradientFrom: 'from-error/10',
-    gradientTo: 'to-error/5',
-    bg: 'bg-error',
-    text: 'text-error-content',
-    badge: 'badge-error',
-    badgeText: 'text-error',
-    progress: 'progress-error'
-  }
-};
-
 // Icon mapping for different skill categories
 const getIconSvg = (iconName: string) => {
   const icons: Record<string, string> = {
     code: `<path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />`,
+    ai: `<path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.456-2.456L14.25 6l1.035-.259a3.375 3.375 0 0 0 2.456-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423L16.5 15.75l.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />`,
     design: `<path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />`,
     cloud: `<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />`,
     database: `<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />`,
@@ -98,70 +32,53 @@ const getIconSvg = (iconName: string) => {
 };
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-fr">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 auto-rows-fr">
   {skillCategories.map((category, index) => {
-    const colors = colorClasses[category.color];
-    // Create bento grid layout with varying sizes
-    const spanClasses = [
-      'lg:col-span-2 lg:row-span-1', // Programming Languages - wide
-      'lg:col-span-1 lg:row-span-1', // Frontend
-      'lg:col-span-1 lg:row-span-1', // Backend
-      'lg:col-span-1 lg:row-span-1', // Cloud
-      'lg:col-span-1 lg:row-span-1', // Databases
-      'lg:col-span-2 lg:row-span-1', // DevOps - wide
-      'lg:col-span-1 lg:row-span-1', // Project Management
-    ];
+    const visibleSkills = showAll ? category.skills : category.skills.slice(0, maxSkillsPerCategory);
     return (
-    <div class={`card bg-base-100 shadow-lg transition-all duration-300 group relative overflow-hidden ${spanClasses[index]} scroll-reveal border-2 border-base-content/10 hover:border-primary/40 hover:shadow-xl`} data-delay={index % 3 + 1}>
-      <div class="card-body items-center text-center p-6 md:p-8 relative z-10">
-        <!-- Minimal icon with primary accent -->
-        <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-all duration-300 border border-primary/20">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="h-8 w-8 text-primary"
-            set:html={getIconSvg(category.icon)}
-          >
-          </svg>
-        </div>
-
-        <!-- Enhanced Title with display font -->
-        <h3 class="card-title text-xl md:text-2xl mb-2 font-display group-hover:text-primary transition-colors">
-          {category.title}
-        </h3>
-        
-        <!-- Description -->
-        {category.description && (
-          <p class="text-base text-base-content/60 mb-4">
-            {category.description}
-          </p>
-        )}
-        
-        <!-- Minimal skills display -->
-        <div class="flex flex-wrap gap-2 justify-center mt-auto">
-          {(showAll ? category.skills : category.skills.slice(0, maxSkillsPerCategory)).map((skill) => (
-            <div class="badge badge-outline badge-sm font-mono text-xs hover:badge-primary hover:scale-105 transition-all cursor-default">
-              {skill}
+      <article class="card h-full bg-base-100 shadow-lg transition-shadow duration-300 scroll-reveal border border-base-content/10 hover:shadow-xl" data-delay={index % 3 + 1}>
+        <div class="card-body p-6 md:p-7">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-primary/10 rounded-xl flex-none flex items-center justify-center border border-primary/20">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="h-6 w-6 text-primary"
+                set:html={getIconSvg(category.icon)}
+                aria-hidden="true"
+              >
+              </svg>
             </div>
-          ))}
-          {!showAll && category.skills.length > maxSkillsPerCategory && (
-            <div class="badge badge-outline badge-sm font-mono text-xs text-primary">
-              +{category.skills.length - maxSkillsPerCategory}
+            <div class="min-w-0">
+              <h3 class="text-xl font-display font-bold text-base-content leading-snug">
+                {category.title}
+              </h3>
+              {category.description && (
+                <p class="text-sm text-base-content/60 mt-1 leading-relaxed">
+                  {category.description}
+                </p>
+              )}
             </div>
-          )}
-        </div>
-
-        <!-- Simplified skill count -->
-        <div class="w-full mt-4">
-          <div class="text-center">
-            <span class="text-xs font-mono text-base-content/50">{category.skills.length} technologies</span>
           </div>
+
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 mt-3 border-t border-base-content/10 pt-4">
+            {visibleSkills.map((skill) => (
+              <li class="flex items-start gap-2 text-sm text-base-content/75 leading-snug min-w-0">
+                <span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-none" aria-hidden="true"></span>
+                <span class="min-w-0 break-words">{skill}</span>
+              </li>
+            ))}
+            {!showAll && category.skills.length > maxSkillsPerCategory && (
+              <li class="text-sm text-primary font-medium sm:col-span-2">
+                +{category.skills.length - maxSkillsPerCategory} more
+              </li>
+            )}
+          </ul>
         </div>
-      </div>
-    </div>
+      </article>
     );
   })}
 </div>

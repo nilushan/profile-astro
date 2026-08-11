@@ -1,0 +1,123 @@
+---
+title: "SmartSMB Human-in-the-Loop AI Workflow"
+description: "A non-production personal learning project exploring stateful agent orchestration for small businesses: enquiry triage, tool-assisted quoting, deterministic pricing, durable state, and human approval before action."
+period: "2026"
+status: "completed"
+featured: false
+technologies:
+  - "TypeScript"
+  - "Node.js"
+  - "LangGraph.js"
+  - "PostgreSQL"
+  - "Hono"
+  - "Drizzle ORM"
+  - "Zod"
+  - "Vitest"
+  - "LLM Tool Calling"
+  - "Human-in-the-Loop"
+achievements:
+  - "Built a stateful workflow that routes quotes, complaints, FAQs, and unclear enquiries to specialist paths or human handoff"
+  - "Kept quote calculations deterministic in code while using the LLM to gather details and select validated tools"
+  - "Implemented approve, revise, and reject controls so consequential actions remain under human supervision"
+  - "Persisted graph state in PostgreSQL so paused conversations survive restarts and resume safely"
+  - "Created a swappable model layer and comprehensive deterministic tests for agent behaviour"
+challenges:
+  - "Combining flexible language understanding with predictable business decisions"
+  - "Pausing and resuming a multi-step workflow safely across process restarts"
+  - "Preventing duplicate delivery when a checkpointed workflow is replayed"
+  - "Allowing human revisions without bypassing the approval gate"
+outcomes:
+  - "A working learning implementation of controlled agentic patterns for small-business workflows"
+  - "Practical experience with LangGraph state, conditional routing, tools, interrupts, and persistence"
+  - "A testable architecture where models are swappable and critical calculations remain deterministic"
+github: "https://github.com/nilushan/langgraph-frontdesk-agent"
+role: "Personal Project — Architecture and Implementation"
+tags:
+  - "Agentic AI"
+  - "Small Business Automation"
+  - "Multi-Agent Patterns"
+  - "Tool Calling"
+  - "Human-in-the-Loop"
+category: "ai"
+publishDate: 2026-07-01
+lastUpdated: 2026-08-11
+---
+
+## Scope and Purpose
+
+SmartSMB is a **non-production personal learning project** built to understand how agentic and multi-agent patterns can support common small-business workflows without handing uncontrolled authority to an LLM.
+
+The sample receives a customer enquiry, identifies its intent, gathers the information needed for a quote, calculates the price in normal application code, and pauses for a person to approve, revise, or reject higher-value work before anything is sent.
+
+Although deliberately compact, the project treats the agent as a software system: state is typed, decisions are testable, side effects are idempotent, model providers are replaceable, and human approval is part of the workflow rather than an afterthought.
+
+## Workflow
+
+A customer message can be routed to several specialist paths:
+
+- **Quote:** gather job details, consult pricing and availability tools, calculate a quote, and request approval when required
+- **Complaint:** direct the message to a dedicated complaint path
+- **FAQ:** handle common information requests
+- **Unclear or low-confidence enquiry:** hand off to a person rather than guessing
+
+The quote path uses a ReAct-style loop in which the model can call validated tools. Graph routing is handled by explicit application logic, and the full workflow state is checkpointed after each step.
+
+## Deterministic Decisions Around Probabilistic Models
+
+The LLM is useful for interpreting an unstructured request and gathering missing details, but it does not get to invent the final price. A dedicated node calculates the amount from structured inputs in code.
+
+This boundary demonstrates a pattern I consider important for practical AI systems:
+
+- Use models where language understanding and flexible reasoning add value
+- Use schemas to validate model and tool inputs
+- Keep financial rules and other critical decisions deterministic
+- Route low-confidence or exceptional cases to a person
+- Test the deterministic boundaries independently of the model provider
+
+## Human-in-the-Loop Approval
+
+Quotes over a configurable threshold cause the LangGraph workflow to interrupt and wait. An operator can:
+
+- **Approve** the quote as prepared
+- **Revise** structured quote details and send the result back through approval
+- **Reject** it and move the conversation to human follow-up
+
+A revision never goes directly to the customer. It loops back through the approval gate, retaining a record of who changed the quote and what changed. This keeps a person accountable for consequential output while still allowing the agent to do useful preparation work.
+
+## Durable State and Safe Resumption
+
+Conversation and workflow state is stored through a PostgreSQL checkpointer. A thread can pause while waiting for approval, survive an application restart, and resume from the recorded state.
+
+The delivery step is idempotent, keyed by quote identity, so replaying or resuming a workflow does not send the same approved quote twice.
+
+## Model and Tool Architecture
+
+Agent nodes depend on a common chat-model abstraction rather than a hard-coded provider. This allowed me to explore how the same workflow can operate with different LLMs while preserving the surrounding business rules.
+
+Tool calls use validated schemas for operations such as pricing and availability lookup. This keeps the tool boundary explicit and makes invalid input fail predictably instead of flowing into business services.
+
+## Engineering Approach
+
+This project was also an exercise in agentic engineering practices:
+
+1. Write a specification and architecture decisions before implementation
+2. Model workflow state, trust boundaries, and side effects explicitly
+3. Use coding agents to assist with planning and implementation
+4. Add deterministic unit and integration tests
+5. Review diffs, failure paths, and generated behaviour as normal production-oriented code
+6. Keep human ownership of architecture and acceptance decisions
+
+The repository includes architecture diagrams, ADRs, a runbook, CI checks, and a comprehensive automated test suite.
+
+## What I Learned
+
+- Stateful orchestration is more reliable than treating every interaction as an isolated prompt
+- Human approval should be represented in workflow state and control flow, not handled informally outside the system
+- Tool use needs schemas, permissions, and deterministic boundaries
+- Durable checkpoints make long-running, interruptible workflows practical
+- Multi-agent or specialist routing is most useful when each path has a clear responsibility
+- Model portability is easier when orchestration and business logic do not depend directly on a provider
+
+## Production Considerations
+
+This is a learning implementation, not a claim of production operation. A production rollout would additionally require organisation-specific security review, privacy controls, threat modelling, model and prompt evaluation, rate limiting, production retrieval for company knowledge, channel integrations, monitoring, and operational ownership.

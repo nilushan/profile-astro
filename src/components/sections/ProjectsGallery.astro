@@ -15,7 +15,10 @@ const displayedProjects = showAll ? projects : projects.slice(0, maxProjects);
 
 
 // Function to get project icon based on technologies
-const getProjectIcon = (technologies: string[]) => {
+const getProjectIcon = (technologies: string[], category?: string) => {
+  if (category === 'ai') {
+    return 'ai';
+  }
   if (technologies?.some(tech => tech.toLowerCase().includes('iot') || tech.toLowerCase().includes('mqtt'))) {
     return 'iot';
   }
@@ -37,6 +40,7 @@ const iconPaths = {
   voice: `<path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />`,
   dashboard: `<path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />`,
   cloud: `<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />`,
+  ai: `<path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />`,
   default: `<path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />`,
 };
 
@@ -60,6 +64,7 @@ const statusColors = {
       data-technologies={project.data.technologies?.join(',')}
       class={`
       card bg-base-100 shadow-xl transition-all duration-500 group relative overflow-hidden border border-base-content/5 hover:border-primary/20 glass scroll-reveal hover-lift
+      ${layout === 'grid' ? 'h-full' : ''}
       ${project.data.featured ? 'ring-2 ring-primary/30 ring-offset-2 ring-offset-base-100' : ''}
       ${layout === 'masonry' ? 'break-inside-avoid mb-8' : ''}
       ${layout === 'list' ? 'lg:card-side' : ''}
@@ -73,13 +78,13 @@ const statusColors = {
           <DynamicImage
             src={project.data.image}
             alt={`${project.data.title} - ${project.data.description}`}
-            class={`${layout === 'list' ? 'w-full h-48 object-cover rounded-xl lg:h-full' : 'w-full h-48 object-cover rounded-xl'}`}
+            class={`${layout === 'list' ? 'w-full h-48 rounded-xl lg:h-full' : 'w-full h-48 rounded-xl'} ${project.data.imageFit === 'contain' ? 'object-contain' : 'object-cover'}`}
             loading="lazy"
           />
         ) : (
           <div class={`w-full bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-secondary/30 transition-all ${layout === 'list' ? 'h-48 lg:h-full' : 'h-48'}`}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="h-16 w-16 text-primary">
-              <path set:html={iconPaths[getProjectIcon(project.data.technologies)]} />
+              <path set:html={iconPaths[getProjectIcon(project.data.technologies, project.data.category)]} />
             </svg>
           </div>
         )}
@@ -148,18 +153,18 @@ const statusColors = {
         <!-- Enhanced Technologies -->
         <div class="mb-6">
           <h4 class="font-mono text-xs uppercase tracking-wider text-base-content/50 mb-3">Tech Stack</h4>
-          <div class="flex flex-wrap gap-2">
+          <ul class="flex flex-wrap gap-2">
             {project.data.technologies?.slice(0, 6).map((tech) => (
-              <div class="badge badge-outline hover:badge-primary hover:scale-110 transition-all font-mono text-xs shadow-sm">
+              <li class="inline-flex max-w-full rounded-md border border-base-content/15 bg-base-200/50 px-2.5 py-1.5 text-xs leading-snug text-base-content/75 break-words">
                 {tech}
-              </div>
+              </li>
             ))}
             {project.data.technologies?.length > 6 && (
-              <div class="badge badge-outline font-mono font-bold">
-                +{project.data.technologies.length - 6}
-              </div>
+              <li class="inline-flex rounded-md bg-base-200 px-2.5 py-1.5 text-xs leading-snug text-base-content/60">
+                +{project.data.technologies.length - 6} more
+              </li>
             )}
-          </div>
+          </ul>
         </div>
         
         <!-- Enhanced Actions -->

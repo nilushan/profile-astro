@@ -20,27 +20,33 @@ exports.api = onRequest(
     secrets: [geminiApiKey] // Make secret available to function
   },
   async (req, res) => {
-    // Set environment variable from secret
+    // Make the secret available before importing the Astro server module.
     process.env.GEMINI_API_KEY = geminiApiKey.value();
-  // Lazy load the handler on first request (reduces cold start time)
-  if (!handler) {
-    try {
-      const { handler: astroHandler } = await import('./dist/server/entry.mjs');
-      handler = astroHandler;
-    } catch (error) {
-      console.error('Failed to load Astro server:', error);
-      res.status(500).send('Server initialization error');
-      return;
-    }
-  }
 
-  // Forward the request to Astro's handler
-  try {
-    await handler(req, res);
-  } catch (error) {
-    console.error('Request handling error:', error);
-    if (!res.headersSent) {
-      res.status(500).json({ error: 'Internal server error' });
+    // A Cloud Function owns the HTTP server. Prevent an Astro standalone build
+    // from attempting to listen on a second port if deployment configuration
+    // ever regresses from middleware mode.
+    process.env.ASTRO_NODE_AUTOSTART = 'disabled';
+
+    // Lazy load the middleware handler on the first request to reduce cold-start
+    // work and ensure runtime secrets are available during module evaluation.
+    if (!handler) {
+      try {
+        const { handler: astroHandler } = await import('./dist/server/entry.mjs');
+        handler = astroHandler;
+      } catch (error) {
+        console.error('Failed to load Astro server:', error);
+        res.status(500).json({ error: 'Server initialization error' });
+        return;
+      }
     }
-  }
+
+    try {
+      await handler(req, res);
+    } catch (error) {
+      console.error('Request handling error:', error);
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
 });

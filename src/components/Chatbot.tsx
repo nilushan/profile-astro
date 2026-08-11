@@ -7,6 +7,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import DOMPurify from 'dompurify';
+import { portfolioData } from '@/data/portfolio';
 
 /**
  * Mobile keyboard detection hook using Visual Viewport API
@@ -68,6 +69,50 @@ interface Message {
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
+}
+
+/**
+ * Reliable, client-side answers for the most common portfolio questions.
+ * Firebase Hosting can serve these even when the optional AI API is unavailable.
+ */
+function getPortfolioFallback(question: string): string {
+  const query = question.toLowerCase();
+  const { personal, skills, experience } = portfolioData;
+  const currentRole = experience[0];
+
+  if (/contact|email|phone|linkedin|github|reach/.test(query)) {
+    return `You can contact Nilushan at **${personal.email}**, connect on [LinkedIn](https://linkedin.com/in/${personal.social.linkedin}), or view his work on [GitHub](https://github.com/${personal.social.github}).`;
+  }
+
+  if (/c#|c sharp|java|c\+\+|older language|previous language/.test(query)) {
+    return `Nilushan's current hands-on stack is TypeScript and Node.js. He previously worked professionally with **C#, Java, C++, and PHP** and can refresh those ecosystems when a role requires them. See [Skills](/skills) for context.`;
+  }
+
+  if (/typescript|node|current stack|tech stack|programming|language/.test(query)) {
+    return `Nilushan currently works primarily with **TypeScript, Node.js, React, PostgreSQL, and Google Cloud Platform**. His backend experience includes ${skills.backend.slice(0, 4).join(', ')}. See the full [Skills page](/skills).`;
+  }
+
+  if (/cost|partition|postgres|cloud sql|logging|stackdriver/.test(query)) {
+    return `His recent GCP cost-optimisation work uses **monthly Cloud SQL PostgreSQL partitions**, historical-data archival, partition-based retention, and focused Cloud Logging. This controls active storage growth and improves recent time-series query paths. Read the [GCP cost optimisation case study](/projects/gcp-cost-optimization).`;
+  }
+
+  if (/ci\/cd|pipeline|artifact|kustomize|federation|wif|identity|keyless/.test(query)) {
+    return `Nilushan built a build-once, multi-environment delivery workflow using **GitHub Actions, Artifact Registry, Kubernetes, Kustomize, Cloud Run, Firebase, and Workload Identity Federation**. Read the [keyless CI/CD case study](/projects/cicd-keyless-delivery).`;
+  }
+
+  if (/agent|ai|llm|claude|codex|grok|voice/.test(query)) {
+    return `Nilushan uses coding agents during planning, implementation, testing, and review while retaining human ownership of architecture and quality. His learning projects include [SmartSMB](/projects/smartsmb-agentic-workflow), a human-in-the-loop quoting workflow, and an [AI voice service-agent prototype](/projects/ai-voice-service-agent).`;
+  }
+
+  if (/experience|career|current role|work|zimi/.test(query)) {
+    return `Nilushan has **${personal.yearsExperience}+ years** of software experience and currently works as **${currentRole.title} at ${currentRole.company}**. His work spans production GCP infrastructure, TypeScript services, React interfaces, IoT systems, CI/CD, and third-party integrations. See [Experience](/experience).`;
+  }
+
+  if (/project|portfolio|built|case stud/.test(query)) {
+    return `Key projects include a 55,000+ device [IoT platform migration](/projects/iot-platform-migration), [GCP cost optimisation](/projects/gcp-cost-optimization), [keyless CI/CD](/projects/cicd-keyless-delivery), third-party APIs, voice integrations, and agentic-AI learning projects. Browse [all projects](/projects).`;
+  }
+
+  return `I can help with Nilushan's **skills, experience, GCP work, CI/CD, programming languages, AI projects, or contact details**. You can also explore [Projects](/projects), [Experience](/experience), and [Skills](/skills).`;
 }
 
 const CHAT_STORAGE_KEY = 'portfolio-chatbot-history';
@@ -191,11 +236,15 @@ export default function Chatbot() {
         }),
       });
 
+      const data = await response.json().catch(() => ({}));
+
       if (!response.ok) {
-        throw new Error('Failed to get response');
+        throw new Error(data.error || `Chat request failed (${response.status})`);
       }
 
-      const data = await response.json();
+      if (typeof data.response !== 'string' || !data.response.trim()) {
+        throw new Error('Chat API returned an empty response');
+      }
 
       const assistantMessage: Message = {
         role: 'assistant',
@@ -209,7 +258,7 @@ export default function Chatbot() {
 
       const errorMessage: Message = {
         role: 'assistant',
-        content: "Sorry, I'm having trouble responding right now. Please try again.",
+        content: getPortfolioFallback(userMessage.content),
         timestamp: new Date(),
       };
 
@@ -299,7 +348,7 @@ export default function Chatbot() {
             <div className="bg-primary text-primary-content px-3 py-2.5 sm:px-4 sm:py-3 rounded-t-2xl flex justify-between items-center">
               <div>
                 <h3 className="font-semibold text-base sm:text-lg">Ask About Nilushan</h3>
-                <p className="text-xs sm:text-sm opacity-90">Powered by AI</p>
+                <p className="text-xs sm:text-sm opacity-90">Answers from portfolio content</p>
               </div>
               <button
                 onClick={clearHistory}
@@ -385,10 +434,13 @@ export default function Chatbot() {
                         ? 'chat-bubble-primary'
                         : 'bg-base-200 text-base-content'
                     } max-w-[75%] sm:max-w-xs text-sm sm:text-base`}
-                    dangerouslySetInnerHTML={{
-                      __html: msg.role === 'user' ? msg.content : parseMarkdown(msg.content),
-                    }}
-                  />
+                  >
+                    {msg.role === 'user' ? (
+                      msg.content
+                    ) : (
+                      <span dangerouslySetInnerHTML={{ __html: parseMarkdown(msg.content) }} />
+                    )}
+                  </div>
                 </div>
               ))}
 
@@ -443,7 +495,7 @@ export default function Chatbot() {
                 </button>
               </div>
               <p className="text-xs sm:text-sm text-base-content/60 mt-1.5 sm:mt-2">
-                AI responses may not always be accurate
+                Answers are based on published portfolio information
               </p>
             </div>
           </div>

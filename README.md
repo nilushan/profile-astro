@@ -1,259 +1,106 @@
-# Nilushan Silva - Professional Portfolio
+# Nilushan Silva — Professional Portfolio
 
-A modern, professional portfolio built with Astro, DaisyUI, and Starlight documentation. This portfolio showcases 15+ years of full-stack development and cloud engineering experience.
+Personal portfolio and technical blog for Nilushan Silva, built with Astro, React, TypeScript, Tailwind CSS, and DaisyUI.
 
+## Features
 
-## 🚀 Features
+- Static portfolio pages with interactive React islands
+- Type-safe blog and project content collections
+- Multi-theme DaisyUI interface with persisted theme selection
+- Mermaid diagrams in MDX content
+- RSS feed, sitemap, canonical URLs, Open Graph metadata, and structured data
+- Context-aware Gemini chatbot with a client-side fallback
+- Firebase Hosting and Cloud Functions deployment
 
-### Portfolio Website
-- **Modern Design**: Built with Astro and styled with DaisyUI
-- **Responsive**: Mobile-first design that works on all devices
-- **Interactive**: Smooth animations and transitions
-- **Professional**: Clean, modern aesthetic suitable for senior roles
+## Technology
 
-### Technical Documentation
-- **Starlight Integration**: Professional documentation site at `/docs/`
-- **Architecture Guides**: Detailed technical documentation
-- **Searchable**: Built-in search functionality
-- **Mobile-Responsive**: Works perfectly on all devices
+- Astro 5 in server mode with static page prerendering
+- React 19 for interactive components
+- TypeScript with strict checking and the `@/*` path alias
+- Tailwind CSS 4 and DaisyUI 5
+- MDX content collections
+- Firebase Hosting and Cloud Functions (Node.js 22)
+- pnpm 10
 
-### Content Management
-- **Structured Content**: Well-organized content collections
-- **Type-Safe**: Full TypeScript support
-- **Easy Updates**: Simple data files for content management
-- **Blog Support**: Integrated blog functionality
+## Requirements
 
-## 🛠️ Technology Stack
+- Node.js 22 recommended (CI and Firebase Functions use Node.js 22)
+- pnpm 10.11 or newer
+- Firebase CLI only when deploying manually
 
-- **Framework**: [Astro](https://astro.build/) - Modern static site generator
-- **UI Library**: [DaisyUI](https://daisyui.com/) - Tailwind CSS components
-- **Documentation**: [Starlight](https://starlight.astro.build/) - Technical documentation
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
-- **TypeScript**: Full type safety throughout the project
-- **Package Manager**: pnpm for efficient dependency management
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+ 
-- pnpm (recommended) or npm
-
-### Installation
-
-1. **Clone the repository** (if needed)
-   ```bash
-   cd /projects/astro-app
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pnpm install
-   ```
-
-3. **Start development server**
-   ```bash
-   pnpm dev
-   ```
-
-4. **Open in browser**
-   ```
-   http://localhost:4321
-   ```
-
-### Build for Production
+## Local development
 
 ```bash
-# Build the site
-pnpm build
-
-# Preview the build
-pnpm preview
+pnpm install
+cp .env.example .env.local
+pnpm dev
 ```
 
-## 📁 Project Structure
+The development server is available at `http://localhost:4321` by default.
 
-```
-/projects/astro-app/
-├── src/
-│   ├── components/           # Reusable UI components
-│   │   ├── sections/        # Page sections (Hero, Projects, etc.)
-│   │   ├── navigation/      # Navigation components
-│   │   └── ui/              # UI components
-│   ├── content/             # Content collections
-│   │   ├── docs/            # Starlight documentation
-│   │   ├── knowledge/       # Custom knowledge base
-│   │   ├── blog/            # Blog posts
-│   │   ├── projects/        # Project showcases
-│   │   └── config.ts        # Content collection schemas
-│   ├── data/
-│   │   └── portfolio.ts     # Portfolio data (easily editable)
-│   ├── layouts/
-│   │   └── Layout.astro     # Main layout component
-│   ├── pages/               # Route pages
-│   ├── styles/
-│   │   ├── global.css       # Global styles
-│   │   └── starlight.css    # Starlight theme customization
-│   └── lib/
-│       └── utils.ts         # Utility functions
-├── public/                  # Static assets
-├── astro.config.mjs         # Astro configuration
-├── tailwind.config.ts       # Tailwind/DaisyUI configuration
-├── content.config.ts        # Starlight content configuration
-└── package.json
-```
+The chatbot uses built-in portfolio answers when its API is unavailable. To enable Gemini responses locally, set `GEMINI_API_KEY` in `.env.local`.
 
-## 🎨 Customization
-
-### Portfolio Data
-Edit `/src/data/portfolio.ts` to update:
-- Personal information
-- Experience timeline
-- Project showcases
-- Skills and technologies
-- Contact information
-
-### Theme Customization
-The site uses DaisyUI themes. You can:
-- Choose from 30+ built-in themes
-- Customize colors in `tailwind.config.ts`
-- Add your own theme variants
-
-### Content Management
-- **Blog Posts**: Add `.mdx` files to `/src/content/blog/`
-- **Projects**: Add `.mdx` files to `/src/content/projects/`
-- **Documentation**: Add `.md` files to `/src/content/docs/`
-
-## 📄 Pages Overview
-
-### Main Portfolio (`/`)
-- **Hero Section**: Professional introduction with key stats
-- **About Preview**: Summary of experience and expertise
-- **Featured Projects**: Showcase of major projects
-- **Experience Timeline**: Career progression
-- **Skills Overview**: Technical competencies
-- **Contact Information**: Get in touch section
-
-### Technical Documentation (`/docs/`)
-- **Welcome Page**: Introduction to technical expertise
-- **Getting Started**: Overview of skills and experience
-- **Architecture Guides**: IoT platform architecture patterns
-- **Cloud Platforms**: GCP best practices and implementation
-- **Searchable**: Built-in search functionality
-
-### Projects (`/projects/`)
-- **Project Gallery**: All projects with filtering
-- **Individual Project Pages**: Detailed case studies
-- **Technologies Used**: Technical stack for each project
-- **Key Achievements**: Measurable outcomes
-
-### Blog (`/blog/`)
-- **Technical Articles**: Development insights
-- **Architecture Posts**: System design discussions
-- **Industry Insights**: Cloud and IoT perspectives
-
-## 🎯 Key Achievements Highlighted
-
-- **55,000+ IoT devices** migrated with zero downtime
-- **99.999% uptime** achieved on production systems
-- **50% cost reduction** through cloud optimization
-- **40% latency improvement** via architecture redesign
-- **7+ years** of TypeScript/React expertise
-- **6+ years** of Google Cloud Platform experience
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-```bash
-# Build and deploy
-vercel --prod
-```
-
-### Netlify
-```bash
-# Build
-pnpm build
-
-# Deploy dist/ folder
-```
-
-### Traditional Hosting
-```bash
-# Build static files
-pnpm build
-
-# Upload dist/ folder to your hosting provider
-```
-
-## 🔧 Development Commands
+## Commands
 
 ```bash
-# Development
-pnpm dev                # Start dev server
-pnpm build             # Build for production
-pnpm preview           # Preview production build
-
-# Linting & Formatting
-pnpm astro check       # Check for issues
-pnpm astro --help      # Show help
-
-# Dependencies
-pnpm install           # Install dependencies
-pnpm update            # Update dependencies
+pnpm dev       # Start the development server
+pnpm build     # Create the production build
+pnpm preview   # Preview the production build
+pnpm astro     # Run Astro CLI commands
 ```
 
-## 🎨 Available Themes
+There is currently no dedicated test or lint script. Use `pnpm build` as the baseline validation command.
 
-The portfolio includes multiple DaisyUI themes:
-- **Light/Dark**: Professional themes
-- **Corporate**: Business-focused styling
-- **Cyberpunk**: Modern, tech-forward appearance  
-- **Emerald**: Nature-inspired colors
-- **And 25+ more themes**
+## Project structure
 
-Switch themes by updating the `data-theme` attribute or using the theme selector component.
+```text
+src/
+├── assets/             # Source images and other optimized assets
+├── components/         # Astro and interactive React components
+├── content/
+│   ├── blog/           # Blog posts (MDX)
+│   └── projects/       # Project case studies (MDX)
+├── data/               # Central portfolio data
+├── layouts/            # Shared page layouts
+├── lib/                # Utilities, theme management, chatbot context
+├── pages/              # Site routes and /api/chat
+├── styles/             # Global styles
+└── types/              # Shared TypeScript types
 
-## 📱 Responsive Design
+functions/              # Firebase Cloud Function wrapper for Astro SSR
+docs/                   # Project documentation
+public/                 # Assets copied without processing
+```
 
-- **Mobile-First**: Optimized for mobile devices
-- **Tablet-Friendly**: Perfect layout for tablets
-- **Desktop-Enhanced**: Rich experience on larger screens
-- **Print-Friendly**: Optimized for printing/PDF generation
+## Content updates
 
-## 🔒 Performance & SEO
+- Personal details, skills, and experience: `src/data/portfolio.ts`
+- Blog posts: `src/content/blog/*.mdx`
+- Project case studies: `src/content/projects/*.mdx`
+- Collection schemas: `src/content.config.ts`
 
-- **Lighthouse Score**: 95+ across all metrics
-- **Core Web Vitals**: Optimized for Google's requirements
-- **SEO-Optimized**: Meta tags, structured data, sitemap
-- **Accessibility**: WCAG 2.1 AA compliant
+## Deployment
 
-## 🤝 Contributing
+Production deploys to Firebase when changes are pushed to `master`. Pull requests from branches in this repository receive a Hosting preview deployment. The `/api/**` path is routed to the `api` Cloud Function in Sydney (`australia-southeast1`).
 
-This is a personal portfolio, but suggestions and improvements are welcome:
+See [Firebase deployment](docs/deployment/firebase.md) for setup, secrets, manual deployment, and troubleshooting.
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+## Documentation
 
-## 📞 Contact
+Start with the [documentation index](docs/README.md):
 
-- **Email**: nilushan.silva@gmail.com
-- **Phone**: 0416285726
-- **LinkedIn**: [nilushan-silva-27235310](https://www.linkedin.com/in/nilushan-silva-27235310/)
-- **Location**: Gold Coast, Queensland, Australia
+- [Firebase deployment](docs/deployment/firebase.md)
+- [Chatbot](docs/features/chatbot.md)
+- [Mermaid](docs/features/mermaid.md)
+- [SEO and indexing](docs/operations/seo.md)
+- [Design system](docs/design-system.md)
 
-## 📄 License
+## Contact
 
-This project is for personal use. Feel free to use it as inspiration for your own portfolio, but please don't copy the content directly.
+- [LinkedIn](https://www.linkedin.com/in/nilushan-silva-27235310/)
+- [GitHub](https://github.com/nilushan)
+- [nilushansilva.info](https://www.nilushansilva.info)
 
-## 🙏 Acknowledgments
+## License
 
-- Built with [Astro](https://astro.build/)
-- Styled with [DaisyUI](https://daisyui.com/)
-- Documentation powered by [Starlight](https://starlight.astro.build/)
-- Icons from [Heroicons](https://heroicons.com/)
-- Fonts from [Google Fonts](https://fonts.google.com/)
-
----
-
-**Made with ❤️ by Nilushan Silva**
+This repository is a personal portfolio. You may use it for inspiration, but do not copy personal content directly.

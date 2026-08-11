@@ -126,7 +126,7 @@ const isCurrent = (period: string) => {
                   client:load
                   title="Key Achievements"
                   items={experience.highlights}
-                  defaultExpanded={index === 0}
+                  defaultExpanded={false}
                 />
               )}
 
@@ -138,13 +138,13 @@ const isCurrent = (period: string) => {
                   </svg>
                   <span class="font-mono text-sm uppercase tracking-wider">Tech Stack</span>
                 </h5>
-                <div class="flex flex-wrap gap-2">
+                <ul class="flex flex-wrap gap-2">
                   {experience.technologies.map((tech) => (
-                    <div class="badge badge-outline hover:badge-primary hover:scale-110 transition-all cursor-default font-mono text-xs shadow-sm">
+                    <li class="inline-flex max-w-full rounded-md border border-base-content/15 bg-base-200/50 px-2.5 py-1.5 text-xs leading-snug text-base-content/75 break-words">
                       {tech}
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </div>
           </div>
