@@ -78,7 +78,7 @@ const statusColors = {
           <DynamicImage
             src={project.data.image}
             alt={`${project.data.title} - ${project.data.description}`}
-            class={`${layout === 'list' ? 'w-full h-48 object-cover rounded-xl lg:h-full' : 'w-full h-48 object-cover rounded-xl'}`}
+            class={`${layout === 'list' ? 'w-full h-48 rounded-xl lg:h-full' : 'w-full h-48 rounded-xl'} ${project.data.imageFit === 'contain' ? 'object-contain' : 'object-cover'}`}
             loading="lazy"
           />
         ) : (

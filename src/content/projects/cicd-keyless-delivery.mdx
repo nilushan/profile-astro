@@ -1,6 +1,8 @@
 ---
 title: "Keyless Multi-Environment CI/CD on GCP"
 description: "A build-once delivery platform that publishes versioned artifacts from GitHub Actions, promotes them across environments, renders reusable Kustomize overlays, and uses Workload Identity Federation instead of long-lived service-account keys."
+image: /images/projects/keyless-cicd-gcp.jpg
+imageFit: contain
 period: "2026–Present"
 status: "ongoing"
 featured: true
@@ -111,6 +113,8 @@ Runtime services were also moved away from mounted service-account key files.
 With Workload Identity Federation for GKE, a Kubernetes service account is associated with an authorised GCP identity. The workload obtains short-lived credentials at runtime and can access only the GCP resources allowed by its IAM roles.
 
 This allows each service to have a dedicated, least-privilege identity without copying private key files into pods. Application code uses standard GCP authentication rather than knowing where a credential file has been mounted.
+
+![GKE workloads using Workload Identity Federation for keyless, short-lived access to GCP resources](../../assets/projects/gke-workload-identity-federation.jpg)
 
 ## Artifact Access
 

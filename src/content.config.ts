@@ -14,6 +14,7 @@ const projects = defineCollection({
     challenges: z.array(z.string()).optional(),
     outcomes: z.array(z.string()).optional(),
     image: z.string().optional(),
+    imageFit: z.enum(['cover', 'contain']).default('cover'),
     gallery: z.array(z.string()).optional(),
     github: z.string().optional(),
     demo: z.string().optional(),
