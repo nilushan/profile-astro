@@ -12,7 +12,9 @@ export default defineConfig({
   site: 'https://www.nilushansilva.info',
   output: 'server', // Server mode with adapter for API routes
   adapter: node({
-    mode: 'standalone' // Self-contained Node.js server
+    // Firebase Functions imports the generated handler; standalone mode would
+    // auto-start a second HTTP server when entry.mjs is imported.
+    mode: 'middleware'
   }),
 
   vite: {

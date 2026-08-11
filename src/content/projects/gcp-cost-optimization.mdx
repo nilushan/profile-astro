@@ -1,0 +1,126 @@
+---
+title: "GCP Database & Logging Cost Optimisation"
+description: "A production cost-control initiative using monthly Cloud SQL PostgreSQL partitions, historical-data archival, partition-based retention, and focused Cloud Logging to constrain recurring storage and logging cost growth."
+period: "2026–Present"
+status: "ongoing"
+featured: true
+technologies:
+  - "Google Cloud Platform"
+  - "Cloud SQL"
+  - "PostgreSQL"
+  - "PostgreSQL Partitioning"
+  - "Cloud Logging"
+  - "Time-Series Data"
+  - "Data Archival"
+achievements:
+  - "Controlled active Cloud SQL storage growth through monthly partitioning, archival, and partition-based retention"
+  - "Improved recent time-series query paths by allowing PostgreSQL to prune irrelevant historical partitions"
+  - "Replaced large row-by-row retention deletes with fast removal of expired partitions"
+  - "Reduced Cloud Logging volume while preserving essential operational and diagnostic context"
+challenges:
+  - "Controlling continuously growing time-series storage without slowing recent-data queries"
+  - "Removing historical data efficiently while preserving an archive"
+  - "Reducing logging volume without losing information needed to operate and troubleshoot services"
+outcomes:
+  - "More predictable Cloud SQL storage and Cloud Logging spend"
+  - "A repeatable archive-before-delete data-retention process"
+  - "Faster access paths for recent time-series data"
+  - "Lower Cloud Logging ingestion and retention volume"
+client: "Zimi Ltd"
+role: "Senior Cloud Engineer"
+tags:
+  - "Cloud Cost Optimisation"
+  - "PostgreSQL Partitioning"
+  - "Time-Series Data"
+  - "Data Lifecycle"
+  - "Cloud Logging"
+category: "cloud"
+publishDate: 2026-08-11
+lastUpdated: 2026-08-11
+---
+
+## Project Overview
+
+This production GCP cost-control initiative addressed two continuously growing sources of recurring spend: time-series records in Cloud SQL for PostgreSQL and application logs sent to Cloud Logging.
+
+The goal was not simply to delete more data or log less. It was to establish deliberate lifecycle policies that retained the information needed for operations while keeping active storage and logging volume controlled over time.
+
+## The Challenge
+
+Time-series systems naturally accumulate data. Keeping all historical records in the operational Cloud SQL database increased storage usage, made retention harder to manage, and caused queries to operate against a larger active dataset than necessary.
+
+Large row-by-row deletion jobs were also an inefficient retention mechanism. They could run for a long time, add database load, create substantial write-ahead logging, and require additional cleanup before storage could be reclaimed.
+
+Application logging had a similar lifecycle problem. Repetitive or low-value messages increased ingestion and retention volume even though they provided little benefit during monitoring or incident investigation.
+
+## Monthly PostgreSQL Partitions
+
+I organised the time-series tables as monthly PostgreSQL range partitions in Cloud SQL. Each partition represents a clear operational period and can be managed independently from the rest of the table.
+
+This supports two important behaviours:
+
+- Queries for recent time windows can use partition pruning and avoid scanning unrelated historical partitions.
+- Retention can operate on a complete partition rather than deleting millions of individual rows.
+
+Monthly boundaries provide a practical balance: they are fine-grained enough for common recent-data access patterns while remaining straightforward to create, monitor, archive, and remove.
+
+## Archive and Retention Workflow
+
+The lifecycle follows a repeatable process:
+
+1. Create upcoming monthly partitions before they are needed.
+2. Route new time-series records into the appropriate partition.
+3. Monitor partition size, active storage, and query behaviour.
+4. Archive partitions after they pass the active retention period.
+5. Validate that the archive is complete and usable.
+6. Drop the expired partition from the operational database.
+
+Dropping a partition is a fast metadata-level operation compared with a large row-by-row `DELETE`. It also makes retention easier to reason about because the unit being archived and removed is explicit.
+
+## Recent-Data Query Performance
+
+Most operational queries focus on recent time windows. Partition pruning allows PostgreSQL to target only the monthly partitions that overlap the requested range.
+
+The result is a smaller working set for common queries and a data model whose query behaviour remains more predictable as historical records accumulate outside the active window.
+
+## Logging Optimisation
+
+I reviewed application logging to distinguish actionable operational information from repetitive noise.
+
+The revised approach preserves the context needed for:
+
+- Production monitoring
+- Troubleshooting and incident investigation
+- Important state transitions and failures
+- Auditability where required
+
+Messages that did not materially help those activities were removed or adjusted so they were not unnecessarily ingested by Cloud Logging. This lowered logging volume without sacrificing essential diagnostic context.
+
+## Results
+
+### Storage and cost control
+
+- Constrained active Cloud SQL storage and its associated cost growth
+- Established a predictable archive-before-delete retention process
+- Made historical-data removal faster and operationally simpler
+- Reduced Cloud Logging ingestion and retention volume
+
+### Query and operational behaviour
+
+- Improved access paths for recent time-series queries through partition pruning
+- Avoided large recurring row-deletion jobs
+- Made monthly storage growth and retention easier to monitor
+- Preserved the logs needed to operate and troubleshoot the platform
+
+## Skills Demonstrated
+
+- GCP cost and capacity optimisation
+- Cloud SQL for PostgreSQL operations
+- PostgreSQL range partitioning and partition pruning
+- Time-series data lifecycle design
+- Data archival and retention planning
+- Production logging and observability design
+
+## Measurement
+
+The mechanisms and outcomes are documented here without publishing confidential cost or storage figures. Approved before-and-after storage, query, and logging metrics can be added when they are available for public use.

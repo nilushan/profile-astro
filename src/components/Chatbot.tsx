@@ -191,11 +191,15 @@ export default function Chatbot() {
         }),
       });
 
+      const data = await response.json().catch(() => ({}));
+
       if (!response.ok) {
-        throw new Error('Failed to get response');
+        throw new Error(data.error || `Chat request failed (${response.status})`);
       }
 
-      const data = await response.json();
+      if (typeof data.response !== 'string' || !data.response.trim()) {
+        throw new Error('Chat API returned an empty response');
+      }
 
       const assistantMessage: Message = {
         role: 'assistant',
@@ -385,10 +389,13 @@ export default function Chatbot() {
                         ? 'chat-bubble-primary'
                         : 'bg-base-200 text-base-content'
                     } max-w-[75%] sm:max-w-xs text-sm sm:text-base`}
-                    dangerouslySetInnerHTML={{
-                      __html: msg.role === 'user' ? msg.content : parseMarkdown(msg.content),
-                    }}
-                  />
+                  >
+                    {msg.role === 'user' ? (
+                      msg.content
+                    ) : (
+                      <span dangerouslySetInnerHTML={{ __html: parseMarkdown(msg.content) }} />
+                    )}
+                  </div>
                 </div>
               ))}
 

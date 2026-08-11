@@ -64,6 +64,7 @@ const statusColors = {
       data-technologies={project.data.technologies?.join(',')}
       class={`
       card bg-base-100 shadow-xl transition-all duration-500 group relative overflow-hidden border border-base-content/5 hover:border-primary/20 glass scroll-reveal hover-lift
+      ${layout === 'grid' ? 'h-full' : ''}
       ${project.data.featured ? 'ring-2 ring-primary/30 ring-offset-2 ring-offset-base-100' : ''}
       ${layout === 'masonry' ? 'break-inside-avoid mb-8' : ''}
       ${layout === 'list' ? 'lg:card-side' : ''}
@@ -152,18 +153,18 @@ const statusColors = {
         <!-- Enhanced Technologies -->
         <div class="mb-6">
           <h4 class="font-mono text-xs uppercase tracking-wider text-base-content/50 mb-3">Tech Stack</h4>
-          <div class="flex flex-wrap gap-2">
+          <ul class="flex flex-wrap gap-2">
             {project.data.technologies?.slice(0, 6).map((tech) => (
-              <div class="badge badge-outline hover:badge-primary hover:scale-110 transition-all font-mono text-xs shadow-sm">
+              <li class="inline-flex max-w-full rounded-md border border-base-content/15 bg-base-200/50 px-2.5 py-1.5 text-xs leading-snug text-base-content/75 break-words">
                 {tech}
-              </div>
+              </li>
             ))}
             {project.data.technologies?.length > 6 && (
-              <div class="badge badge-outline font-mono font-bold">
-                +{project.data.technologies.length - 6}
-              </div>
+              <li class="inline-flex rounded-md bg-base-200 px-2.5 py-1.5 text-xs leading-snug text-base-content/60">
+                +{project.data.technologies.length - 6} more
+              </li>
             )}
-          </div>
+          </ul>
         </div>
         
         <!-- Enhanced Actions -->
