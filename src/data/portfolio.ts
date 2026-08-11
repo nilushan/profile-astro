@@ -10,7 +10,7 @@ export const portfolioData: PortfolioData = {
   personal: {
     name: "Nilushan Silva",
     title: "Full Stack & Cloud Engineer",
-    tagline: "Building robust, scalable solutions with 15+ years of experience",
+    tagline: `Building robust, scalable solutions with ${yearsExperience}+ years of experience`,
     email: "nilushan.silva@gmail.com",
     phone: "0416285726",
     location: "Gold Coast, Queensland, Australia",
@@ -19,22 +19,24 @@ export const portfolioData: PortfolioData = {
       linkedin: "nilushan-silva-27235310",
       website: "www.nilushansilva.info",
     },
-    heroSummary: `Full Stack Software Engineer & Cloud Developer with ${yearsExperience}+ years delivering robust, high-quality software. Specialized in TypeScript frontends and backend services development, integrating with 3rd party systems. Infrastructure setup and deployment on Google Cloud Platform.`,
-    summary: [`Passionate about delivering robust, efficient, and high-quality software solutions. My expertise focuses on designing and developing backend services and frontend user interfaces using TypeScript, integrating systems with third-party platforms, and architecting solutions on Google Cloud Platform.`,
-      `Proven track record in service-oriented architecture development, large-scale IoT integrations, and DevOps practices with consistently high uptime achievements. I excel at analyzing requirements and designing solutions through collaboration, diagramming, and comprehensive documentation.`,
-      `Committed to implementing engineering best practices to create well-designed, testable, reliable, maintainable, and cost-efficient systems. I always choose the best tools for each purpose rather than reinventing the wheel—leveraging cloud-native open-source frameworks for platform independence or serverless platforms for rapid development and deployment. When needed, I can rapidly develop MVPs with essential functionality by prioritizing the most critical components.`],
+    heroSummary: `Full Stack Software Engineer & Cloud Developer with ${yearsExperience}+ years delivering robust, high-quality software. My current hands-on stack is TypeScript and Node.js, supported by deep Google Cloud Platform experience and earlier professional work with C#, Java, and C++.`,
+    summary: [
+      `My recent hands-on work focuses on TypeScript and Node.js services, React interfaces, third-party integrations, and production architecture on Google Cloud Platform. I have delivered service-oriented systems, large-scale IoT integrations, and reliable cloud operations while documenting designs and collaborating across teams.`,
+      `Earlier in my career I worked professionally with C#, Java, C++, and PHP. Although they are not my current day-to-day languages, my typed-language, object-oriented, and systems engineering foundations allow me to refresh those ecosystems quickly when required.`,
+      `I favour well-designed, testable, maintainable, and cost-efficient solutions. I also use agentic engineering practices across planning, implementation, testing, and review—combining Claude Code, pi, Codex, Grok, and open-weight models with custom skills while retaining human ownership of architecture, security, and final quality.`,
+    ],
     yearsExperience
   },
 
   skills: {
-    programming: ["TypeScript", "JavaScript", "Node.js", "Java", "C#", "C++", "PHP"],
+    programming: ["TypeScript", "JavaScript", "Node.js", "C#", "Java", "C++", "PHP"],
     frontend: ["React", "Redux", "Bootstrap", "HTML5", "CSS3", "Chart.js", "Socket.IO", "Next.js", "Astro"],
     backend: ["Express", "Fastify", "REST APIs", "Event-Driven Architecture", "Service-Oriented Architecture"],
-    databases: ["PostgreSQL", "MySQL", "Firestore", "MongoDB", "Redis", "TimescaleDB", "ClickHouse"],
+    databases: ["PostgreSQL", "PostgreSQL Partitioning", "Cloud SQL", "MySQL", "Firestore", "MongoDB", "Redis", "TimescaleDB", "ClickHouse"],
     cloud: {
       gcp: {
-        actively: ["Kubernetes", "Cloud Functions", "Compute Engine", "IoT Core", "PubSub", "Cloud Storage", "Monitoring", "Firebase", "Container Registry", "Cloud Build", "Scheduler", "Trace", "IAM"],
-        familiar: ["App Engine", "Cloud Run", "Big Query", "Big Table"],
+        actively: ["Cloud SQL", "GKE", "Kubernetes", "Artifact Registry", "Cloud Run", "Cloud Logging", "Workload Identity Federation", "Firebase", "PubSub", "Cloud Functions", "Cloud Storage", "Compute Engine", "IAM", "Cloud Build", "Scheduler", "Trace"],
+        familiar: ["App Engine", "Big Query", "Big Table"],
       },
       aws: {
         familiar: ["Lambda", "Kinesis", "IoT Core", "S3", "DynamoDB", "SNS", "SQS", "Pinpoint", "EKS", "Fargate"],
@@ -43,7 +45,7 @@ export const portfolioData: PortfolioData = {
         familiar: ["App Services", "IoT Core", "Event Hub", "Cosmos DB", "ADX"],
       },
     },
-    devops: ["Docker", "Kubernetes", "CI/CD", "Google Cloud Build", "GitHub Actions", "Git", "SVN"],
+    devops: ["Docker", "Kubernetes", "Kustomize", "CI/CD", "Artifact Promotion", "Google Cloud Build", "GitHub Actions", "Workload Identity Federation", "Git", "SVN"],
     tools: ["Jira", "Confluence", "ClickUp", "Draw.io", "Lucid Charts", "Axure RP 9", "Illograph", "Mermaid", "C4 Diagrams"],
   },
 
@@ -51,11 +53,18 @@ export const portfolioData: PortfolioData = {
   // Refined minimalism: Using primary only for key emphasis, neutral for everything else
   skillCategories: [
     {
-      title: "Programming Languages",
+      title: "Current Development Stack",
       icon: "code",
       color: "primary",
-      description: "Core programming languages I use for development",
-      skills: ["TypeScript", "JavaScript", "Node.js", "Java", "C#", "C++", "PHP"]
+      description: "My current day-to-day hands-on languages and runtime",
+      skills: ["TypeScript", "JavaScript", "Node.js"]
+    },
+    {
+      title: "Previous Professional Languages",
+      icon: "code",
+      color: "primary",
+      description: "Earlier professional experience; strong foundations allow me to refresh these ecosystems quickly when required",
+      skills: ["C#", "Java", "C++", "PHP"]
     },
     {
       title: "Frontend Development",
@@ -76,21 +85,28 @@ export const portfolioData: PortfolioData = {
       icon: "cloud",
       color: "primary",
       description: "Cloud services and infrastructure",
-      skills: ["Google Cloud Platform", "AWS", "Azure", "Kubernetes", "Cloud Functions", "IoT Core", "PubSub", "Firebase"]
+      skills: ["Google Cloud Platform", "GKE", "Cloud Run", "Cloud SQL", "Artifact Registry", "Cloud Logging", "Kubernetes", "Cloud Functions", "PubSub", "Firebase", "Workload Identity Federation"]
     },
     {
       title: "Databases",
       icon: "database",
       color: "primary",
-      description: "Database technologies and data storage solutions",
-      skills: ["PostgreSQL", "MySQL", "Firestore", "MongoDB", "Redis", "TimescaleDB", "ClickHouse", "BigQuery"]
+      description: "Relational, document, cache, and analytical data stores, including partitioned PostgreSQL time-series workloads",
+      skills: ["PostgreSQL", "Cloud SQL", "MySQL", "Firestore", "MongoDB", "Redis", "TimescaleDB", "ClickHouse", "BigQuery"]
     },
     {
       title: "DevOps & Tools",
       icon: "devops",
       color: "primary",
-      description: "Development operations and productivity tools",
-      skills: ["Docker", "Kubernetes", "CI/CD", "GitHub Actions", "Cloud Build", "Git", "Terraform", "Monitoring"]
+      description: "Container delivery, reusable deployment configuration, keyless identity, and multi-environment automation",
+      skills: ["Docker", "Kubernetes", "Kustomize", "GitHub Actions", "Cloud Build", "Artifact Registry", "Workload Identity Federation", "Terraform", "Git"]
+    },
+    {
+      title: "AI-Assisted Engineering",
+      icon: "ai",
+      color: "primary",
+      description: "Agent-assisted planning, implementation, testing, and review with human accountability",
+      skills: ["Claude Code", "pi Coding Agent", "Codex", "Grok", "Open-Weight LLMs", "Custom Agent Skills"]
     },
     {
       title: "Project Management",
@@ -109,70 +125,58 @@ export const portfolioData: PortfolioData = {
       location: "QLD, AU",
       period: "December 2020 – Present",
       type: "full-time",
-      description: "As the only full stack and cloud developer, Full stack development and cloud deployment of Zimi smart home iot cloud product. Involved in maintaining infrastructure on GCP and Amazon, Frontend admin and customer portal development, backend api development and message handler development. Continue building on the IoT platform with additional features and integrations.",
+      description: "Own full-stack development and cloud operations for Zimi's smart-home IoT platform, spanning GCP infrastructure, TypeScript backend services, event processing, admin and customer interfaces, and third-party integrations.",
       highlights: [
         {
           title: "Platform Migration",
-          description: "Successfully migrated cloud IoT platform with 55,000+ active devices from Xively to GCP with zero downtime, reducing infrastructure costs by 50% and latency by 40% while maintaining 99.999% uptime",
+          description: "Migrated a cloud IoT platform with 55,000+ active devices from Xively to GCP with zero downtime, reducing infrastructure costs by 50% and latency by 40% while maintaining 99.999% uptime",
         },
         {
-          title: "Architecture",
-          description: "Designed end-to-end IoT platform for smart electrical devices handling 100+ events/second with secure device communication protocols",
+          title: "IoT Architecture",
+          description: "Designed an event-driven platform for smart electrical devices handling 100+ events per second with secure device communication",
         },
         {
           title: "Cloud Infrastructure",
-          description: "Built service oriented architecture on GCP using Kubernetes, Cloud Functions, Redis, PubSub, Cloud SQL (PostgreSQL) for optimal scalability and resilience",
+          description: "Built and operated services on GCP using Kubernetes, Cloud Functions, Redis, PubSub, and Cloud SQL for scalability and resilience",
         },
         {
-          title: "Frontend Development",
-          description: "Developed React/Redux admin dashboards with dynamic visualizations for IoT device network monitoring and management",
+          title: "Data Lifecycle & Cost Control",
+          description: "Controlled Cloud SQL storage and associated cost growth with monthly PostgreSQL partitions, archival, and fast removal of expired time-series data; also reduced low-value Cloud Logging volume",
         },
         {
-          title: "Backend Development",
-          description: "Created high-performance REST APIs and event-driven services using Node.js/TypeScript with comprehensive documentation, diagramming, and testing",
+          title: "Keyless Cloud Identity",
+          description: "Implemented Workload Identity Federation for GitHub Actions and GKE workloads, replacing long-lived service-account keys with short-lived, least-privilege access",
         },
         {
-          title: "Voice Integration",
-          description: "Engineered and certified Google Assistant and Alexa voice control systems, expanding product ecosystem compatibility",
+          title: "Backend & Integration APIs",
+          description: "Developed TypeScript and Node.js REST APIs, event-driven services, and authorised third-party integrations for device data, control, and status events",
         },
         {
-          title: "Code Efficiency",
-          description: "Created reusable, unit tested TypeScript/Node.js libraries containing common functionality, reducing development time by more than 50%",
+          title: "Frontend Applications",
+          description: "Developed React and Redux admin and customer interfaces with visualisations for device telemetry, network health, and management",
         },
         {
-          title: "DevOps",
-          description: "Setup automated CI/CD pipelines with Docker, Google Cloud Build, GitHub Actions, Container Registry, Kubernetes for seamless multi-environment deployments",
+          title: "Voice Integrations",
+          description: "Engineered and certified Google Assistant and Alexa smart-home integrations, expanding ecosystem compatibility",
         },
         {
-          title: "Knowledge Transfer",
-          description: "Documented the entire system architecture and conducted comprehensive knowledge sharing sessions covering system components and business processes to facilitate seamless transition",
+          title: "Reusable Libraries",
+          description: "Created unit-tested TypeScript and Node.js libraries for shared functionality, reducing development time by more than 50%",
         },
         {
-          title: "Solution Design",
-          description: "Diagrammed and documented solutions, interfaces, and test cases thoroughly before implementation, leading to high-quality, well-designed components",
+          title: "CI/CD & Kubernetes Configuration",
+          description: "Built once to a shared Artifact Registry, promoted the same artifacts across environments, and managed Kubernetes configuration with reusable Kustomize bases and overlays",
         },
         {
-          title: "System Modernization",
-          description: "Proactively planned system improvements by selecting and collaborating with a third-party software company to develop a scalable system capable of handling millions of devices, telemetry data, analytics, and insights",
+          title: "Solution Design & Documentation",
+          description: "Documented architecture, interfaces, decisions, and test cases before implementation to improve design quality and knowledge transfer",
         },
         {
-          title: "Platform Evaluation",
-          description: "Experienced in evaluating software tools and platforms to select optimal solutions for specific use cases",
-        },
-        {
-          title: "Alexa Integration",
-          description: "Alexa smart home voice control integration with the Zimi smart devices",
-        },
-        {
-          title: "3rd Party API",
-          description: "Design, document and develop API for 3rd party integrations for device information retrieval, device control and status change events with user authorization based security",
-        },
-        {
-          title: "Firmware Update CDN",
-          description: "IoT device firmware update CDN service for memory limited devices needing OTA with self signed Certificate Authority and Certificate management system",
+          title: "Firmware Delivery",
+          description: "Built an OTA firmware CDN and certificate-management workflow for memory-constrained IoT devices",
         },
       ],
-      technologies: ["GCP", "Kubernetes", "TypeScript", "React", "Node.js", "PostgreSQL", "Redis", "MQTT", "Docker", "Firebase", "IoT Core", "PubSub", "Cloud Functions", "Alexa Smart Home API"],
+      technologies: ["GCP", "Kubernetes", "Kustomize", "TypeScript", "Node.js", "React", "PostgreSQL", "Redis", "MQTT", "PubSub", "Cloud Run", "Artifact Registry", "Cloud Logging", "GitHub Actions", "Workload Identity Federation"],
     },
     {
       id: "bluekey-zimi",
@@ -281,19 +285,16 @@ export const portfolioData: PortfolioData = {
 
   interests: [
     {
-      title: "AI & LLMs",
-      description: "Leveraging LLMs, AI Agents, and AI-based coding assistants to accelerate development while maintaining high quality through effective prompting, providing latest documentation, and contextual information",
-    },
-    {
       title: "Diagramming & Documentation",
       description: "Advanced visualization tools like Illograph, Mermaid, and C4 diagrams for clear technical communication",
     },
     {
       title: "Emerging Technologies",
+      description: "Exploring practical platforms that simplify distributed systems and accelerate focused product delivery.",
       items: [
-        "Dapr: Distributed Application Runtime for simplified microservice development with built-in service discovery, state management, PubSub messaging, and observability",
-        "Next.js: For integrated frontend and backend systems in smaller projects",
-        "Supabase: Open source, self-hosted or managed essential services for web applications",
+        "Dapr for distributed application building blocks",
+        "Next.js for integrated full-stack applications",
+        "Supabase for open-source application services",
       ],
     },
   ],
@@ -320,7 +321,7 @@ export const portfolioData: PortfolioData = {
     home: {
       label: "Discover More",
       title: "Want to Know More About Me?",
-      description: "Explore my journey, skills, and the projects I've built over 15+ years of software development. Let's start with my story.",
+      description: `Explore my journey, skills, and the projects I've built over ${yearsExperience}+ years of software development. Let's start with my story.`,
       primaryButton: {
         text: "About Me",
         href: "/about",

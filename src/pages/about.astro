@@ -77,9 +77,13 @@ const funFacts = [
             <h2 class="text-3xl font-display font-bold text-base-content mb-6">
               Hello, I'm {personal.name} 👋
             </h2>
-            <p class="text-lg text-base-content/80 leading-relaxed">
-              {personal.summary}
-            </p>
+            <div class="space-y-5">
+              {personal.summary.map((paragraph) => (
+                <p class="text-lg text-base-content/80 leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -174,41 +178,28 @@ const funFacts = [
         <h2 class="text-3xl font-display font-bold text-center mb-12">
           Professional <span class="text-accent">Interests</span>
         </h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {interests.map((interest, index) => {
             const icons = ['🎯', '☁️', '📱', '⚡', '🔒', '🚀']
             return (
-              <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-base-content/5 flex flex-col min-h-[350px]">
-                <div class="card-body flex flex-col justify-between">
-                  <div>
-                    <div class="text-4xl mb-4">{icons[index % icons.length]}</div>
-                    <h3 class="card-title text-xl text-primary mb-3">{interest.title}</h3>
-                    {interest.description ? (
-                      <p class="text-base-content/70 text-sm mb-4 leading-relaxed">{interest.description}</p>
-                    ) : interest.items && interest.items.length > 0 ? (
-                      <ul class="space-y-2 mb-4">
-                        {interest.items.map(item => (
-                          <li class="text-base-content/70 text-sm flex items-start gap-2">
-                            <span class="text-primary mt-0.5">•</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </div>
-                  {interest.description && interest.items && interest.items.length > 0 && (
-                    <div class="flex flex-wrap gap-1">
-                      {interest.items.slice(0, 3).map(item => {
-                        // Extract just the technology name (before the colon if present)
-                        const displayName = item.includes(':') ? item.split(':')[0].trim() : item;
-                        return (
-                          <div class="badge badge-sm badge-outline" title={item}>{displayName}</div>
-                        );
-                      })}
-                      {interest.items.length > 3 && (
-                        <div class="badge badge-sm badge-ghost">+{interest.items.length - 3}</div>
-                      )}
-                    </div>
+              <div class="card h-full bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-base-content/10">
+                <div class="card-body p-6 sm:p-7">
+                  <div class="text-3xl" aria-hidden="true">{icons[index % icons.length]}</div>
+                  <h3 class="card-title text-xl text-primary leading-snug">{interest.title}</h3>
+                  {interest.description && (
+                    <p class="text-base-content/70 text-sm leading-relaxed">{interest.description}</p>
+                  )}
+                  {interest.items && interest.items.length > 0 && (
+                    <ul class="mt-2 space-y-3 border-t border-base-content/10 pt-4">
+                      {interest.items.map(item => (
+                        <li class="text-base-content/70 text-sm leading-relaxed flex items-start gap-3">
+                          <svg class="w-4 h-4 mt-0.5 text-primary flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                          </svg>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   )}
                 </div>
               </div>

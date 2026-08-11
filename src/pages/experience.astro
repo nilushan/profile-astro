@@ -6,11 +6,11 @@ import ExperienceTimeline from '@/components/sections/ExperienceTimeline.astro'
 import CallToAction from '@/components/CallToAction.astro'
 import { portfolioData } from '@/data/portfolio'
 
-const { experience, ctas } = portfolioData
+const { experience, personal, ctas } = portfolioData
 const cta = ctas.experience
 ---
 
-<Layout title="Experience - Nilushan Silva" description="Explore my professional journey spanning 15+ years in software development, from junior developer to senior cloud engineer.">
+<Layout title="Experience - Nilushan Silva" description={`Explore my professional journey spanning ${personal.yearsExperience}+ years in software development, from software engineer to senior cloud engineer.`}>
   <!-- Page Header - Tall -->
   <section class="hero min-h-[400px] sm:min-h-[500px] relative overflow-hidden tech-grid">
     <!-- Animated gradient background -->

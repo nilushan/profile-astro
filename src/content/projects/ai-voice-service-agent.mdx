@@ -1,0 +1,127 @@
+---
+title: "AI Voice Service Agent Prototype"
+description: "A non-production personal learning prototype exploring how a voice agent can answer customer calls, retrieve current company data, use tools to create a job request, and keep final confirmation under human control."
+period: "2026–Present"
+status: "ongoing"
+featured: false
+technologies:
+  - "Voice AI"
+  - "Conversational AI"
+  - "LLM Tool Calling"
+  - "Service APIs"
+  - "Structured Data"
+  - "Human-in-the-Loop"
+achievements:
+  - "Prototyped a task-oriented voice workflow for inbound small-business customer calls"
+  - "Grounded conversations in current company information retrieved from real service APIs"
+  - "Used validated tool calls to turn customer intent into a structured job request"
+  - "Kept consequential actions human-controlled by requiring operator review before customer confirmation"
+challenges:
+  - "Maintaining a natural conversation while gathering complete structured job details"
+  - "Grounding answers in current business data instead of relying on model memory"
+  - "Mapping conversational intent to safe, validated service actions"
+  - "Handling uncertainty and escalation without making unsupported commitments"
+outcomes:
+  - "Practical learning in voice-agent interaction and tool-use patterns"
+  - "A sample architecture separating conversation, company-data retrieval, business actions, and human review"
+  - "A clear path from customer request to operator-reviewed job creation"
+role: "Personal Learning Prototype — Architecture and Experimentation"
+tags:
+  - "Voice AI"
+  - "Tool Calling"
+  - "Small Business Automation"
+  - "Service Integration"
+  - "Human-in-the-Loop"
+category: "ai"
+publishDate: 2026-08-11
+lastUpdated: 2026-08-11
+---
+
+## Scope
+
+This is a **non-production personal learning prototype** exploring an AI voice agent for small service businesses. The sample focuses on an inbound phone-call scenario in which a customer needs information or wants to request work.
+
+The agent can hold a task-oriented conversation, retrieve current information about the company from services, and use tools to prepare a structured action. For example, it can gather the details of a requested job and create a job request for an operator to review.
+
+The prototype intentionally keeps final authority with a person. Creating a draft request is useful automation; accepting work, committing to details, or confirming the request to the customer remains subject to human review.
+
+## Example Customer Journey
+
+1. A customer calls the company's service number
+2. The voice agent answers and identifies what the customer needs
+3. It retrieves current company, service, or availability information from APIs when required
+4. It asks focused follow-up questions to collect missing job details
+5. Validated tool calls create a structured draft job request in the business system
+6. A human operator reviews, corrects, and approves the request
+7. The approved outcome can then be confirmed to the customer
+
+This workflow connects conversational AI to real business data and actions while placing a control point before a consequential commitment is made.
+
+## Grounding in Real Company Data
+
+A customer-facing agent must not rely only on the model's training data or prompt text. Company details can change, including offered services, coverage areas, availability, customer records, and operating policies.
+
+The sample therefore treats business services as the source of truth. The agent retrieves relevant data when needed and uses the returned information to answer the customer. If required information is unavailable or ambiguous, the safe response is to clarify or escalate rather than invent an answer.
+
+## Tool-Based Business Actions
+
+Conversation becomes operationally useful when it can produce a structured result. Tool calls provide an explicit boundary between the LLM and company systems.
+
+For a job request, the tool contract can require fields such as:
+
+- Customer and contact details
+- Requested service
+- Location
+- Preferred timing
+- Description and notes gathered during the call
+- Source and conversation reference
+- Review status
+
+Validating these inputs before calling a service makes the action testable and prevents arbitrary model output from being written directly into company data.
+
+## Human Review and Confirmation
+
+The draft job request is routed to a person before it is treated as confirmed. The operator can review the transcript and structured fields, correct misunderstood details, check operational constraints, and decide whether the company can accept the work.
+
+This human-in-the-loop step addresses several risks:
+
+- Speech recognition or interpretation errors
+- Incomplete customer information
+- Unsupported services or locations
+- Availability conflicts
+- Pricing or contractual commitments
+- Requests that need judgement or specialist handling
+
+The agent assists with intake and preparation; the business retains control of the decision.
+
+## Architecture Explored
+
+The prototype separates concerns into components that could evolve independently:
+
+- **Telephony and audio layer:** receives the call and streams speech
+- **Conversation layer:** maintains context and decides whether to ask, retrieve, act, or escalate
+- **Company-data tools:** read current information from authorised services
+- **Action tools:** validate and submit structured requests
+- **Human review queue:** presents the request and supporting context to an operator
+- **Confirmation path:** communicates only the approved outcome
+
+This separation helps keep model reasoning away from direct, unrestricted access to business systems.
+
+## Agentic Engineering Approach
+
+I used the prototype to practise an AI-assisted engineering workflow as well as voice-agent concepts. Coding agents can support requirements analysis, conversation-flow design, interface definitions, implementation, test generation, and review. Their output is checked against the intended workflow, tool schemas, security boundaries, and failure cases.
+
+The goal is not to accept generated code without scrutiny. Agentic engineering works best when specifications, project context, automated validation, independent review, and human judgement form part of the process.
+
+## What I Learned
+
+- Voice interaction requires concise prompts and progressive information gathering
+- Real service data is essential for trustworthy customer answers
+- Tool calls should be narrow, authorised, schema-validated, and observable
+- Read operations and consequential write operations need different trust boundaries
+- A draft-and-review workflow can provide value without granting the model final authority
+- Explicit escalation is a feature, not a failure, when confidence or information is insufficient
+
+## Production Considerations
+
+This prototype demonstrates concepts only. A production implementation would need telephony-provider integration, identity and consent handling, privacy and recording policies, authentication and authorisation for every tool, latency and interruption testing, prompt-injection controls, evaluation against realistic calls, monitoring, fallback handling, and a well-defined operational review process.

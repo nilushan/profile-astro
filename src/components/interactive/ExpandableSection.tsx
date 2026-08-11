@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 interface ExpandableSectionProps {
   title: string;
@@ -15,11 +15,15 @@ export default function ExpandableSection({
   defaultExpanded = false,
 }: ExpandableSectionProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const contentId = useId();
 
   return (
     <div className="mb-6">
       <button
+        type="button"
         onClick={() => setIsExpanded(!isExpanded)}
+        aria-expanded={isExpanded}
+        aria-controls={contentId}
         className="w-full flex items-center justify-between gap-2 font-semibold text-base-content mb-3 hover:text-primary transition-colors group"
       >
         <div className="flex items-center gap-2">
@@ -30,6 +34,7 @@ export default function ExpandableSection({
             strokeWidth="1.5"
             stroke="currentColor"
             className="w-5 h-5 text-primary"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -48,6 +53,7 @@ export default function ExpandableSection({
           className={`w-5 h-5 transition-transform duration-300 ${
             isExpanded ? 'rotate-180' : ''
           }`}
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -58,6 +64,8 @@ export default function ExpandableSection({
       </button>
 
       <div
+        id={contentId}
+        aria-hidden={!isExpanded}
         className={`grid transition-all duration-300 ease-in-out ${
           isExpanded
             ? 'grid-rows-[1fr] opacity-100'

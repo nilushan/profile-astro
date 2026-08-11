@@ -13,15 +13,32 @@ import { getCollection } from "astro:content";
 const { experience, skillCategories, ctas } = portfolioData;
 const cta = ctas.home;
 
-// Get all projects and filter for featured ones
+// Curate the homepage around the strongest production outcomes rather than
+// sorting by article publication date.
 const allProjects = await getCollection('projects');
+const homepageProjectOrder = [
+  'gcp-cost-optimization-keyless-delivery',
+  'iot-platform-migration',
+  'third-party-api-platform',
+];
 const featuredProjects = allProjects
-  .filter((project) => project.data.featured === true)
-  .sort((a, b) => {
-    // Sort by publish date (newest first)
-    return new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime();
-  })
-  .slice(0, 3);
+  .filter((project) => homepageProjectOrder.includes(project.id))
+  .sort(
+    (a, b) =>
+      homepageProjectOrder.indexOf(a.id) - homepageProjectOrder.indexOf(b.id),
+  );
+
+const homepageSkillTitles = new Set([
+  'Current Development Stack',
+  'Frontend Development',
+  'Backend Development',
+  'Cloud Platforms',
+  'Databases',
+  'DevOps & Tools',
+]);
+const homepageSkillCategories = skillCategories.filter((category) =>
+  homepageSkillTitles.has(category.title),
+);
 
 const recentExperience = experience.slice(0, 2);
 ---
@@ -96,7 +113,7 @@ const recentExperience = experience.slice(0, 2);
       </div>
 
       <SkillsGrid
-        skillCategories={skillCategories}
+        skillCategories={homepageSkillCategories}
         showAll={false}
         maxSkillsPerCategory={4}
       />

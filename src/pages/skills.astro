@@ -38,7 +38,7 @@ const cta = ctas.skills
         </h1>
 
         <p class="text-base sm:text-lg lg:text-2xl text-base-content/60 max-w-2xl mx-auto text-center leading-relaxed font-light">
-          <span class="number-highlight">{skillCategories.reduce((total, cat) => total + cat.skills.length, 0)}+</span> technologies mastered across <span class="number-highlight">{skillCategories.length}</span> domains
+          Practical experience across <span class="number-highlight">{skillCategories.length}</span> areas of software and cloud engineering
         </p>
       </div>
     </div>
@@ -92,14 +92,14 @@ const cta = ctas.skills
                   <div class="badge badge-success badge-sm font-mono">Expert</div>
                 </div>
 
-                <div class="flex flex-wrap gap-1">
+                <ul class="flex flex-wrap gap-2">
                   {skills.cloud.gcp.actively.slice(0, 10).map((service) => (
-                    <div class="badge badge-outline badge-xs text-[10px] font-mono">{service}</div>
+                    <li class="inline-flex max-w-full rounded-md border border-base-content/15 bg-base-200/50 px-2.5 py-1.5 text-xs leading-snug text-base-content/75 break-words">{service}</li>
                   ))}
                   {skills.cloud.gcp.actively.length > 10 && (
-                    <div class="badge badge-ghost badge-xs text-[10px] font-mono">+{skills.cloud.gcp.actively.length - 10}</div>
+                    <li class="inline-flex rounded-md bg-base-200 px-2.5 py-1.5 text-xs leading-snug text-base-content/60">+{skills.cloud.gcp.actively.length - 10} more</li>
                   )}
-                </div>
+                </ul>
               </div>
             </div>
 
@@ -121,11 +121,11 @@ const cta = ctas.skills
                   <div class="badge badge-warning badge-sm font-mono">Growing</div>
                 </div>
 
-                <div class="flex flex-wrap gap-1">
+                <ul class="flex flex-wrap gap-2">
                   {skills.cloud.aws.familiar.map((service) => (
-                    <div class="badge badge-outline badge-xs text-[10px] font-mono">{service}</div>
+                    <li class="inline-flex max-w-full rounded-md border border-base-content/15 bg-base-200/50 px-2.5 py-1.5 text-xs leading-snug text-base-content/75 break-words">{service}</li>
                   ))}
-                </div>
+                </ul>
               </div>
             </div>
 
@@ -147,11 +147,11 @@ const cta = ctas.skills
                   <div class="badge badge-accent badge-sm font-mono">Basic</div>
                 </div>
 
-                <div class="flex flex-wrap gap-1">
+                <ul class="flex flex-wrap gap-2">
                   {skills.cloud.azure.familiar.map((service) => (
-                    <div class="badge badge-outline badge-xs text-[10px] font-mono">{service}</div>
+                    <li class="inline-flex max-w-full rounded-md border border-base-content/15 bg-base-200/50 px-2.5 py-1.5 text-xs leading-snug text-base-content/75 break-words">{service}</li>
                   ))}
-                </div>
+                </ul>
               </div>
             </div>
           </div>
