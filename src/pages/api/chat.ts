@@ -1,11 +1,8 @@
 /**
  * Chatbot API Endpoint
  *
- * Handles chat requests using Google Gemini Flash 2.0
- * with full portfolio context loaded into system prompt.
- *
- * Cost: ~$0.075 per 1M input tokens, $0.30 per 1M output tokens
- * Typical chat: ~0.0001 USD per conversation
+ * Handles chat requests using a current Gemini Flash Lite model with full
+ * portfolio context loaded into the system prompt.
  */
 
 import type { APIRoute } from 'astro';
@@ -15,6 +12,10 @@ import { aggregatePortfolioContext, generateSystemPrompt } from '@/lib/chatbot-c
 // Initialize Gemini with API key from environment
 // In Cloud Functions, use process.env; in dev/build, use import.meta.env
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
+const GEMINI_MODEL =
+  process.env.GEMINI_MODEL ||
+  import.meta.env.GEMINI_MODEL ||
+  'gemini-3.5-flash-lite';
 
 if (!GEMINI_API_KEY) {
   console.error('GEMINI_API_KEY not found in environment variables');
@@ -64,7 +65,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Initialize Gemini
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
-      model: 'gemini-flash-lite-latest', // Ultra-cheap: $0.075/1M tokens input
+      model: GEMINI_MODEL,
       systemInstruction: systemPrompt,
     });
 
@@ -104,7 +105,7 @@ export const POST: APIRoute = async ({ request }) => {
       JSON.stringify({
         response: responseText,
         metadata: {
-          model: 'gemini-flash-lite-latest',
+          model: GEMINI_MODEL,
           contextSize: contextData.metadata.totalCharacters,
           sources: contextData.metadata.contentSources,
           timestamp: new Date().toISOString(),
