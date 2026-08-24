@@ -291,7 +291,7 @@ const pushStateUpdates = async (deviceEvent: DeviceStateEvent) => {
 ### Translation Layer Benefits
 
 **Code Reuse and Maintainability**
-- **Unified Logic**: Single implementation of core business logic reduces maintenance overhead by 60%
+- **Unified Logic**: Single implementation of core business logic behind platform-specific adapters
 - **Platform Abstraction**: Translation layers isolate platform-specific code, enabling easier updates
 - **Consistent Behavior**: Ensures identical functionality across both voice assistant platforms
 
@@ -321,7 +321,7 @@ const handleOAuthCallback = async (platform: 'google' | 'alexa', authCode: strin
 
 **Response Time Optimization**
 - Implemented response caching for device discovery requests
-- Optimized common business logic for sub-500ms response times
+- Shared business logic so Alexa and Google Home behave consistently
 - Used connection pooling for Zimi backend API calls
 - Implemented efficient event batching for state updates
 
@@ -349,7 +349,7 @@ const handleOAuthCallback = async (platform: 'google' | 'alexa', authCode: strin
 ## Results & Impact
 
 ### Technical Achievements
-- **Code Reuse**: 80% of business logic shared between platforms through common architecture
+- **Code reuse**: Shared business logic with platform-specific adapters for Alexa and Google Home
 - **Maintenance Efficiency**: Single codebase for core functionality reduces development time
 - **Real-time Sync**: Sub-second state synchronization across all voice platforms
 - **Scalable Design**: Architecture supports easy addition of new voice assistant platforms

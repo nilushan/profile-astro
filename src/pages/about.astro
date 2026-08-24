@@ -1,9 +1,11 @@
 ---
 export const prerender = true;
 
+import { Image } from 'astro:assets'
 import Layout from '@/layouts/Layout.astro'
 import CallToAction from '@/components/CallToAction.astro'
 import { portfolioData } from '@/data/portfolio'
+import profileImage from '@/assets/profile.jpg'
 
 const { personal, education, interests, currentLearning, ctas } = portfolioData
 const cta = ctas.about
@@ -13,11 +15,11 @@ const yearsExperience = currentYear - startYear
 
 // Journey milestones
 const journeyMilestones = [
-  { year: '2008', title: 'Started Journey', description: 'Began studying Computer Science at University of Colombo', icon: 'graduation' },
-  { year: '2010', title: 'First Role', description: 'Started professional career in software development', icon: 'code' },
-  { year: '2015', title: 'Cloud Era', description: 'Specialized in cloud architecture and DevOps', icon: 'cloud' },
-  { year: '2020', title: 'IoT Focus', description: 'Led large-scale IoT platform development', icon: 'devices' },
-  { year: currentYear.toString(), title: 'Current', description: 'Building scalable systems at scale', icon: 'rocket' }
+  { year: '2008', title: 'First professional role', description: 'Graduated from the University of Colombo and started professional software work at Respere', icon: 'graduation' },
+  { year: '2015', title: 'Product Manager', description: 'As Product Manager at Simcentric, led 10 engineers and 5 QA specialists', icon: 'code' },
+  { year: '2017', title: 'IoT and GCP', description: 'Began owning the consumer IoT backend and GCP platform at Bluekey', icon: 'cloud' },
+  { year: '2020', title: 'Zimi, Gold Coast', description: 'Continued that platform at Zimi in Gold Coast, working from Logan', icon: 'devices' },
+  { year: currentYear.toString(), title: 'Current', description: 'Own the backend and GCP platform for 70,000+ devices and 10,000+ user accounts at 99.999% uptime', icon: 'rocket' }
 ]
 
 // Personal facts
@@ -39,9 +41,17 @@ const funFacts = [
     <div class="hero-content text-center relative z-10 w-full py-12 sm:py-16 lg:py-20">
       <div class="max-w-4xl mx-auto">
         <!-- Avatar -->
-        <div class="avatar placeholder mb-6 sm:mb-8">
-          <div class="bg-gradient-to-br from-primary to-secondary text-primary-content w-24 h-24 sm:w-32 sm:h-32 rounded-3xl ring-4 ring-primary/30 ring-offset-base-100 ring-offset-4 shadow-2xl">
-            <span class="text-3xl sm:text-4xl">{personal.name.split(' ').map(n => n[0]).join('')}</span>
+        <div class="avatar mb-6 sm:mb-8">
+          <div class="w-36 h-36 sm:w-48 sm:h-48 rounded-3xl ring-4 ring-primary/30 ring-offset-base-100 ring-offset-4 shadow-2xl">
+            <Image
+              src={profileImage}
+              alt={personal.name}
+              width={384}
+              height={384}
+              densities={[1, 2]}
+              class="h-full w-full object-cover object-[center_18%]"
+              loading="eager"
+            />
           </div>
         </div>
 
@@ -165,9 +175,9 @@ const funFacts = [
               {currentLearning}
             </p>
             <div class="flex flex-wrap gap-2">
-              <div class="badge badge-outline">AWS Architecture</div>
-              <div class="badge badge-outline">Cloud Certifications</div>
-              <div class="badge badge-outline">Modern DevOps</div>
+              <div class="badge badge-outline">AWS architecture</div>
+              <div class="badge badge-outline">Agentic AI (personal)</div>
+              <div class="badge badge-outline">Cloud certification path</div>
             </div>
           </div>
         </div>

@@ -8,12 +8,6 @@ import CountUp from "@/components/interactive/CountUp";
 
 const { personal } = portfolioData;
 
-// Get initials for avatar fallback
-const initials = personal.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("");
-
 // Generate social links with metadata
 const socialLinks = generateSocialLinksWithMetadata(personal);
 ---
@@ -26,46 +20,15 @@ const socialLinks = generateSocialLinksWithMetadata(personal);
     <div class="absolute top-0 left-0 w-full h-0.5 bg-primary opacity-30"></div>
 
     <div class="container mx-auto px-4 relative z-10">
-        <div
-            class="flex flex-col lg:flex-row-reverse gap-6 sm:gap-8 lg:gap-16 items-center py-6 sm:py-8 lg:py-20"
-        >
-            <!-- Avatar Section with Enhanced Design -->
-            <div class="flex-shrink-0 flex flex-col items-center reveal-item reveal-item-delay-1">
-                <div class="relative">
-                    <!-- Floating geometric background -->
-                    <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl transform rotate-6 scale-105 blur-2xl"></div>
-
-                    <div class="avatar placeholder relative z-10">
-                        <div
-                            class="bg-gradient-to-br from-primary to-secondary text-primary-content w-32 sm:w-48 md:w-56 lg:w-72 rounded-3xl ring-4 ring-primary/30 ring-offset-base-100 ring-offset-4 flex items-center shadow-2xl glow-hover transition-all duration-500 hover:scale-105"
-                        >
-                            <div
-                                class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display items-center justify-around flex h-full w-full"
-                            >
-                                {initials}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Floating badge -->
-                    <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-max">
-                        <div
-                            class="badge badge-success badge-lg gap-2 text-success-content shadow-lg glass backdrop-blur-md"
-                        >
-                            <div
-                                class="h-2 w-2 rounded-full bg-current animate-pulse"
-                            >
-                            </div>
-                            <span class="font-mono text-xs">AVAILABLE_FOR_HIRE</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+        <div class="py-6 sm:py-8 lg:py-20">
             <!-- Content Section with Enhanced Typography -->
-            <div class="text-center lg:text-left flex-1 space-y-6">
+            <div class="text-center lg:text-left flex-1 space-y-6 max-w-4xl">
                 <!-- Overline label -->
-                <div class="reveal-item reveal-item-delay-2">
+                <div class="reveal-item reveal-item-delay-1 flex flex-col sm:flex-row items-center gap-3">
+                    <div class="badge badge-success badge-lg gap-2 text-success-content shadow-lg glass backdrop-blur-md">
+                        <div class="h-2 w-2 rounded-full bg-current animate-pulse"></div>
+                        <span class="font-mono text-xs">Open to Work</span>
+                    </div>
                     <span class="font-mono text-sm text-primary uppercase tracking-wider">
                         &lt; Full Stack Engineer /&gt;
                     </span>

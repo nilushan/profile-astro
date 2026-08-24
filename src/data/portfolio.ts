@@ -9,17 +9,17 @@ const yearsExperience = currentYear - startYear;
 export const portfolioData: PortfolioData = {
   personal: {
     name: "Nilushan Silva",
-    title: "Full Stack & Cloud Engineer",
+    title: "Senior Full Stack & Cloud Engineer",
     tagline: `Building robust, scalable solutions with ${yearsExperience}+ years of experience`,
     email: "nilushan.silva@gmail.com",
-    phone: "0416285726",
-    location: "Gold Coast, Queensland, Australia",
+    phone: "0416 285 726",
+    location: "Logan, Queensland, Australia",
     social: {
       github: "nilushan",
       linkedin: "nilushan-silva-27235310",
       website: "www.nilushansilva.info",
     },
-    heroSummary: `Full Stack Software Engineer & Cloud Developer with ${yearsExperience}+ years delivering robust, high-quality software. My current hands-on stack is TypeScript and Node.js, supported by deep Google Cloud Platform experience and earlier professional work with C#, Java, and C++.`,
+    heroSummary: `Senior Full Stack & Cloud Engineer with ${yearsExperience}+ years delivering robust, high-quality software. My current hands-on stack is TypeScript and Node.js, supported by deep Google Cloud Platform experience and earlier professional work with C#, Java, and C++.`,
     summary: [
       `My recent hands-on work focuses on TypeScript and Node.js services, React interfaces, third-party integrations, and production architecture on Google Cloud Platform. I have delivered service-oriented systems, large-scale IoT integrations, and reliable cloud operations while documenting designs and collaborating across teams.`,
       `Earlier in my career I worked professionally with C#, Java, C++, and PHP. Although they are not my current day-to-day languages, my typed-language, object-oriented, and systems engineering foundations allow me to refresh those ecosystems quickly when required.`,
@@ -53,18 +53,11 @@ export const portfolioData: PortfolioData = {
   // Refined minimalism: Using primary only for key emphasis, neutral for everything else
   skillCategories: [
     {
-      title: "Current Development Stack",
+      title: "Programming Languages",
       icon: "code",
       color: "primary",
-      description: "My current day-to-day hands-on languages and runtime",
-      skills: ["TypeScript", "JavaScript", "Node.js"]
-    },
-    {
-      title: "Previous Professional Languages",
-      icon: "code",
-      color: "primary",
-      description: "Earlier professional experience; strong foundations allow me to refresh these ecosystems quickly when required",
-      skills: ["C#", "Java", "C++", "PHP"]
+      description: "Languages and runtimes used across professional projects",
+      skills: ["TypeScript", "JavaScript", "Node.js", "C#", "Java", "C++", "PHP"]
     },
     {
       title: "Frontend Development",
@@ -120,16 +113,16 @@ export const portfolioData: PortfolioData = {
   experience: [
     {
       id: "zimi-current",
-      title: "Senior Cloud Engineer",
+      title: "Senior Full Stack & Cloud Engineer",
       company: "Zimi Ltd",
-      location: "QLD, AU",
+      location: "Gold Coast, Queensland, Australia",
       period: "December 2020 – Present",
       type: "full-time",
       description: "Own full-stack development and cloud operations for Zimi's smart-home IoT platform, spanning GCP infrastructure, TypeScript backend services, event processing, admin and customer interfaces, and third-party integrations.",
       highlights: [
         {
           title: "Platform Migration",
-          description: "Migrated a cloud IoT platform with 55,000+ active devices from Xively to GCP with zero downtime, reducing infrastructure costs by 50% and latency by 40% while maintaining 99.999% uptime",
+          description: "Own the GCP IoT platform now serving 70,000+ devices and 10,000+ user accounts at 99.999% uptime, after a zero-downtime live migration from Xively",
         },
         {
           title: "IoT Architecture",
@@ -153,7 +146,7 @@ export const portfolioData: PortfolioData = {
         },
         {
           title: "Frontend Applications",
-          description: "Developed React and Redux admin and customer interfaces with visualisations for device telemetry, network health, and management",
+          description: "Developed the React/Redux admin portal and a focused Next.js invitation-accept portal for customers and installers",
         },
         {
           title: "Voice Integrations",
@@ -161,7 +154,7 @@ export const portfolioData: PortfolioData = {
         },
         {
           title: "Reusable Libraries",
-          description: "Created unit-tested TypeScript and Node.js libraries for shared functionality, reducing development time by more than 50%",
+          description: "Created unit-tested TypeScript and Node.js libraries for shared functionality, reducing duplication and speeding delivery of new features",
         },
         {
           title: "CI/CD & Kubernetes Configuration",
@@ -181,8 +174,8 @@ export const portfolioData: PortfolioData = {
     {
       id: "bluekey-zimi",
       title: "Full Stack Developer",
-      company: "BlueKey Pty Ltd (acquired by Zimi)",
-      location: "QLD, AU",
+      company: "Bluekey Pty Ltd (acquired by Zimi)",
+      location: "Gold Coast, Queensland, Australia",
       period: "October 2017 – December 2020",
       type: "full-time",
       description: "As the only full-stack/cloud engineer of the team, designed, developed, tested, deployed and maintained the services and infrastructure of the entire backend system.",
@@ -205,7 +198,7 @@ export const portfolioData: PortfolioData = {
         },
         {
           title: "Cost & Performance Optimization",
-          description: "Infrastructure cost reduced by more than 50%. Latency decreased considerably. Reliability increased.",
+          description: "Lowered infrastructure cost and request latency while improving reliability.",
         },
       ],
       technologies: ["GCP", "Firebase", "Firestore", "Cloud Functions", "IoT Core", "PubSub", "Kubernetes", "Docker", "PostgreSQL", "BigQuery", "TypeScript", "React", "Redux"],
@@ -301,7 +294,7 @@ export const portfolioData: PortfolioData = {
 
   certifications: [],
 
-  currentLearning: "Currently studying AWS architecture and services with the aim of obtaining certification",
+  currentLearning: "Currently studying AWS architecture and services toward certification, and practising agentic AI as personal, non-production learning.",
 
   cta: {
     label: "Let's Collaborate",
@@ -360,7 +353,7 @@ export const portfolioData: PortfolioData = {
     experience: {
       label: "Explore Projects",
       title: "Ready to See the Results?",
-      description: "From IoT platforms handling 55,000+ devices to cloud migrations with zero downtime - explore the projects that showcase my expertise in action.",
+      description: "From an IoT platform serving 70,000+ devices to cloud migrations with zero downtime. Explore the projects that showcase that work.",
       primaryButton: {
         text: "View My Projects",
         href: "/projects",

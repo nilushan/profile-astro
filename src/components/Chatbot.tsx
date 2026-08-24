@@ -109,7 +109,7 @@ function getPortfolioFallback(question: string): string {
   }
 
   if (/project|portfolio|built|case stud/.test(query)) {
-    return `Key projects include a 55,000+ device [IoT platform migration](/projects/iot-platform-migration), [GCP cost optimisation](/projects/gcp-cost-optimization), [keyless CI/CD](/projects/cicd-keyless-delivery), third-party APIs, voice integrations, and agentic-AI learning projects. Browse [all projects](/projects).`;
+    return `Key projects include a 70,000+ device [IoT platform](/projects/iot-platform-migration), [GCP cost optimisation](/projects/gcp-cost-optimization), [keyless CI/CD](/projects/cicd-keyless-delivery), third-party APIs, voice integrations, and personal agentic-AI learning projects. Browse [all projects](/projects).`;
   }
 
   return `I can help with Nilushan's **skills, experience, GCP work, CI/CD, programming languages, AI projects, or contact details**. You can also explore [Projects](/projects), [Experience](/experience), and [Skills](/skills).`;

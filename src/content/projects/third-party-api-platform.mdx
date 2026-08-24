@@ -33,8 +33,8 @@ challenges:
   - "Creating comprehensive documentation for external developers"
 outcomes:
   - "Enabled ecosystem expansion through partner integrations"
-  - "Reduced partner integration time from months to weeks"
-  - "Achieved 99.9% API uptime with sub-200ms response times"
+  - "Faster partner onboarding against a documented API"
+  - "OAuth 2.0, rate limiting, caching and webhook delivery"
   - "Facilitated integration with major smart home platforms"
   - "Created new revenue streams through API partnerships"
 client: "Zimi Ltd"
@@ -65,7 +65,7 @@ Creating a robust API platform for third-party integrations required addressing 
 - **Real-time Communication**: Event-driven architecture for instant status updates
 - **Scalability**: Platform designed to support hundreds of integration partners
 - **Developer Experience**: Comprehensive documentation and testing tools
-- **Reliability**: 99.9% uptime with comprehensive monitoring and error handling
+- **Reliability**: Monitoring, error handling and retries on a platform that runs at 99.999% uptime
 
 ## System Architecture
 
@@ -511,23 +511,20 @@ class APIAnalytics {
 
 ## Results & Impact
 
-### Business Impact
-- **Ecosystem Expansion**: Enabled partnerships with 15+ major smart home platforms
-- **Revenue Growth**: Created new API-based revenue streams
-- **Time to Market**: Reduced partner integration time from 6 months to 4 weeks
-- **Developer Adoption**: 50+ active API integrations with 95% developer satisfaction
+### Business impact
+- **Ecosystem**: Alexa, Google Home and other partner integrations on a shared API
+- **Partner access**: OAuth 2.0-protected APIs so vendors can use customer and device data they are allowed to use
+- **Onboarding**: Documented contracts, OpenAPI and knowledge-transfer material
 
-### Technical Achievements
-- **High Performance**: Sub-200ms average response times
-- **Reliability**: 99.9% API uptime with comprehensive error handling
-- **Scalability**: Successfully handling 10M+ API calls per month
-- **Security**: Zero security incidents with comprehensive OAuth2 implementation
+### Technical achievements
+- **Performance**: Caching, rate limiting and event-driven delivery instead of polling
+- **Reliability**: Error handling and retries on the same production platform
+- **Security**: OAuth 2.0 authorisation and role-based access
 
-### Developer Experience
-- **Comprehensive Documentation**: Interactive API docs with code examples
-- **Multiple SDKs**: Support for 5 programming languages
-- **Quick Onboarding**: Developers can integrate basic functionality in under 2 hours
-- **Robust Testing Tools**: Sandbox environment for development and testing
+### Developer experience
+- **Documentation**: OpenAPI / Swagger for the API surface
+- **Contracts**: Clear service boundaries for mobile, web and third-party clients
+- **Delivery**: Webhooks so partners do not need to poll
 
 ## Lessons Learned
 
