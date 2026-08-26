@@ -1,0 +1,40 @@
+---
+interface Props {
+  view: string
+  title: string
+  caption?: string
+  height?: string
+}
+
+const { view, title, caption, height = '32rem' } = Astro.props
+const explorer = `https://nilushan.github.io/nilushan-projects-c4/view/${view}`
+const embed = `https://nilushan.github.io/nilushan-projects-c4/embed/${view}/?padding=20`
+---
+
+<figure class="not-prose my-8 overflow-hidden rounded-lg border border-base-content/10 bg-base-200/40 shadow-xl">
+  <div class="flex flex-wrap items-center justify-between gap-2 border-b border-base-content/10 px-4 py-2 text-sm">
+    <span class="font-medium text-base-content">{title}</span>
+    <a
+      href={explorer}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="link link-primary text-xs whitespace-nowrap"
+    >
+      Open interactive view
+    </a>
+  </div>
+  <iframe
+    src={embed}
+    title={title}
+    loading="lazy"
+    allow="fullscreen"
+    referrerpolicy="no-referrer-when-downgrade"
+    class="block w-full border-0 bg-base-100"
+    style={`height: ${height}`}
+  ></iframe>
+  {caption && (
+    <figcaption class="px-4 py-3 text-sm text-base-content/70">
+      {caption}
+    </figcaption>
+  )}
+</figure>

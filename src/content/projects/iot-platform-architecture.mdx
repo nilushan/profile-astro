@@ -59,13 +59,16 @@ publishDate: 2026-08-26
 lastUpdated: 2026-08-26
 ---
 
+import LikeC4Embed from '../../components/LikeC4Embed.astro'
+
 ## What this model is
 
 This project is a [C4](https://c4model.com/) model of a production smart-home / smart-electrical platform I have owned since 2017. The diagrams are the work: one [LikeC4](https://likec4.dev/) source file, several views you can drill into.
 
 The live estate behind the pictures is **70,000+ devices**, **10,000+ accounts**, **100+ events per second** and **99.999% uptime**. The system in the model is the **Smart Device IoT Platform**. Around it sit a **Home Gateway**, a **Platform API**, and the neighbouring services the household actually talks to.
 
-**Interactive explorer** (pan, zoom, click a box to drill down): [nilushan.github.io/nilushan-projects-c4](https://nilushan.github.io/nilushan-projects-c4/). Source: [github.com/nilushan/nilushan-projects-c4](https://github.com/nilushan/nilushan-projects-c4).
+- Live explorer: [nilushan.github.io/nilushan-projects-c4](https://nilushan.github.io/nilushan-projects-c4/)
+- Source: [github.com/nilushan/nilushan-projects-c4](https://github.com/nilushan/nilushan-projects-c4)
 
 Related write-ups: the [zero-downtime migration](/projects/iot-platform-migration), [voice ecosystem](/projects/voice-control-ecosystem), [admin dashboard](/projects/iot-dashboard) and [C4 / LikeC4 notes](/blog/c4-architecture-diagrams).
 
@@ -73,7 +76,12 @@ Related write-ups: the [zero-downtime migration](/projects/iot-platform-migratio
 
 People around the platform: the **customer**, the **installer** who commissions a household and hands it over, and internal **admin / support / operator** roles. Neighbouring systems are a managed identity provider, an MQTT broker, Google Home, Alexa, mobile push, transactional email and a customer-engagement platform.
 
-![System context — people and neighbouring systems around the Smart Device IoT Platform](../../assets/projects/c4/index.png)
+<LikeC4Embed
+  view="index"
+  title="System context"
+  caption="People and neighbouring systems around the Smart Device IoT Platform. Pan, zoom, or click a box to drill in."
+  height="30rem"
+/>
 
 The home side is a **local device mesh** plus a **home gateway**. The gateway is the only thing that speaks MQTT to the cloud. Devices themselves stay on the LAN.
 
@@ -81,7 +89,12 @@ The home side is a **local device mesh** plus a **home gateway**. The gateway is
 
 The slide-sized container view. Clients on the left, the API and shared library in the middle, stores on the right.
 
-![Core containers — apps, platform API, shared library and primary stores](../../assets/projects/c4/containers-core.png)
+<LikeC4Embed
+  view="containers-core"
+  title="Core containers"
+  caption="Apps, platform API, shared library and primary stores."
+  height="34rem"
+/>
 
 What this view is careful to show:
 
@@ -94,7 +107,12 @@ What this view is careful to show:
 
 Unsolicited telemetry and cloud-to-device commands share one decode path.
 
-![Device telemetry pipeline — gateway, MQTT broker, decode, stores, push and voice report-state](../../assets/projects/c4/device-pipeline.png)
+<LikeC4Embed
+  view="device-pipeline"
+  title="Device telemetry and control"
+  caption="Gateway, MQTT broker, decode, stores, push and voice report-state."
+  height="34rem"
+/>
 
 - The gateway publishes state, requests and schedules onto the MQTT broker.
 - A **device event bus** fans those messages to pull subscribers.
@@ -141,7 +159,12 @@ Installers commission on the LAN, then the customer accepts a code, QR, email li
 
 A customer toggling a device from the app — authenticated API call, MQTT command, decode, live UI confirmation:
 
-![Flow — customer toggles a device from the app](../../assets/projects/c4/flow-app-command.png)
+<LikeC4Embed
+  view="flow-app-command"
+  title="Flow — app command"
+  caption="Authenticated API call, MQTT command, decode, live UI confirmation."
+  height="30rem"
+/>
 
 Voice directive, unsolicited telemetry, and installer handover:
 
