@@ -1,6 +1,6 @@
 ---
-title: "Architecture diagrams using C4 diagrams - likeC4"
-description: "Exploring the C4 model for visualizing software architecture and using likeC4 for creating clear, hierarchical diagrams that effectively communicate system design."
+title: "Architecture diagrams with the C4 model and LikeC4"
+description: "A practical introduction to the C4 model and LikeC4: how to describe a software system as code, generate layered architecture views, and keep those diagrams in git."
 publishDate: 2025-02-02
 author: "Nilushan Silva"
 tags: ["architecture", "diagrams", "C4 model", "documentation", "software design"]
@@ -9,18 +9,45 @@ featured: true
 image: /images/blog/likec4/likec4-playground.png
 ---
 
-I have always been a fan of  diagramming software systems. I have tried out many diagramming tools in the past. The most recent popular tool being Lucid charts. And then Draw.io. Due to some drawbacks of manually drawn diagrams, I have started to enjoyed diagrams as code. Initially there were sequence diagramming tools that supported defining the diagram as code. With time, it was possible to draw entire diagrams as code.
+Software architecture is hard to talk about without pictures. A good diagram shows who uses the system, what the main parts are, and how those parts talk to each other. A bad diagram is a slide that nobody updates after the first design review.
 
-I have been fond of C4 diagrams as it provides a layered and encapsulated view and architecture. You can start looking at the high level architecture and drill all the way down to the detailed level using C4. At first Icepanel.io introduced me to the concepts of C4. It was a good tool to learn about C4. How to define and draw a layered architecture diagram. Thereafter I tried out a few C4 diagramming tools that allow the diagram to be defined using code.
+I have used a lot of drawing tools over the years — Lucidchart, draw.io, and others. They are fine for a one-off picture. They fall apart when the system changes every sprint and you have five slightly different versions of "the architecture" living in Confluence.
 
-Today I am trying out a new C4 diagramming tool. Its called likeC4.dev. I feel it is a great C4 diagramming tool.
+That is why I prefer **diagrams as code**. You describe the system in a text file, generate the pictures from that file, and review the change in a pull request the same way you review application code.
 
-This is how I am trying it out.
+For software architecture specifically, I use the **C4 model** and a tool called **[LikeC4](https://likec4.dev/)**.
+
+## The C4 model
+
+[C4](https://c4model.com/) is a way of drawing software systems at four zoom levels. You do not put every box on one canvas. You start wide and drill in.
+
+1. **Context** — the system as a single box, the people who use it, and the neighbouring systems it talks to. This is the picture for anyone, including non-engineers.
+2. **Containers** — the separately deployable parts inside the system: a web app, an API, a database, a worker, a mobile client.
+3. **Components** — the main building blocks inside one container: modules, services, or packages and how they call each other.
+4. **Code** — classes or functions, used rarely, and only when a component is genuinely hard to explain.
+
+The value is the hierarchy. A product manager can stay on the context view. An engineer joining a service can open the container view and then one component view. Nobody has to decode a 40-box whiteboard photo.
+
+## Why LikeC4
+
+LikeC4 is a small language for writing a C4 **model** and then projecting **views** from that model.
+
+That split matters:
+
+- The **model** is the source of truth: people, systems, containers, relationships, a bit of metadata.
+- A **view** is a query over the model: "show the whole landscape" or "show this system and its database tables."
+
+You do not redraw the same boxes on five slides. You describe the system once and ask for different pictures.
+
+Other useful properties:
+
+- The source is a `.c4` or `.likec4` file, so it lives in git.
+- Layout is automatic. You spend time on structure, not on lining up arrows.
+- The local preview is a small website you can click through, not a static PNG.
 
 ## Setup
-I have node.js already installed and running on my system.
 
-To draw a diagram its as simple as selecting a folder for the diagram code, defining the diagram code and running a command.
+You need Node.js. Then pick a folder, create a model file, and start the preview.
 
 ```sh
 mkdir c4like-diagrams
@@ -29,18 +56,21 @@ cd c4like-diagrams
 touch tutorial.c4
 ```
 
-
-run likec4
-
 ```sh
-
 npx likec4 start
-
 ```
 
-Follow the tutorial https://likec4.dev/tutorial/
+LikeC4 watches the folder, renders the model, and opens a local site. The official walkthrough is on [likec4.dev/tutorial](https://likec4.dev/tutorial/).
 
-tutorial.c4
+## A first model
+
+The file below is a small SaaS: a customer, a frontend, a backend, a database, plus Stripe and SendGrid on the outside.
+
+A LikeC4 file has three blocks.
+
+- **`specification`** — the vocabulary. What kinds of things exist (`actor`, `system`, `component`, `database`) and any tags or relationship types you want.
+- **`model`** — the actual system. Nested blocks become containment. Arrows become relationships.
+- **`views`** — which slices of the model to draw.
 
 ```c4
 specification {
@@ -147,12 +177,33 @@ views {
 
 ```
 
-Live demo
-Overview http://c4likelearn.nilushansilva.info
+A few things to notice:
+
+- Nesting is containment. `ui`, `backend`, and `database` sit *inside* `saas`. The two tables sit inside `database`.
+- Relationships can be qualified (`saas.backend -> external.stripe`) so you do not need unique names everywhere.
+- `.async` marks the email call as asynchronous. That is just a relationship kind from the specification.
+- `view of saas` starts from that system and then pulls in extra detail (`database.*`, `external.*`). The landscape view (`index`) stays high level.
+
+## Generated views
+
+The same model produces several pictures. These are from a hosted copy of the example.
+
+Overview: [c4likelearn.nilushansilva.info](http://c4likelearn.nilushansilva.info)
+
 ![All view](../../assets/blog/likec4/likec4%20all%20view.png)
 
-Landscape view http://c4likelearn.nilushansilva.info/view/index
+Landscape view: [c4likelearn.nilushansilva.info/view/index](http://c4likelearn.nilushansilva.info/view/index)
+
 ![Landscape view](../../assets/blog/likec4/likec4%20landscape%20view.png)
 
-Saas View http://c4likelearn.nilushansilva.info/view/view_1c9nbub
+SaaS view: [c4likelearn.nilushansilva.info/view/view_1c9nbub](http://c4likelearn.nilushansilva.info/view/view_1c9nbub)
+
 ![SaaS view](../../assets/blog/likec4/likec4%20saas%20view.png)
+
+Click through the live site if you want to see how LikeC4 lets you zoom from the landscape into a single system.
+
+## After the tutorial
+
+The example is small on purpose. The same three blocks — specification, model, views — are enough for a real platform: more people, more containers, sequence-style flows, and a deployment view.
+
+I used that approach on a production smart-home IoT platform and published the model as [Diagramming a Smart-Home IoT Platform with C4](/projects/iot-platform-architecture). The diagrams there are generated from LikeC4 source, not redrawn by hand.

@@ -1,5 +1,7 @@
 # LikeC4 Architecture Diagramming - Learning Guide
 
+`portfolio.likec4` in this folder models the **portfolio site** itself. The smart-home IoT C4 model lives in the sibling repo `nilushan-projects-c4` and is published as [Diagramming a Smart-Home IoT Platform with C4](/projects/iot-platform-architecture).
+
 A comprehensive guide to understanding and using LikeC4 DSL for architecture modeling.
 
 ## Table of Contents
