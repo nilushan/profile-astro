@@ -1,6 +1,6 @@
 ---
 title: "Zimi Smart Home Voice Assistant Integration"
-description: "Architected and implemented voice control integrations for Google Home and Amazon Alexa using a unified translation-based architecture with common business logic and platform-specific adapters for consistent smart home device control."
+description: "Certified Alexa and Google Home control for Zimi devices from one domain layer — platform-specific translators, OAuth linking, and report-state from live telemetry."
 period: "2019-2021"
 status: "completed"
 featured: true
@@ -16,24 +16,17 @@ technologies:
   - "REST APIs"
   - "Event-driven Architecture"
 achievements:
-  - "Successfully certified for both Google Home and Alexa platforms"
-  - "Developed unified translation-based architecture for consistent behavior"
-  - "Implemented real-time state synchronization across voice platforms"
-  - "Created reusable common business logic reducing maintenance overhead"
-  - "Achieved seamless OAuth account linking for both platforms"
-  - "Maintained consistent device control experience across ecosystems"
+  - "Certified Alexa Smart Home and Google Home fulfilment"
+  - "One device/command model behind two assistant APIs"
+  - "Report-state from the telemetry path so assistants are not polling us"
 challenges:
-  - "Translating between different API paradigms and request/response formats"
-  - "Implementing unified business logic while supporting platform-specific requirements"
-  - "Ensuring real-time state synchronization from Zimi backend to voice platforms"
-  - "Managing OAuth authentication flows for both Google Home and Alexa"
-  - "Handling platform-specific device capability reporting and discovery"
+  - "Alexa and Google disagree on discovery, traits, and state reporting"
+  - "A wall plate is several virtual endpoints, not one gadget"
+  - "A voice 'on' has to hit the same MQTT command path the app uses"
 outcomes:
-  - "Expanded Zimi's reach to major voice assistant ecosystems"
-  - "Enhanced user experience with hands-free device control"
-  - "Established scalable foundation for future voice platform integrations"
-  - "Reduced code duplication through common business logic architecture"
-  - "Enabled consistent voice control experience across platforms"
+  - "Same household devices behave the same from app and from either assistant"
+  - "Capability lists live in one place, so certification is not two products"
+  - "Account linking is OAuth; voice never sees customer app JWTs"
 image: /images/projects/voicecontrol.png
 gallery:
   - "/images/projects/zimi-voice-architecture.jpg"
@@ -50,339 +43,45 @@ tags:
   - "Real-time Synchronization"
 category: "iot"
 publishDate: 2021-06-01
-lastUpdated: 2024-01-10
+lastUpdated: 2026-08-27
 ---
 
-## Project Overview
+I built and certified Zimi’s Amazon Alexa and Google Home integrations so the same in-wall devices can be asked to switch, dim, and report state from either assistant. Fulfilment runs on our GCP backend. Assistants never talk MQTT.
 
-The Zimi Smart Home Voice Assistant Integration project implements comprehensive voice control capabilities for Zimi smart electrical devices through both Google Home and Amazon Alexa platforms. The project features a sophisticated backend architecture with unified business logic and platform-specific translation layers to ensure consistent functionality across voice assistant ecosystems while maximizing code reuse and maintainability.
+Voice, OAuth linking, and report-state are views in [the C4 model](/projects/iot-platform-architecture).
 
-## The Challenge
+## Two assistant APIs, one device model
 
-Integrating Zimi smart devices with multiple voice assistant platforms presented unique architectural challenges:
+Google Sync/Query/Execute and Alexa Discover/Control/ReportState are the same three questions in different envelopes: what devices exist, what are they doing, do this.
 
-- **Platform Diversity**: Google Home and Alexa have different API structures, request/response formats, and authentication flows
-- **Code Duplication**: Risk of maintaining separate implementations for each platform
-- **Real-time Synchronization**: Device state changes from Zimi backend must be instantly reflected across all voice platforms
-- **OAuth Complexity**: Secure account linking between voice assistants and Zimi user accounts
-- **Consistent Behavior**: Ensuring identical device control experience across different voice ecosystems
+If each assistant gets its own stack, those answers drift. A dimmer grows a trait on Google and not on Alexa. Certification becomes two products. Multi-function hardware makes that worse: one physical plate is a switch, a dimmer, a fan, a garage — virtual endpoints with different capabilities.
 
-## Architecture & Design
+Auth is a second split. App users have IdP JWTs. Voice needs OAuth account linking, with the assistant holding tokens that must never be treated as an admin session.
 
-Voice fulfilment, OAuth account linking and report-state sit in the C4 model: [Diagramming a Smart-Home IoT Platform with C4](/projects/iot-platform-architecture).
+And state has to move both ways. A finger on the wall should update the Google Home graph. A spoken command should go through the same MQTT command path as the mobile app, or “Alexa off” and the app will disagree.
 
-### Unified Translation-Based Architecture
+## What changed
 
-The core innovation was designing a translation-based architecture that converts platform-specific requests into a common internal format:
+I put a **translation layer** on each assistant and a **shared domain layer** behind both.
 
-- **Translation Layer**: Converts Google Home and Alexa requests into common internal format
-- **Common Business Logic**: Unified processing engine handling device operations regardless of source platform
-- **Response Translation**: Converts common internal responses back to platform-specific formats
-- **Shared Components**: Device state management, user authentication, and command processing logic reused across platforms
+Google and Alexa adapters map discovery, query, and execute into a common request: who is the user, which endpoints, which operation. The domain layer checks the linked account, loads devices, and runs the same command/query code the rest of the platform uses. Responses map back into each assistant’s payload shape.
 
-### Authentication Layer
+OAuth account linking is the identity bridge. The voice path does not accept the customer app JWT. Tokens and unlinking (Google Disconnect, Alexa disable) are first-class.
 
-**OAuth 2.0 Integration**: Both Google Home and Amazon Alexa authenticate users through OAuth flows to link Zimi user accounts with their respective smart home platforms, enabling secure device access and control through centralized token management.
+Unsolicited changes — someone used the wall switch — already flow through the telemetry processor. That processor **reports state** to Google Home Report State and Alexa Change Report. Assistants are not polling us for “is the light on.”
 
-### System Components
+Alexa hits a thin wrapper; fulfilment, state, and commands stay on GCP. Device-class mapping (switch, dimmer, fan, outlet, blind, garage) lives in the shared model so both certifications see the same hardware.
 
-**Platform Translation Services**
-- Google Home Translator: Handles conversion between Google Actions format and common format
-- Alexa Translator: Manages conversion between Alexa Skills format and common format
-- Bidirectional Processing: Supports both request translation and response formatting
+## Translate at the edge, share the domain
 
-**Common Business Logic Engine**
-- Device Manager: Unified device discovery, state management, and command processing
-- User Manager: Permission validation and account management across platforms
-- State Engine: Centralized device state tracking and command execution
+The alternative was two fulfilment services. That duplicates ownership rules, endpoint IDs, and “what does off mean on a fan.” The cheaper-looking option is the one that fails certification when Google adds a trait and Alexa does not.
 
-**Real-time Event System**
-- Event Handler: Processes device state changes from Zimi backend
-- Event Translator: Converts internal events to platform-specific formats
-- Push Service: Distributes real-time updates to Google Home and Alexa platforms
+Keeping the assistants at the edge means a Google payload never leaks into command execution. The domain layer speaks *our* operations. Adding a third assistant, if we ever did, is another translator — not another device model.
 
-## Implementation Details
+The operational consequence is that report-state is part of telemetry, not part of the HTTP request that handled the last voice command. If we only updated assistants when voice ran, wall-switch changes would be stale until the next spoken query. Users notice that immediately; they call it “broken.”
 
-### Google Home Integration
+## After
 
-**Supported APIs**
-The Google Home integration implements the complete Actions on Google Smart Home API:
+Both platforms certified. A household can link once per assistant and control the same devices the app sees. Capability mapping is shared. State follows the device, not the last voice request.
 
-- **Sync**: Discovers and registers user's Zimi devices with Google Home
-- **Query**: Retrieves current device states for status inquiries
-- **Execute**: Processes voice commands to control devices
-- **Disconnect**: Handles account unlinking and device removal
-
-**Request Translation Implementation**
-```typescript
-// Convert Google Home format to common format
-const translateGoogleRequest = (googleRequest: GoogleSmartHomeRequest) => {
-  const { inputs, requestId } = googleRequest;
-  
-  for (const input of inputs) {
-    switch (input.intent) {
-      case 'action.devices.SYNC':
-        return createCommonSyncRequest(input, requestId);
-      case 'action.devices.QUERY':
-        return createCommonQueryRequest(input, requestId);
-      case 'action.devices.EXECUTE':
-        return createCommonExecuteRequest(input, requestId);
-    }
-  }
-};
-
-// Convert common response to Google format
-const translateToGoogleResponse = (commonResponse: CommonResponse) => {
-  return {
-    requestId: commonResponse.requestId,
-    payload: formatGooglePayload(commonResponse.data)
-  };
-};
-```
-
-### Amazon Alexa Integration
-
-**Supported APIs**
-The Alexa integration implements the Smart Home Skill API:
-
-- **Discovery**: Discovers and registers user's Zimi devices with Alexa
-- **Control**: Executes voice commands to control devices
-- **Query/ReportState**: Retrieves current device states for status inquiries
-- **Authorization**: Manages OAuth and account linking
-
-**Request Translation Implementation**
-```typescript
-// Convert Alexa format to common format
-const translateAlexaRequest = (alexaDirective: AlexaDirective) => {
-  const { header, endpoint, payload } = alexaDirective;
-  
-  switch (header.name) {
-    case 'Discover':
-      return createCommonDiscoveryRequest(alexaDirective);
-    case 'TurnOn':
-    case 'TurnOff':
-      return createCommonControlRequest(alexaDirective);
-    case 'ReportState':
-      return createCommonQueryRequest(alexaDirective);
-  }
-};
-
-// Convert common response to Alexa format
-const translateToAlexaResponse = (commonResponse: CommonResponse) => {
-  return {
-    event: {
-      header: createAlexaHeader(commonResponse),
-      endpoint: formatAlexaEndpoint(commonResponse),
-      payload: formatAlexaPayload(commonResponse.data)
-    }
-  };
-};
-```
-
-### Common Business Logic Engine
-
-The unified processing engine handles all device operations through a standardized interface:
-
-```typescript
-// Common request processor
-const processCommonRequest = async (commonRequest: CommonRequest) => {
-  // Validate user permissions
-  await validateUserAccess(commonRequest.userId, commonRequest.deviceIds);
-  
-  // Process device operations through Zimi backend
-  const result = await executeDeviceOperation(commonRequest);
-  
-  // Return standardized response
-  return createCommonResponse(result);
-};
-
-// Device operation execution
-const executeDeviceOperation = async (request: CommonRequest) => {
-  switch (request.operation) {
-    case 'sync':
-      return await syncUserDevices(request.userId);
-    case 'query':
-      return await queryDeviceStates(request.deviceIds);
-    case 'execute':
-      return await executeDeviceCommands(request.commands);
-  }
-};
-```
-
-## Real-time State Synchronization
-
-### Event Processing Pipeline
-
-The system implements comprehensive real-time state synchronization to keep all platforms updated when device states change:
-
-**Backend Event Handler Integration**
-```typescript
-// Process device state changes from Zimi backend event handler
-const handleDeviceStateChange = async (deviceEvent: DeviceStateEvent) => {
-  // Update internal device state
-  await updateDeviceState(deviceEvent.deviceId, deviceEvent.newState);
-  
-  // Translate to platform-specific events
-  const googleEvent = translateToGoogleStateEvent(deviceEvent);
-  const alexaEvent = translateToAlexaStateEvent(deviceEvent);
-  
-  // Forward to respective platforms
-  await sendGoogleStateReport(googleEvent);
-  await sendAlexaChangeReport(alexaEvent);
-};
-
-// Event translation for Google Home
-const translateToGoogleStateEvent = (deviceEvent: DeviceStateEvent) => {
-  return {
-    requestId: generateRequestId(),
-    agentUserId: deviceEvent.userId,
-    payload: {
-      devices: {
-        states: {
-          [deviceEvent.deviceId]: formatGoogleDeviceState(deviceEvent.newState)
-        }
-      }
-    }
-  };
-};
-
-// Event translation for Alexa
-const translateToAlexaStateEvent = (deviceEvent: DeviceStateEvent) => {
-  return {
-    event: {
-      header: {
-        namespace: getAlexaNamespace(deviceEvent.deviceType),
-        name: 'ChangeReport',
-        messageId: generateMessageId()
-      },
-      endpoint: {
-        endpointId: deviceEvent.deviceId
-      },
-      payload: formatAlexaChangePayload(deviceEvent.newState)
-    }
-  };
-};
-```
-
-### State Distribution System
-
-**Push Service Implementation**
-- **Google Home**: Uses Report State API to push real-time device state updates
-- **Amazon Alexa**: Uses Alexa Event Gateway to send change reports
-- **State Synchronization**: Ensures all platforms maintain consistent device state information
-
-```typescript
-// Push state updates to platforms
-const pushStateUpdates = async (deviceEvent: DeviceStateEvent) => {
-  // Send to Google Home Report State API
-  await axios.post('https://homegraph.googleapis.com/v1/devices:reportStateAndNotification', 
-    googleEvent, {
-      headers: { 'Authorization': `Bearer ${googleAccessToken}` }
-    });
-  
-  // Send to Alexa Event Gateway
-  await axios.post('https://api.amazonalexa.com/v3/events', 
-    alexaEvent, {
-      headers: { 'Authorization': `Bearer ${alexaAccessToken}` }
-    });
-};
-```
-
-## Technical Highlights
-
-### Translation Layer Benefits
-
-**Code Reuse and Maintainability**
-- **Unified Logic**: Single implementation of core business logic behind platform-specific adapters
-- **Platform Abstraction**: Translation layers isolate platform-specific code, enabling easier updates
-- **Consistent Behavior**: Ensures identical functionality across both voice assistant platforms
-
-**Extensible Architecture**
-- **New Platform Support**: Additional voice assistants can be integrated by adding new translation layers
-- **Minimal Core Changes**: Common business logic remains unchanged when adding platforms
-- **Isolated Updates**: Platform-specific changes don't affect the core system
-
-### OAuth Authentication Flow
-
-**Secure Account Linking**
-```typescript
-// OAuth flow implementation
-const handleOAuthCallback = async (platform: 'google' | 'alexa', authCode: string) => {
-  // Exchange authorization code for tokens
-  const tokens = await exchangeAuthCode(platform, authCode);
-  
-  // Link user accounts
-  await linkUserAccounts(tokens.userId, platform, tokens);
-  
-  // Return success response
-  return { linked: true, platform };
-};
-```
-
-### Performance Optimization
-
-**Response Time Optimization**
-- Implemented response caching for device discovery requests
-- Shared business logic so Alexa and Google Home behave consistently
-- Used connection pooling for Zimi backend API calls
-- Implemented efficient event batching for state updates
-
-## Integration Flow
-
-### Voice Command Processing Flow
-1. User issues voice command to Google Home or Alexa
-2. Platform sends API request to Zimi voice integration service
-3. Translation layer converts platform-specific request to common format
-4. Common business logic processes the request and interacts with Zimi backend
-5. Response is generated in common format
-6. Translation layer converts response back to platform-specific format
-7. Device action is executed through Zimi backend and ZCC gateways
-8. State change confirmation is sent back to the voice platform
-
-### Real-time State Synchronization Flow
-1. Zimi device state changes (detected by ZCC gateway)
-2. ZCC gateway reports change to Zimi backend via MQTT
-3. Zimi backend event handler processes the state change
-4. Event is translated to platform-specific formats (Google/Alexa)
-5. Real-time updates are sent to both Google Home and Alexa platforms
-6. Voice assistants update their device state cache
-7. Users receive accurate status information for future voice queries
-
-## Results & Impact
-
-### Technical Achievements
-- **Code reuse**: Shared business logic with platform-specific adapters for Alexa and Google Home
-- **Maintenance Efficiency**: Single codebase for core functionality reduces development time
-- **Real-time Sync**: Sub-second state synchronization across all voice platforms
-- **Scalable Design**: Architecture supports easy addition of new voice assistant platforms
-
-### User Experience Benefits
-- **Consistent Behavior**: Identical device control experience across Google Home and Alexa
-- **Hands-free Control**: Natural voice commands for all Zimi smart devices
-- **Real-time Updates**: Accurate device status reporting across all platforms
-- **Seamless Setup**: Simple OAuth-based account linking process
-
-### Business Impact
-- **Market Expansion**: Access to millions of Google Home and Alexa users
-- **Platform Coverage**: Comprehensive voice assistant ecosystem support
-- **Development Efficiency**: Unified architecture reduces ongoing maintenance costs
-- **Future-Ready**: Scalable foundation for additional voice platform integrations
-
-## Lessons Learned
-
-### Architecture Insights
-- **Translation Pattern**: Converting platform requests to common format enables maximum code reuse
-- **Event-Driven Design**: Real-time state synchronization is critical for voice assistant trust
-- **OAuth Complexity**: Account linking requires careful handling of multiple authentication flows
-
-### Platform Considerations
-- **API Differences**: Google Home and Alexa have fundamentally different request/response patterns
-- **State Reporting**: Each platform has unique requirements for real-time state updates
-- **Certification Requirements**: Platform-specific testing and compliance processes require dedicated effort
-
-### Development Best Practices
-- **Common Interface**: Abstracting platform differences through translation layers simplifies maintenance
-- **Comprehensive Testing**: Voice interactions require extensive testing across multiple scenarios
-- **Error Handling**: Graceful degradation and clear error messages are essential for voice interfaces
-
-This project successfully established Zimi's presence in the voice assistant ecosystem through an innovative translation-based architecture that maximizes code reuse while providing platform-specific optimizations for Google Home and Amazon Alexa integration.
+Related: [partner API](/projects/third-party-api-platform) (OAuth and events for non-voice partners), [migration](/projects/iot-platform-migration), [C4 voice and identity views](/projects/iot-platform-architecture).

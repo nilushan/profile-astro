@@ -1,6 +1,6 @@
 ---
 title: "Keyless Multi-Environment CI/CD on GCP"
-description: "A build-once delivery platform that publishes versioned artifacts from GitHub Actions, promotes them across environments, renders reusable Kustomize overlays, and uses Workload Identity Federation instead of long-lived service-account keys."
+description: "Build once to Artifact Registry for GKE and Cloud Run, promote the same image through dev/staging/prod, coordinate Firebase artifacts under the same release, and replace JSON keys with Workload Identity Federation."
 image: /images/projects/keyless-cicd-gcp.jpg
 imageFit: contain
 period: "2026–Present"
@@ -19,21 +19,18 @@ technologies:
   - "Docker"
   - "IAM"
 achievements:
-  - "Standardised development, staging, and production delivery around versioned artifacts from a shared Artifact Registry"
-  - "Created reusable Kubernetes configuration with common Kustomize bases and service- and environment-specific overlays"
-  - "Implemented keyless GitHub Actions authentication to GCP through Workload Identity Federation"
-  - "Removed mounted service-account key files from GKE workloads by adopting workload-specific federated identities"
-  - "Supported consistent deployment paths for Kubernetes, Cloud Run, and Firebase"
+  - "Promoted one versioned artifact through development, staging, and production"
+  - "Shared Kustomize bases with service and environment overlays instead of copied manifests"
+  - "GitHub Actions reaches GCP through Workload Identity Federation — no service-account keys in secrets"
+  - "GKE workloads use federated identities instead of mounted JSON key files"
 challenges:
-  - "Preventing environment drift across multiple services and deployment targets"
-  - "Sharing Kubernetes configuration without duplicating manifests for each service and environment"
-  - "Replacing long-lived credentials without interrupting CI/CD or workload access"
-  - "Applying least-privilege identity across deployment automation and runtime services"
+  - "Rebuilding per environment meant staging and production were not the same bits"
+  - "Copied Kubernetes YAML drifted across services"
+  - "Long-lived keys in GitHub and in pods were a rotation and leak problem"
 outcomes:
-  - "Consistent promotion of the same tested artifact across environments"
-  - "Reusable and reviewable Kubernetes configuration"
-  - "Fewer long-lived secrets in GitHub Actions and service workloads"
-  - "Clearer service- and environment-specific deployment differences"
+  - "The image that passed staging is the image that runs in production"
+  - "Environment differences are overlays in git, not hand-edited live manifests"
+  - "CI and runtime credentials are short-lived and scoped"
 client: "Zimi Ltd"
 role: "Senior Cloud Engineer"
 tags:
@@ -45,112 +42,49 @@ tags:
   - "Cloud Security"
 category: "infrastructure"
 publishDate: 2026-08-10
-lastUpdated: 2026-08-11
+lastUpdated: 2026-08-27
 ---
 
-## Project Overview
+This is the delivery path for the Zimi GCP platform: GitHub Actions builds a versioned image once, stores it in Artifact Registry, and promotes that same digest through development, staging, and production for GKE and Cloud Run. Firebase Hosting and Functions use their own release artifacts and deployment toolchain. Kubernetes config is composed with Kustomize. GitHub and GKE authenticate to GCP with Workload Identity Federation, not JSON keys.
 
-This project standardised how application artifacts move from the main branch into development, staging, and production on Google Cloud Platform.
+## Rebuilds, copied YAML, and keys in the cluster
 
-It combined three related improvements:
+Building separately for each environment looks convenient until something fails only in production. The git SHA might match; the image often does not. Different build times, different caches, different unnoticed Dockerfile changes.
 
-1. Build once and promote the same versioned artifact between environments.
-2. Manage Kubernetes configuration through reusable Kustomize bases and overlays.
-3. Replace long-lived CI/CD and workload credentials with Workload Identity Federation.
+Kubernetes had a quieter form of the same drift. Each service and environment carried its own copy of probes, labels, ports, and resources. A one-line fix became a scavenger hunt. Intentional prod-only differences were hard to tell from accidents.
 
-The resulting delivery model supports Kubernetes, Cloud Run, and Firebase while keeping environment differences explicit and reducing the number of static credentials that need to be stored and rotated.
+Credentials were the third copy. Service-account keys in GitHub secrets and keys mounted into pods are long-lived, easy to over-scope, and painful to rotate. Anyone who has the file has the access.
 
-## The Delivery Problem
+## What changed
 
-Building separately for each environment can introduce drift: development, staging, and production may nominally reference the same source revision but run artifacts created at different times or under different conditions.
+Main-branch CI builds one versioned container image and publishes it to a shared Artifact Registry. GKE and Cloud Run promote that digest through development, staging, and production instead of rebuilding it. Firebase is a separate path tied to the same source revision and release: Hosting deploys built directory contents, while Functions are packaged and built through the Firebase toolchain.
 
-Kubernetes configuration can also drift when every service and environment maintains a copied set of manifests. Small fixes must then be repeated across many files, and it becomes difficult to distinguish intentional differences from accidental ones.
+Kubernetes manifests are layered:
 
-Finally, service-account JSON keys create an avoidable security and operational burden. Keys stored in CI/CD or mounted into containers are long-lived credentials that must be distributed, protected, audited, and rotated.
+- A **base** for the common shape: resources, labels, probes, ports.
+- A **service overlay** for things that belong to one app.
+- An **environment overlay** for dev, staging, or production.
 
-## Build Once, Deploy Many
+CI renders the selected composition to plain YAML and deploys that. The override is visible in git; the rendered output can be reviewed before it hits the cluster.
 
-The pipeline uses a main-branch build as the source of a versioned container artifact:
+GitHub Actions presents its OIDC identity to GCP and receives short-lived credentials. IAM bindings constrain *which* repository, branch, and workflow can assume the deployer identity, and *what* that identity may do: push images, read config, deploy to the intended project.
 
-1. GitHub Actions checks out and validates the main branch.
-2. The pipeline builds a versioned container image once.
-3. The image is published to a shared Artifact Registry.
-4. Development, staging, and production reference that same artifact version.
-5. Runtime-specific jobs deploy to Kubernetes, Cloud Run, or Firebase as required.
-
-Promoting an immutable artifact means production runs the same build that was already exercised in earlier environments. It also creates a clearer audit trail between a source revision, artifact version, and deployment.
-
-## Kubernetes Configuration with Kustomize
-
-Kubernetes manifests were organised into composable Kustomize layers:
-
-- A **base** contains common resources, labels, probes, ports, and configuration structure.
-- **Service overlays** apply changes that belong to an individual service.
-- **Environment overlays** apply development, staging, or production differences.
-- CI renders the selected composition into standard Kubernetes manifests before deployment.
-
-This approach keeps common configuration in one place and makes every override visible in source control. Rendered output can be reviewed or validated before it reaches the cluster.
-
-## Keyless GitHub Actions Authentication
-
-GitHub Actions authenticates to GCP through Workload Identity Federation.
-
-Instead of storing a service-account JSON key in GitHub secrets, the workflow presents its GitHub OIDC identity and receives short-lived GCP credentials. IAM conditions and roles restrict which repository, branch, and workflow can assume the deployment identity and what that identity can do.
-
-The federated credentials support authorised operations such as:
-
-- Publishing container images to Artifact Registry
-- Reading deployment configuration
-- Deploying to the intended GCP runtime
-- Accessing only the projects and environments assigned to the workflow
-
-This removes a high-value static credential from CI/CD and reduces key-rotation work.
-
-## Workload Identity Federation for GKE
-
-Runtime services were also moved away from mounted service-account key files.
-
-With Workload Identity Federation for GKE, a Kubernetes service account is associated with an authorised GCP identity. The workload obtains short-lived credentials at runtime and can access only the GCP resources allowed by its IAM roles.
-
-This allows each service to have a dedicated, least-privilege identity without copying private key files into pods. Application code uses standard GCP authentication rather than knowing where a credential file has been mounted.
+GKE workloads dropped mounted key files. A Kubernetes service account is bound to a GCP identity; the pod gets short-lived tokens at runtime and only the IAM roles of that identity.
 
 ![GKE workloads using Workload Identity Federation for keyless, short-lived access to GCP resources](../../assets/projects/gke-workload-identity-federation.jpg)
 
-## Artifact Access
+## Why federation instead of JSON keys
 
-Artifact Registry and Kubernetes access follow the same identity-first principle: platform identities and short-lived credentials are preferred over manually distributed keys.
+A JSON key works from anywhere that holds it: a laptop, a fork, a log line. Federation ties access to an attested workload identity. The token expires. The condition can say “only this workflow on `main`,” which is a much smaller accident surface than “anyone with `gcp-sa.json`.”
 
-The pipeline publishes versioned images under an authorised deployment identity, and the Kubernetes environment retrieves approved artifacts through its configured GCP identity path.
+The same rule at runtime: the pod should not know where a secret file was mounted. Application code uses ADC; GCP decides whether that GKE service account may read the bucket or publish to Pub/Sub.
 
-## Results
+The trade-off is setup cost. Federation needs a pool, provider, attribute mapping, and IAM conditions — more moving parts than pasting a key into GitHub. It is also much easier to reason about six months later, when nobody wants to be the person who rotates twenty keys.
 
-### Delivery consistency
+## After
 
-- Established a shared Artifact Registry as the source of deployable images
-- Promoted the same versioned artifact through development, staging, and production
-- Supported Kubernetes, Cloud Run, and Firebase delivery paths
-- Made deployments easier to trace back to source and artifact versions
+Environments promote an immutable artifact instead of rebuilding it. Kubernetes differences live in overlays. GitHub Actions and GKE workloads talk to GCP without long-lived keys in the repo or the cluster.
 
-### Maintainability
+The coordinated release covers Kubernetes and Cloud Run with the promoted container digest, and Firebase with separately built deployment artifacts. Every production deploy traces back to the same source revision and release; only GKE and Cloud Run trace to the shared Artifact Registry digest.
 
-- Reduced duplicated Kubernetes YAML
-- Centralised common configuration in Kustomize bases
-- Kept service and environment differences explicit in overlays
-- Rendered standard manifests for validation and deployment
-
-### Security
-
-- Replaced static GitHub-to-GCP credentials with short-lived federated access
-- Removed mounted service-account key files from GKE workloads
-- Applied workload-specific identities and least-privilege IAM
-- Reduced credential distribution and rotation responsibilities
-
-## Skills Demonstrated
-
-- Multi-environment CI/CD architecture
-- Immutable artifact creation and promotion
-- GitHub Actions and Artifact Registry
-- Kubernetes configuration management with Kustomize
-- GCP IAM and Workload Identity Federation
-- Keyless workload authentication
-- GKE, Cloud Run, and Firebase delivery
+Related: [production deployment in the C4 model](/projects/iot-platform-architecture).

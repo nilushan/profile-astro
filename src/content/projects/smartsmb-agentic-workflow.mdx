@@ -1,6 +1,6 @@
 ---
 title: "SmartSMB Human-in-the-Loop AI Workflow"
-description: "A non-production personal learning project exploring stateful agent orchestration for small businesses: enquiry triage, tool-assisted quoting, deterministic pricing, durable state, and human approval before action."
+description: "A learning system for small-business enquiries: LangGraph routes the job, code calculates the quote, PostgreSQL holds state, and quotes above a configurable threshold require approval."
 period: "2026"
 status: "completed"
 featured: false
@@ -16,20 +16,18 @@ technologies:
   - "LLM Tool Calling"
   - "Human-in-the-Loop"
 achievements:
-  - "Built a stateful workflow that routes quotes, complaints, FAQs, and unclear enquiries to specialist paths or human handoff"
-  - "Kept quote calculations deterministic in code while using the LLM to gather details and select validated tools"
-  - "Implemented approve, revise, and reject controls so consequential actions remain under human supervision"
-  - "Persisted graph state in PostgreSQL so paused conversations survive restarts and resume safely"
-  - "Created a swappable model layer and comprehensive deterministic tests for agent behaviour"
+  - "Quote / complaint / FAQ / handoff routing in a stateful graph, not a single prompt"
+  - "Prices calculated in code; the model only gathers fields and picks tools"
+  - "Approve, revise, reject as graph interrupts — revisions go back through approval"
+  - "PostgreSQL checkpoints so a paused thread survives a process restart without double-sending"
 challenges:
-  - "Combining flexible language understanding with predictable business decisions"
-  - "Pausing and resuming a multi-step workflow safely across process restarts"
-  - "Preventing duplicate delivery when a checkpointed workflow is replayed"
-  - "Allowing human revisions without bypassing the approval gate"
+  - "Language is messy; prices and sends must not be"
+  - "A workflow that waits overnight has to resume from disk, not from RAM"
+  - "Replay after a checkpoint must not email the customer twice"
 outcomes:
-  - "A working learning implementation of controlled agentic patterns for small-business workflows"
-  - "Practical experience with LangGraph state, conditional routing, tools, interrupts, and persistence"
-  - "A testable architecture where models are swappable and critical calculations remain deterministic"
+  - "A small, testable example of controlled agentic patterns"
+  - "Swappable chat models behind the same graph and business rules"
+  - "Deterministic tests around routing, tools, and approval — not 'the LLM usually does this'"
 github: "https://github.com/nilushan/langgraph-frontdesk-agent"
 role: "Personal Project — Architecture and Implementation"
 tags:
@@ -40,84 +38,61 @@ tags:
   - "Human-in-the-Loop"
 category: "ai"
 publishDate: 2026-07-01
-lastUpdated: 2026-08-11
+lastUpdated: 2026-08-27
 ---
 
-## Scope and Purpose
+## Why I built this
 
-SmartSMB is a **non-production personal learning project** built to understand how agentic and multi-agent patterns can support common small-business workflows without handing uncontrolled authority to an LLM.
+I wanted to learn how far a stateful agent can go on a small-business front desk *without* giving the model the company chequebook. The question was not “can an LLM talk like a receptionist.” It was: can it triage an enquiry, fill a quote, and require a person to approve amounts above a configurable threshold.
 
-The sample receives a customer enquiry, identifies its intent, gathers the information needed for a quote, calculates the price in normal application code, and pauses for a person to approve, revise, or reject higher-value work before anything is sent.
+This is a personal learning project. It is not running a business.
 
-Although deliberately compact, the project treats the agent as a software system: state is typed, decisions are testable, side effects are idempotent, model providers are replaceable, and human approval is part of the workflow rather than an afterthought.
+## Scope
 
-## Workflow
+The sample accepts a customer message and routes it:
 
-A customer message can be routed to several specialist paths:
+- **Quote** — collect job details, call pricing/availability tools, compute a price in application code, and pause when the amount exceeds a configurable approval threshold
+- **Complaint** — dedicated path, not mixed into quoting
+- **FAQ** — common information
+- **Unclear** — hand off instead of guessing
 
-- **Quote:** gather job details, consult pricing and availability tools, calculate a quote, and request approval when required
-- **Complaint:** direct the message to a dedicated complaint path
-- **FAQ:** handle common information requests
-- **Unclear or low-confidence enquiry:** hand off to a person rather than guessing
+What it does not do: production auth, real telephony, a live company knowledge base, or real customer-channel delivery. Quotes at or below the configured threshold follow the automatic send path; larger quotes pause for an operator. Models are swappable; the graph, schemas, and side effects are the system.
 
-The quote path uses a ReAct-style loop in which the model can call validated tools. Graph routing is handled by explicit application logic, and the full workflow state is checkpointed after each step.
+Repo: [nilushan/langgraph-frontdesk-agent](https://github.com/nilushan/langgraph-frontdesk-agent).
 
-## Deterministic Decisions Around Probabilistic Models
+## Core workflow
 
-The LLM is useful for interpreting an unstructured request and gathering missing details, but it does not get to invent the final price. A dedicated node calculates the amount from structured inputs in code.
+A quote thread looks like this:
 
-This boundary demonstrates a pattern I consider important for practical AI systems:
+1. Classify the message.
+2. If it is a quote, loop: ask for missing fields, call Zod-validated tools (pricing, availability).
+3. A **code node** turns those fields into a number. The model does not write the total.
+4. Above the configured threshold, LangGraph **interrupts**. An operator approves, revises the structured fields, or rejects; quotes at or below it continue to delivery automatically.
+5. A revision cannot jump to the customer. It re-enters approval, with who changed what.
+6. Delivery is idempotent on quote identity, then the thread continues.
 
-- Use models where language understanding and flexible reasoning add value
-- Use schemas to validate model and tool inputs
-- Keep financial rules and other critical decisions deterministic
-- Route low-confidence or exceptional cases to a person
-- Test the deterministic boundaries independently of the model provider
+State is checkpointed in PostgreSQL after each step. Restart the process while someone is thinking; the thread is still there.
 
-## Human-in-the-Loop Approval
+## Design choices
 
-Quotes over a configurable threshold cause the LangGraph workflow to interrupt and wait. An operator can:
+**Probabilistic where language is, deterministic where money is.** The model is good at “they want the gutters done next Thursday.” It is not the pricing engine. Keeping that split means I can test quotes without mocking prose.
 
-- **Approve** the quote as prepared
-- **Revise** structured quote details and send the result back through approval
-- **Reject** it and move the conversation to human follow-up
+**Approval is a node, not a Slack side-channel.** If human review lives outside the graph, resume logic, audit, and “did we send this” all rot. Interrupts make the wait part of the program.
 
-A revision never goes directly to the customer. It loops back through the approval gate, retaining a record of who changed the quote and what changed. This keeps a person accountable for consequential output while still allowing the agent to do useful preparation work.
+**Checkpoints plus idempotent send.** Durable state without a delivery key is how you double-email after a retry. The send step is keyed on the quote.
 
-## Durable State and Safe Resumption
+**Tools are schemas, not “the model can call the database.”** Invalid arguments fail at the boundary. Routing between quote/complaint/FAQ is application code, not a vibe.
 
-Conversation and workflow state is stored through a PostgreSQL checkpointer. A thread can pause while waiting for approval, survive an application restart, and resume from the recorded state.
+I also used this repo to practise writing the spec and ADRs first, then implementing with coding agents, then treating the diff like production code: tests, failure paths, CI. Generated code that fails those is not a pass.
 
-The delivery step is idempotent, keyed by quote identity, so replaying or resuming a workflow does not send the same approved quote twice.
+## What I learned
 
-## Model and Tool Architecture
+A long-running front-desk job is a state machine that sometimes calls a model, not a chat log with extra steps. Once you admit that, persistence, interrupts, and idempotency stop being optional.
 
-Agent nodes depend on a common chat-model abstraction rather than a hard-coded provider. This allowed me to explore how the same workflow can operate with different LLMs while preserving the surrounding business rules.
+Specialist routes only help if each path has a different contract. Dumping complaints into the quote ReAct loop just makes a worse quote agent.
 
-Tool calls use validated schemas for operations such as pricing and availability lookup. This keeps the tool boundary explicit and makes invalid input fail predictably instead of flowing into business services.
+Model portability was easy *after* the graph and the price code stopped importing a vendor SDK. Before that, “swap the LLM” meant swapping the business rules by accident.
 
-## Engineering Approach
+## Not production
 
-This project was also an exercise in agentic engineering practices:
-
-1. Write a specification and architecture decisions before implementation
-2. Model workflow state, trust boundaries, and side effects explicitly
-3. Use coding agents to assist with planning and implementation
-4. Add deterministic unit and integration tests
-5. Review diffs, failure paths, and generated behaviour as normal production-oriented code
-6. Keep human ownership of architecture and acceptance decisions
-
-The repository includes architecture diagrams, ADRs, a runbook, CI checks, and a comprehensive automated test suite.
-
-## What I Learned
-
-- Stateful orchestration is more reliable than treating every interaction as an isolated prompt
-- Human approval should be represented in workflow state and control flow, not handled informally outside the system
-- Tool use needs schemas, permissions, and deterministic boundaries
-- Durable checkpoints make long-running, interruptible workflows practical
-- Multi-agent or specialist routing is most useful when each path has a clear responsibility
-- Model portability is easier when orchestration and business logic do not depend directly on a provider
-
-## Production Considerations
-
-This is a learning implementation, not a claim of production operation. A production rollout would additionally require organisation-specific security review, privacy controls, threat modelling, model and prompt evaluation, rate limiting, production retrieval for company knowledge, channel integrations, monitoring, and operational ownership.
+A real rollout would still need threat modelling, prompt-injection and tool-abuse controls, evaluation on real transcripts, rate limits, retrieval over actual company data, channel integration (email/SMS/phone), and someone on-call for the approval queue. None of that is claimed here.
