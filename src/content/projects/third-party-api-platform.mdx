@@ -1,6 +1,6 @@
 ---
 title: "Third-Party Integration API Platform"
-description: "Comprehensive RESTful API platform for third-party integrations enabling device information retrieval, control, and real-time status events with OAuth2 security and event-driven architecture."
+description: "Partner-facing REST API for Zimi devices: OAuth 2.0 user consent, scoped control, and signed event delivery so integrations do not poll the fleet."
 period: "2020-Present"
 status: "ongoing"
 featured: true
@@ -19,24 +19,17 @@ technologies:
   - "OpenAPI"
   - "Swagger"
 achievements:
-  - "Designed and implemented comprehensive API platform"
-  - "OAuth2-based security with user authorization"
-  - "Event-driven architecture avoiding polling"
-  - "Real-time device status synchronization"
-  - "Comprehensive API documentation and testing tools"
-  - "High-performance caching and rate limiting"
+  - "OAuth 2.0 so a user grants a partner access to their own devices, not the fleet"
+  - "Device read/control APIs with rate limits and cached hot reads"
+  - "Webhook events for status changes instead of partner polling"
 challenges:
-  - "Designing scalable event-driven API architecture"
-  - "Implementing secure OAuth2 authorization flows"
-  - "Managing real-time synchronization across multiple systems"
-  - "Balancing API performance with security requirements"
-  - "Creating comprehensive documentation for external developers"
+  - "Partners needed a stable contract without seeing internal services"
+  - "Polling a 70,000-device estate from outside would have become our load"
+  - "Consent, scopes, and device ownership have to be right on every call"
 outcomes:
-  - "Enabled ecosystem expansion through partner integrations"
-  - "Faster partner onboarding against a documented API"
-  - "OAuth 2.0, rate limiting, caching and webhook delivery"
-  - "Facilitated integration with major smart home platforms"
-  - "Created new revenue streams through API partnerships"
+  - "Alexa, Google Home, and other partners share one authorised API surface"
+  - "Onboarding is an OpenAPI contract, not a guided tour of the monolith"
+  - "Internal MQTT and stores stay behind the platform API"
 client: "Zimi Ltd"
 role: "Lead API Architect & Developer"
 tags:
@@ -47,517 +40,47 @@ tags:
   - "Integration Platform"
 category: "api"
 publishDate: 2023-01-01
-lastUpdated: 2024-06-01
+lastUpdated: 2026-08-27
 image: /images/projects/socketapi.png
-
 ---
 
-## Project Overview
-
-The Third-Party Integration API Platform is a comprehensive RESTful API system designed to enable external partners and developers to integrate with the Zimi smart home ecosystem. This platform provides secure access to device information, control capabilities, and real-time status updates while maintaining the highest standards of security, performance, and reliability.
-
-## The Challenge
-
-Creating a robust API platform for third-party integrations required addressing several complex requirements:
-
-- **Security**: Implementing OAuth2 with granular user consent and authorization
-- **Performance**: High-throughput API capable of handling thousands of concurrent requests
-- **Real-time Communication**: Event-driven architecture for instant status updates
-- **Scalability**: Platform designed to support hundreds of integration partners
-- **Developer Experience**: Comprehensive documentation and testing tools
-- **Reliability**: Monitoring, error handling and retries on a platform that runs at 99.999% uptime
-
-## System Architecture
-
-### Event-Driven API Design
-Built around an event-driven architecture to eliminate polling and ensure real-time synchronization:
-
-```typescript
-// Event-driven API architecture
-interface APIEvent {
-  type: 'device_status_change' | 'device_added' | 'device_removed';
-  deviceId: string;
-  userId: string;
-  timestamp: Date;
-  data: any;
-}
-
-class EventBroker {
-  private pubsub: PubSub;
-  private subscriptions: Map<string, WebhookSubscription[]>;
-
-  async publishEvent(event: APIEvent): Promise<void> {
-    // Publish to internal PubSub for real-time processing
-    await this.pubsub.publish('api-events', event);
-    
-    // Notify subscribed webhooks
-    await this.notifyWebhooks(event);
-  }
-
-  private async notifyWebhooks(event: APIEvent): Promise<void> {
-    const webhooks = this.subscriptions.get(event.userId) || [];
-    
-    const notifications = webhooks.map(webhook => 
-      this.sendWebhook(webhook, event)
-    );
-    
-    await Promise.allSettled(notifications);
-  }
-}
-```
-
-### Microservices Architecture
-- **API Gateway**: Request routing, authentication, and rate limiting
-- **Authorization Service**: OAuth2 implementation and token management
-- **Device Service**: Device information and control operations
-- **Event Service**: Real-time event processing and webhook delivery
-- **Documentation Service**: Interactive API documentation and testing
-
-## OAuth2 Security Implementation
-
-### Authorization Flow
-Implemented comprehensive OAuth2 authorization with user consent management:
-
-```typescript
-class OAuth2Service {
-  async initiateAuthFlow(clientId: string, scopes: string[], redirectUri: string) {
-    // Validate client and redirect URI
-    const client = await this.validateClient(clientId, redirectUri);
-    
-    // Generate authorization code
-    const authCode = await this.generateAuthorizationCode({
-      clientId,
-      scopes,
-      redirectUri,
-      expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
-    });
-
-    return {
-      authorizationUrl: `${this.authEndpoint}?${new URLSearchParams({
-        response_type: 'code',
-        client_id: clientId,
-        scope: scopes.join(' '),
-        redirect_uri: redirectUri,
-        code: authCode
-      })}`
-    };
-  }
-
-  async exchangeCodeForToken(code: string, clientId: string, clientSecret: string) {
-    // Validate authorization code
-    const authData = await this.validateAuthorizationCode(code);
-    
-    // Verify client credentials
-    await this.verifyClientCredentials(clientId, clientSecret);
-    
-    // Generate access and refresh tokens
-    const accessToken = await this.generateAccessToken({
-      userId: authData.userId,
-      clientId,
-      scopes: authData.scopes,
-      expiresIn: 3600 // 1 hour
-    });
-
-    const refreshToken = await this.generateRefreshToken({
-      userId: authData.userId,
-      clientId
-    });
-
-    return {
-      access_token: accessToken,
-      refresh_token: refreshToken,
-      token_type: 'Bearer',
-      expires_in: 3600,
-      scope: authData.scopes.join(' ')
-    };
-  }
-}
-```
-
-### Granular Permissions
-Implemented fine-grained permission system allowing users to control exactly what data and capabilities they share:
-
-```typescript
-interface APIScope {
-  name: string;
-  description: string;
-  resources: string[];
-  actions: string[];
-}
-
-const API_SCOPES: APIScope[] = [
-  {
-    name: 'devices:read',
-    description: 'Read basic device information',
-    resources: ['devices'],
-    actions: ['read']
-  },
-  {
-    name: 'devices:control',
-    description: 'Control device state (turn on/off, brightness, etc.)',
-    resources: ['devices'],
-    actions: ['write', 'execute']
-  },
-  {
-    name: 'events:subscribe',
-    description: 'Receive real-time device status updates',
-    resources: ['events'],
-    actions: ['subscribe']
-  }
-];
-```
-
-## API Design & Implementation
-
-### RESTful Endpoints
-Designed comprehensive REST API with OpenAPI 3.0 specification:
-
-```typescript
-// Device control endpoint
-@Route('/api/v1/devices/{deviceId}/actions')
-export class DeviceActionsController {
-  @Post('/')
-  @Security('oauth2', ['devices:control'])
-  public async executeAction(
-    @Path() deviceId: string,
-    @Body() action: DeviceAction,
-    @Request() request: AuthenticatedRequest
-  ): Promise<ActionResult> {
-    
-    // Validate user has access to device
-    await this.validateDeviceAccess(request.user.id, deviceId);
-    
-    // Execute action with timeout and error handling
-    const result = await this.deviceService.executeAction(deviceId, action);
-    
-    // Publish event for real-time updates
-    await this.eventBroker.publishEvent({
-      type: 'device_status_change',
-      deviceId,
-      userId: request.user.id,
-      timestamp: new Date(),
-      data: result
-    });
-
-    return result;
-  }
-
-  private async validateDeviceAccess(userId: string, deviceId: string): Promise<void> {
-    const hasAccess = await this.authService.userHasDeviceAccess(userId, deviceId);
-    if (!hasAccess) {
-      throw new ForbiddenError('Access denied to device');
-    }
-  }
-}
-```
-
-### Real-time Event Delivery
-Implemented webhook system for real-time event delivery to partner systems:
-
-```typescript
-class WebhookDeliveryService {
-  private queue: Queue<WebhookDelivery>;
-  private retryPolicy: RetryPolicy;
-
-  async deliverWebhook(webhook: WebhookSubscription, event: APIEvent): Promise<void> {
-    const delivery: WebhookDelivery = {
-      webhookId: webhook.id,
-      url: webhook.url,
-      payload: this.formatEventPayload(event),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Webhook-Signature': this.signPayload(webhook.secret, event),
-        'X-Event-Type': event.type,
-        'X-Delivery-ID': this.generateDeliveryId()
-      },
-      attempts: 0,
-      maxAttempts: 3
-    };
-
-    await this.queue.add('webhook-delivery', delivery);
-  }
-
-  private signPayload(secret: string, payload: any): string {
-    const data = JSON.stringify(payload);
-    return crypto
-      .createHmac('sha256', secret)
-      .update(data)
-      .digest('hex');
-  }
-
-  async processDelivery(delivery: WebhookDelivery): Promise<void> {
-    try {
-      const response = await fetch(delivery.url, {
-        method: 'POST',
-        headers: delivery.headers,
-        body: JSON.stringify(delivery.payload),
-        timeout: 10000 // 10 second timeout
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-
-      await this.recordSuccessfulDelivery(delivery);
-    } catch (error) {
-      await this.handleDeliveryFailure(delivery, error);
-    }
-  }
-}
-```
-
-## Performance & Scalability
-
-### Caching Strategy
-Implemented multi-layer caching for optimal performance:
-
-```typescript
-class CachedDeviceService {
-  private cache: Redis;
-  private deviceService: DeviceService;
-
-  async getDevice(deviceId: string, userId: string): Promise<Device> {
-    const cacheKey = `device:${deviceId}:${userId}`;
-    
-    // Try L1 cache (Redis)
-    const cached = await this.cache.get(cacheKey);
-    if (cached) {
-      return JSON.parse(cached);
-    }
-
-    // Fallback to database
-    const device = await this.deviceService.getDevice(deviceId, userId);
-    
-    // Cache for 5 minutes
-    await this.cache.setex(cacheKey, 300, JSON.stringify(device));
-    
-    return device;
-  }
-
-  // Cache invalidation on device updates
-  async updateDevice(deviceId: string, userId: string, updates: DeviceUpdate): Promise<Device> {
-    const device = await this.deviceService.updateDevice(deviceId, userId, updates);
-    
-    // Invalidate cache
-    await this.cache.del(`device:${deviceId}:${userId}`);
-    
-    return device;
-  }
-}
-```
-
-### Rate Limiting
-Implemented sophisticated rate limiting to prevent abuse while allowing legitimate usage:
-
-```typescript
-class RateLimiter {
-  private redis: Redis;
-
-  async checkRateLimit(clientId: string, endpoint: string): Promise<RateLimitResult> {
-    const key = `rate_limit:${clientId}:${endpoint}`;
-    const window = 3600; // 1 hour window
-    const limit = this.getLimitForEndpoint(endpoint);
-
-    const multi = this.redis.multi();
-    multi.incr(key);
-    multi.expire(key, window);
-    
-    const [count] = await multi.exec();
-    
-    return {
-      allowed: count <= limit,
-      remaining: Math.max(0, limit - count),
-      resetTime: Date.now() + (window * 1000)
-    };
-  }
-
-  private getLimitForEndpoint(endpoint: string): number {
-    const limits = {
-      '/devices': 1000,      // 1000 requests per hour
-      '/devices/actions': 500, // 500 actions per hour
-      '/events': 100         // 100 webhook subscriptions per hour
-    };
-    
-    return limits[endpoint] || 100; // Default limit
-  }
-}
-```
-
-## Developer Experience
-
-### Interactive Documentation
-Created comprehensive API documentation using OpenAPI 3.0 with interactive testing:
-
-```yaml
-# OpenAPI specification excerpt
-paths:
-  /devices/{deviceId}/actions:
-    post:
-      summary: Execute device action
-      description: |
-        Execute an action on a specific device. Actions include turning devices 
-        on/off, adjusting brightness, changing colors, etc.
-      parameters:
-        - name: deviceId
-          in: path
-          required: true
-          schema:
-            type: string
-            example: "device_12345"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeviceAction'
-            examples:
-              turn_on:
-                summary: Turn device on
-                value:
-                  action: "turn_on"
-              set_brightness:
-                summary: Set brightness
-                value:
-                  action: "set_brightness"
-                  parameters:
-                    brightness: 75
-      responses:
-        '200':
-          description: Action executed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ActionResult'
-```
-
-### SDK Development
-Created SDKs for popular programming languages to simplify integration:
-
-```typescript
-// TypeScript SDK example
-export class ZimiAPI {
-  private client: APIClient;
-
-  constructor(accessToken: string) {
-    this.client = new APIClient({
-      baseURL: 'https://api.zimi.com/v1',
-      accessToken
-    });
-  }
-
-  async getDevices(): Promise<Device[]> {
-    return this.client.get('/devices');
-  }
-
-  async controlDevice(deviceId: string, action: DeviceAction): Promise<ActionResult> {
-    return this.client.post(`/devices/${deviceId}/actions`, action);
-  }
-
-  async subscribeToEvents(webhookUrl: string, events: string[]): Promise<Subscription> {
-    return this.client.post('/events/subscriptions', {
-      url: webhookUrl,
-      events
-    });
-  }
-}
-```
-
-## Monitoring & Analytics
-
-### Comprehensive Monitoring
-Implemented detailed monitoring and analytics for API usage:
-
-```typescript
-class APIAnalytics {
-  async recordAPICall(request: APIRequest, response: APIResponse): Promise<void> {
-    const metrics = {
-      endpoint: request.endpoint,
-      method: request.method,
-      clientId: request.clientId,
-      userId: request.userId,
-      responseTime: response.duration,
-      statusCode: response.statusCode,
-      timestamp: new Date()
-    };
-
-    // Store in time-series database for analytics
-    await this.timeSeriesDB.insert('api_metrics', metrics);
-
-    // Update real-time counters
-    await this.redis.incr(`api_calls:${request.clientId}:${this.getCurrentHour()}`);
-    
-    // Track error rates
-    if (response.statusCode >= 400) {
-      await this.redis.incr(`api_errors:${request.clientId}:${this.getCurrentHour()}`);
-    }
-  }
-
-  async generateUsageReport(clientId: string, period: string): Promise<UsageReport> {
-    const metrics = await this.timeSeriesDB.query(`
-      SELECT 
-        endpoint,
-        COUNT(*) as request_count,
-        AVG(response_time) as avg_response_time,
-        COUNT(CASE WHEN status_code >= 400 THEN 1 END) as error_count
-      FROM api_metrics 
-      WHERE client_id = ? AND timestamp >= ?
-      GROUP BY endpoint
-    `, [clientId, this.getPeriodStart(period)]);
-
-    return this.formatUsageReport(metrics);
-  }
-}
-```
-
-## Results & Impact
-
-### Business impact
-- **Ecosystem**: Alexa, Google Home and other partner integrations on a shared API
-- **Partner access**: OAuth 2.0-protected APIs so vendors can use customer and device data they are allowed to use
-- **Onboarding**: Documented contracts, OpenAPI and knowledge-transfer material
-
-### Technical achievements
-- **Performance**: Caching, rate limiting and event-driven delivery instead of polling
-- **Reliability**: Error handling and retries on the same production platform
-- **Security**: OAuth 2.0 authorisation and role-based access
-
-### Developer experience
-- **Documentation**: OpenAPI / Swagger for the API surface
-- **Contracts**: Clear service boundaries for mobile, web and third-party clients
-- **Delivery**: Webhooks so partners do not need to poll
-
-## Lessons Learned
-
-### API Design Principles
-- **Developer-First Design**: APIs must be intuitive and well-documented
-- **Versioning Strategy**: Plan for API evolution from the beginning
-- **Error Handling**: Consistent, informative error responses are crucial
-- **Rate Limiting**: Balance between preventing abuse and enabling legitimate use
-
-### Security Considerations
-- **OAuth2 Complexity**: Proper OAuth2 implementation requires careful attention to detail
-- **Token Management**: Secure token storage and refresh flows are critical
-- **Webhook Security**: Signature verification prevents webhook spoofing
-- **Audit Logging**: Comprehensive logging enables security monitoring and compliance
-
-### Performance Optimization
-- **Caching Strategy**: Multi-layer caching significantly improves performance
-- **Database Optimization**: Proper indexing and query optimization at scale
-- **Real-time Events**: Event-driven architecture scales better than polling
-- **Monitoring**: Proactive monitoring enables quick issue resolution
-
-## Future Enhancements
-
-### Advanced Features
-- **GraphQL Support**: More flexible data querying for complex integrations
-- **Real-time WebSocket API**: Direct WebSocket connections for real-time applications
-- **AI-Enhanced Documentation**: Automated code examples and integration guides
-- **Advanced Analytics**: Machine learning-powered usage analytics and optimization
-
-### Ecosystem Expansion
-- **Marketplace Integration**: API marketplace for third-party developers
-- **Certification Program**: Partner certification for quality assurance
-- **Community Platform**: Developer community and support forums
-- **Extended Protocol Support**: Support for Matter, Thread, and other emerging standards
-
-This API platform has become a cornerstone of the Zimi ecosystem, enabling rapid expansion through partnerships while maintaining the highest standards of security, performance, and developer experience. The event-driven architecture and comprehensive OAuth2 implementation have proven scalable and secure, supporting the company's growth into new markets and use cases.
+Partners needed to read Zimi devices, change them, and hear about state changes. They did not need our MQTT broker, our document store, or our admin paths. I built the partner-facing REST API in TypeScript so third parties talk to a contract: OAuth 2.0, scoped resources, and events.
+
+## Partners needed the devices, not the internals
+
+An integration that “just uses the internal API” couples their release cycle to ours and puts every internal handler on the public internet. The other failure mode is API keys that represent the company, not the household — a partner with a leaked key should not be able to reach devices a user never authorised.
+
+Scale makes the obvious sync strategy lethal. If every partner polls every device they care about, their retry loops become our QPS. Status changes already exist as internal events. The API should forward the ones a subscriber is allowed to see.
+
+This surface also had to survive the same production bar as the rest of the platform (99.999% uptime): timeouts, retries, and rate limits as part of the design, not as an afterthought.
+
+## What changed
+
+The public API is a boundary in front of the platform:
+
+- **OAuth 2.0 authorisation code** with user consent. The partner never gets a god-mode key for the fleet.
+- **Scopes** such as device read, device control, and event subscription. A weather-display integration should not be able to toggle loads.
+- **REST** for reads and commands, documented with OpenAPI / Swagger so onboarding is the spec, not a slide deck.
+- **Ownership checks** on every call. A valid token is not enough; the user must actually have that device.
+- **Redis** for hot device reads and for rate-limit counters per client and route.
+- **Pub/Sub → signed webhooks** for `device_status_change` (and related) events, with retries on failed delivery.
+
+Voice assistants use the same idea — user linking and a narrow fulfilment path — and are covered separately in [the voice write-up](/projects/voice-control-ecosystem) and [the C4 identity/voice views](/projects/iot-platform-architecture). This API is the partner contract around device data and events; it is not a dump of every internal service.
+
+## Push events, don't let them poll
+
+The decision that keeps this API from becoming a load generator is event delivery.
+
+Internal telemetry already fans out after decode. Once a partner has `events:subscribe` and a webhook, we push the authorised subset, signed so they can reject spoofed callbacks. They do not need a cron job walking `/devices`.
+
+Commands still go through REST: validate token and scope, check ownership, execute, publish the resulting state event. Partners who issued the command and partners who only listen both see the same change.
+
+Caching is conservative. Device snapshots are safe to cache briefly; a command invalidates that key. Rate limits are per client and stricter on control routes than on reads. Exact quotas are a commercial setting, not a number I am publishing here.
+
+I did not bolt GraphQL onto this. The partner questions are known — list devices, act, subscribe — and a stable REST+events contract is easier to support than a query language over the internals.
+
+## After
+
+External integrations sit on an authorised, documented API instead of on internal handlers. Users grant access per partner. Status moves as events. The MQTT broker and stores stay private.
+
+Related: [C4 identity and access](/projects/iot-platform-architecture), [voice](/projects/voice-control-ecosystem), [migration](/projects/iot-platform-migration).

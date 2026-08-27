@@ -1,6 +1,6 @@
 ---
 title: "Enterprise IoT Cloud Platform Migration"
-description: "Zero-downtime live migration of a consumer IoT platform from Xively to Google Cloud Platform. The platform now serves 70,000+ devices and 10,000+ user accounts at 99.999% uptime."
+description: "Zero-downtime move of a live consumer IoT backend off Xively onto GCP after Google acquired Xively and later discontinued it. Same platform now serving 70,000+ devices and 10,000+ accounts at 99.999% uptime."
 period: "2017-2020"
 status: "completed"
 featured: true
@@ -19,28 +19,24 @@ technologies:
   - "Express"
   - "Fastify"
   - "Docker"
+  - "Cloud Build"
+  - "Cloud Storage"
+  - "Cloud Monitoring"
+  - "Cloud Trace"
   - "Cloud Functions"
 achievements:
   - "Zero-downtime live migration from Xively to GCP"
-  - "Platform now serving 70,000+ devices and 10,000+ user accounts"
-  - "Lowered infrastructure cost and request latency"
-  - "99.999% uptime after the migration"
-  - "Successful migration of all users, apps, and voice control integrations"
-  - "Seamless transition with comprehensive documentation"
+  - "Platform now serving 70,000+ devices and 10,000+ user accounts at 99.999% uptime"
+  - "Apps, devices, and voice integrations kept working through the cutover"
 challenges:
-  - "Migrating live production system with zero downtime"
-  - "Maintaining data integrity across platforms"
-  - "Ensuring device connectivity during transition"
-  - "Coordinating with multiple development teams"
-  - "Managing complex system dependencies"
+  - "Devices in the field cannot take a maintenance window"
+  - "Xively was acquired by Google and later discontinued; the fleet had to leave a dying PaaS"
+  - "Mobile apps, firmware, and voice skills had to keep talking to something during the move"
 outcomes:
-  - "Improved system reliability and performance"
-  - "Significant cost savings for the organization"
-  - "Enhanced scalability for future growth"
-  - "Better monitoring and observability"
-  - "Streamlined development and deployment processes"
+  - "We own the backend instead of renting an IoT PaaS"
+  - "Owning MQTT, identity, and storage meant we were no longer waiting on a vendor roadmap"
+  - "The GCP system is still the system of record"
 image: /images/projects/iotmigration.png
-
 client: "Zimi Ltd"
 role: "Full Stack Developer"
 tags:
@@ -51,131 +47,51 @@ tags:
   - "Real-time Systems"
 category: "cloud"
 publishDate: 2020-12-01
-lastUpdated: 2024-01-15
+lastUpdated: 2026-08-27
 ---
 
-## Project Overview
+From 2017 I was the full-stack and cloud engineer for Bluekey’s (later Zimi’s) smart-electrical platform. The first backend sat on [Xively](https://en.wikipedia.org/wiki/Xively): device identity, MQTT, a way to ship. Google later acquired Xively and then discontinued it. I designed the GCP replacement, built the services, and moved a live fleet off that PaaS before it went away. That GCP system is still what the field talks to.
 
-The Enterprise IoT Cloud Platform Migration was a critical infrastructure project that involved migrating a large-scale IoT system from the Xively platform to Google Cloud Platform (GCP). This project was essential for improving system performance, reducing costs, and ensuring long-term scalability for smart electrical devices.
+## The PaaS under the fleet was going away
 
-## The Challenge
+This was not a greenfield “let’s try Kubernetes” project. Xively was the IoT contract — broker, device identity, the path from a home gateway to the cloud — and that contract was ending. Staying meant betting a product already in people’s walls on a discontinued platform.
 
-The existing system was built on the Xively IoT platform, which had limitations in terms of scalability, cost-effectiveness, and customization options. With a live fleet that has since grown to 70,000+ devices and more than 100 events per second, we needed a solution that could:
+Moving meant owning MQTT, identity, and storage ourselves, on a deadline we did not set. **The devices were already installed.** Gateways in homes, mobile apps in pockets, voice skills already linked. A weekend cutover was not an option. Data had to stay consistent. MQTT sessions had to keep working. Alexa and Google Home could not quietly break.
 
-- Handle high-volume real-time data processing
-- Provide better cost efficiency
-- Offer improved latency and reliability
-- Support future growth and feature development
-- Maintain zero downtime during migration
+## What changed
 
-## Architecture & Design
+I built a service-oriented backend on GCP and moved traffic onto it in batches rather than in one freeze.
 
-The current platform is documented as a C4 model — context, containers, telemetry pipeline, voice, data and deployment — in [Diagramming a Smart-Home IoT Platform with C4](/projects/iot-platform-architecture).
+The replacement had to cover everything Xively had been doing for us:
 
-### Service-Oriented Architecture
-I designed a microservices-based architecture on GCP that emphasized:
-- **Scalability**: Auto-scaling components based on demand
-- **Reliability**: Redundancy and fault tolerance built-in
-- **Security**: End-to-end encryption and secure device communication
-- **Maintainability**: Clear separation of concerns and comprehensive documentation
-- **Observability**: Detailed monitoring and tracing capabilities
+- MQTT between home gateways and the cloud
+- Device identity and registry
+- APIs for apps and the admin console
+- Device metadata and the latest snapshot
+- Event fan-out for telemetry and commands
+- Auth for customers, installers, and operators
+- File storage (firmware images, exports, other blobs)
 
-### Technology Stack
-- **Cloud Platform**: Google Cloud Platform
-- **Container Orchestration**: Kubernetes for scalable deployment
-- **Database**: Cloud SQL (PostgreSQL) for relational data, Redis for caching
-- **Messaging**: PubSub for event-driven communication
-- **Authentication**: Firebase Auth for user management
-- **Storage**: Firestore for device metadata, Cloud Storage for files
-- **Monitoring**: Cloud Monitoring and Trace for observability
+On GCP that became TypeScript/Node services on Kubernetes. **IoT Core** was the device registry and MQTT path that replaced Xively’s broker — not a logo on a slide. Gateways authenticated to that channel; traffic was encrypted. We owned the topic contract and the credentials instead of inheriting a PaaS default.
 
-## Implementation
+Firestore held document state, PostgreSQL history, Redis hot paths, Pub/Sub events, Cloud Storage files. Firebase Auth handled user identity. Cloud Monitoring and Trace were how we watched the cutover, not a post-launch extra. I put shared MQTT, auth, and domain code in libraries so the new services did not each invent a protocol.
 
-### Phase 1: Research & Planning
-- Analyzed existing system architecture and dependencies
-- Designed new microservices architecture
-- Created comprehensive migration plan
-- Set up development and staging environments
+The [React/Redux admin console](/projects/iot-dashboard) was built in the same effort: operators needed a place to see the new backend while devices were still moving. CI ran through Docker and Cloud Build.
 
-### Phase 2: Development
-- Built new backend services using TypeScript and Node.js
-- Implemented REST APIs and event-driven services
-- Developed device communication protocols using MQTT
-- Created admin dashboards with React/Redux
-- Established CI/CD pipelines with Docker and Cloud Build
+Staging ran load against simulated device traffic and the existing voice integrations before any household moved. Cutover was gradual: batches of devices, watching connectivity and error rates, coordinating with the mobile and firmware teams so field software and cloud moved in step.
 
-### Phase 3: Testing & Validation
-- Performed extensive testing in staging environment
-- Validated data integrity and system performance
-- Conducted load testing with simulated device traffic
-- Verified all integrations including voice control systems
+The current shape of that system — containers, telemetry pipeline, voice, data, deployment — is in [the C4 model](/projects/iot-platform-architecture).
 
-### Phase 4: Migration Execution
-- Executed zero-downtime migration strategy
-- Gradually migrated devices in batches
-- Monitored system health throughout the process
-- Coordinated with mobile app and firmware development teams
+## Cut over in batches without a freeze
 
-## Technical Highlights
+A big-bang DNS flip would have been simpler to describe and harder to survive. If the new broker, the new stores, and the new APIs were even slightly wrong, every silent device would have been a support call.
 
-### Real-time Event Processing
-Implemented a robust event processing system capable of handling 100+ events per second from IoT devices, with automatic scaling based on load.
+Batching meant the blast radius of a mistake was a slice of the estate, not the estate. It also forced the new stack to run *next to* the old one: same app versions, same firmware, two backends, until we were willing to stop the old one. That is slower than a rewrite-and-launch. It is how you move a live IoT product.
 
-### Device Communication Security
-Established secure MQTT communication channels with proper authentication and encryption, ensuring device data integrity and privacy.
+The unglamorous work was the contract with the field: what a gateway publishes, what it expects back, how a missed message is retried. Cloud diagrams do not matter if a dimmer stops reporting.
 
-### Monitoring & Observability
-Integrated comprehensive monitoring using Cloud Monitoring, custom metrics, and distributed tracing to ensure system health and performance visibility.
+## After
 
-### Development Efficiency
-Created reusable TypeScript/Node.js libraries containing common functionality, reducing duplication and speeding delivery of new features.
+The platform left Xively without a customer-facing outage, before the discontinued PaaS could take the fleet with it. It now serves **70,000+ devices** and **10,000+ accounts**, handles **100+ events/s**, and runs at **99.999% uptime**. Once we owned the stack we could also size compute and storage ourselves, which brought cost and request latency down — that was a consequence of having to leave, not the reason we left.
 
-## Results & Impact
-
-The migration project delivered significant improvements across multiple dimensions:
-
-**Cost and operations**
-- Lowered infrastructure cost through the Xively-to-GCP redesign
-- Removed the previous platform licence constraint
-- Tightened compute and storage usage
-
-**Performance**
-- Lowered request latency after the cutover
-- Improved responsiveness for apps and operators
-- Kept real-time device event processing in place at 100+ events per second
-
-**Reliability**
-- Maintained 99.999% uptime after the migration
-- Switched backends, databases, users, devices and voice integrations of a live system
-- Improved disaster-recovery planning
-
-**Delivery**
-- Streamlined development with modern CI/CD
-- Faster, repeatable deployments
-- Better testing and quality-assurance workflows
-
-## Knowledge Transfer & Documentation
-
-Recognizing the importance of knowledge sharing, I:
-- Documented the entire system architecture with detailed diagrams
-- Created comprehensive API documentation
-- Conducted knowledge transfer sessions with the development team
-- Established best practices for ongoing maintenance and development
-
-## Lessons Learned
-
-This project reinforced several key principles:
-- **Planning is Critical**: Thorough planning and testing prevented major issues during migration
-- **Communication is Key**: Regular coordination with all stakeholders ensured smooth execution
-- **Monitoring is Essential**: Comprehensive monitoring helped identify and resolve issues quickly
-- **Documentation Matters**: Detailed documentation facilitated team knowledge transfer and future development
-
-## Future Considerations
-
-The new architecture positions the platform for future enhancements:
-- Capability to handle millions of devices
-- Support for advanced analytics and machine learning
-- Integration with additional IoT protocols and standards
-- Enhanced real-time dashboard capabilities
-
-This project demonstrates the successful execution of a complex cloud migration while maintaining business continuity and achieving significant improvements in performance, cost, and reliability.
+I still operate this backend. Later work on the same system — [voice](/projects/voice-control-ecosystem), [admin dashboard](/projects/iot-dashboard), [partner API](/projects/third-party-api-platform), [CI/CD](/projects/cicd-keyless-delivery), [data lifecycle](/projects/gcp-cost-optimization) — is evolution of this cutover, not a second platform.

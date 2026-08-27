@@ -1,6 +1,6 @@
 ---
 title: "GCP Database & Logging Cost Optimisation"
-description: "A production cost-control initiative using monthly Cloud SQL PostgreSQL partitions, historical-data archival, partition-based retention, and focused Cloud Logging to constrain recurring storage and logging cost growth."
+description: "Monthly Cloud SQL partitions, archive-and-drop retention, and quieter logging so time-series storage and Cloud Logging stop growing without bound."
 image: /images/projects/gcp-storage-cost-optimisation.jpg
 imageFit: contain
 period: "2026"
@@ -15,19 +15,18 @@ technologies:
   - "Time-Series Data"
   - "Data Archival"
 achievements:
-  - "Controlled active Cloud SQL storage growth through monthly partitioning, archival, and partition-based retention"
-  - "Improved recent time-series query paths by allowing PostgreSQL to prune irrelevant historical partitions"
-  - "Replaced large row-by-row retention deletes with fast removal of expired partitions"
-  - "Reduced Cloud Logging volume while preserving essential operational and diagnostic context"
+  - "Stopped unbounded Cloud SQL growth with monthly partitions, archival, and partition drops"
+  - "Recent time-series queries prune history instead of scanning it"
+  - "Replaced long row-by-row retention deletes with dropping an expired month"
+  - "Cut Cloud Logging volume while keeping the logs operators actually use"
 challenges:
-  - "Controlling continuously growing time-series storage without slowing recent-data queries"
-  - "Removing historical data efficiently while preserving an archive"
-  - "Reducing logging volume without losing information needed to operate and troubleshoot services"
+  - "Time-series and logs grow every day; deleting them naively is worse than keeping them"
+  - "Recent operational queries were paying for years of history still sitting in the hot table"
+  - "Low-value log lines were a recurring ingest-and-retain cost"
 outcomes:
-  - "More predictable Cloud SQL storage and Cloud Logging spend"
-  - "A repeatable archive-before-delete data-retention process"
-  - "Faster access paths for recent time-series data"
-  - "Lower Cloud Logging ingestion and retention volume"
+  - "Active database size and logging volume became a policy, not an accident"
+  - "Retention is archive-then-drop, not a multi-hour DELETE"
+  - "Recent telemetry queries hit a smaller working set"
 client: "Zimi Ltd"
 role: "Senior Cloud Engineer"
 tags:
@@ -38,91 +37,47 @@ tags:
   - "Cloud Logging"
 category: "cloud"
 publishDate: 2026-08-11
-lastUpdated: 2026-08-11
+lastUpdated: 2026-08-27
 ---
 
-## Project Overview
+The Zimi platform stores years of device telemetry and control history in Cloud SQL for PostgreSQL, and it sends application logs to Cloud Logging. Both grow every day. I treated that growth as a data-lifecycle problem: what must stay hot, what can be archived, and what should never have been written.
 
-This production GCP cost-control initiative addressed two continuously growing sources of recurring spend: time-series records in Cloud SQL for PostgreSQL and application logs sent to Cloud Logging.
+## The storage bill was a data-lifecycle problem
 
-The goal was not simply to delete more data or log less. It was to establish deliberate lifecycle policies that retained the information needed for operations while keeping active storage and logging volume controlled over time.
+Time-series tables do not plateau. Every power sample and state change lands in the operational database, so storage, backups, and query plans all get heavier even when nobody is asking about last year.
 
-## The Challenge
+Retention as `DELETE FROM … WHERE time < …` made that worse. Removing millions of rows is a long write: WAL, bloat, autovacuum, and disk that does not come back until that work finishes. Meanwhile the queries operators actually run — last hour, last day, this month — were still scanning a table that contained the whole history.
 
-Time-series systems naturally accumulate data. Keeping all historical records in the operational Cloud SQL database increased storage usage, made retention harder to manage, and caused queries to operate against a larger active dataset than necessary.
+Logging had the same shape. Repetitive, low-signal lines were cheap to `console.log` and expensive to ingest and retain.
 
-Large row-by-row deletion jobs were also an inefficient retention mechanism. They could run for a long time, add database load, create substantial write-ahead logging, and require additional cleanup before storage could be reclaimed.
+## What changed
 
-Application logging had a similar lifecycle problem. Repetitive or low-value messages increased ingestion and retention volume even though they provided little benefit during monitoring or incident investigation.
+I converted the hot time-series tables to monthly PostgreSQL range partitions on Cloud SQL. New months are created before they are needed; inserts land in the current month; older months are physical tables we can manage on their own.
 
-## Monthly PostgreSQL Partitions
+The retention path is then boring on purpose:
 
-I organised the time-series tables as monthly PostgreSQL range partitions in Cloud SQL. Each partition represents a clear operational period and can be managed independently from the rest of the table.
+1. Archive a month that has left the active window.
+2. Check the archive is complete.
+3. `DROP` the partition from Cloud SQL.
 
-This supports two important behaviours:
+Dropping a partition is a metadata operation. It does not replay every row as a delete.
 
-- Queries for recent time windows can use partition pruning and avoid scanning unrelated historical partitions.
-- Retention can operate on a complete partition rather than deleting millions of individual rows.
+On the logging side I went through what the services emitted and kept lines that help with monitoring, incidents, state changes, and audit. Noise that never appeared in those workflows stopped going to Cloud Logging.
 
-Monthly boundaries provide a practical balance: they are fine-grained enough for common recent-data access patterns while remaining straightforward to create, monitor, archive, and remove.
+## Why drop a month, not delete rows
 
-## Archive and Retention Workflow
+Monthly boundaries match how this data is used. Support and operations almost always ask about *recent* time. Partition pruning lets PostgreSQL ignore months outside the query range, so the hot path stays a few partitions even as the estate ages.
 
-The lifecycle follows a repeatable process:
+A month is also a sane ops unit: large enough that we are not managing hundreds of tiny tables, small enough to archive and drop on a schedule. Daily partitions would have been more moving parts; yearly partitions would have left too much history in the active query path.
 
-1. Create upcoming monthly partitions before they are needed.
-2. Route new time-series records into the appropriate partition.
-3. Monitor partition size, active storage, and query behaviour.
-4. Archive partitions after they pass the active retention period.
-5. Validate that the archive is complete and usable.
-6. Drop the expired partition from the operational database.
+The important product decision sits next to the SQL: how long is “active,” where does the archive live, and who is allowed to read it. Partitioning without that agreement just moves the mess.
 
-Dropping a partition is a fast metadata-level operation compared with a large row-by-row `DELETE`. It also makes retention easier to reason about because the unit being archived and removed is explicit.
+## After
 
-## Recent-Data Query Performance
+Active Cloud SQL size is now governed by the retention window, not by how long the platform has been running. Recent telemetry queries work against a smaller set of partitions. Retention no longer depends on a multi-hour delete job.
 
-Most operational queries focus on recent time windows. Partition pruning allows PostgreSQL to target only the monthly partitions that overlap the requested range.
+Cloud Logging ingest and retain less, without dropping the context needed to run the platform.
 
-The result is a smaller working set for common queries and a data model whose query behaviour remains more predictable as historical records accumulate outside the active window.
+Approved before-and-after storage, query, and logging figures are not published here.
 
-## Logging Optimisation
-
-I reviewed application logging to distinguish actionable operational information from repetitive noise.
-
-The revised approach preserves the context needed for:
-
-- Production monitoring
-- Troubleshooting and incident investigation
-- Important state transitions and failures
-- Auditability where required
-
-Messages that did not materially help those activities were removed or adjusted so they were not unnecessarily ingested by Cloud Logging. This lowered logging volume without sacrificing essential diagnostic context.
-
-## Results
-
-### Storage and cost control
-
-- Constrained active Cloud SQL storage and its associated cost growth
-- Established a predictable archive-before-delete retention process
-- Made historical-data removal faster and operationally simpler
-- Reduced Cloud Logging ingestion and retention volume
-
-### Query and operational behaviour
-
-- Improved access paths for recent time-series queries through partition pruning
-- Avoided large recurring row-deletion jobs
-- Made monthly storage growth and retention easier to monitor
-- Preserved the logs needed to operate and troubleshoot the platform
-
-## Skills Demonstrated
-
-- GCP cost and capacity optimisation
-- Cloud SQL for PostgreSQL operations
-- PostgreSQL range partitioning and partition pruning
-- Time-series data lifecycle design
-- Data archival and retention planning
-- Production logging and observability design
-
-## Measurement
-
-The mechanisms and outcomes are documented here without publishing confidential cost or storage figures. Approved before-and-after storage, query, and logging metrics can be added when they are available for public use.
+Related: the same data stores sit in [the C4 model](/projects/iot-platform-architecture) — document snapshot, Redis hot path, partitioned PostgreSQL history, archive.
