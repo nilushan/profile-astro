@@ -1,6 +1,6 @@
 ---
 title: "SmartSMB Human-in-the-Loop AI Workflow"
-description: "A learning system for small-business enquiries: LangGraph routes the job, code calculates the quote, PostgreSQL holds state, and a person approves before anything is sent."
+description: "A learning system for small-business enquiries: LangGraph routes the job, code calculates the quote, PostgreSQL holds state, and quotes above a configurable threshold require approval."
 period: "2026"
 status: "completed"
 featured: false
@@ -43,7 +43,7 @@ lastUpdated: 2026-08-27
 
 ## Why I built this
 
-I wanted to learn how far a stateful agent can go on a small-business front desk *without* giving the model the company chequebook. The question was not “can an LLM talk like a receptionist.” It was: can it triage an enquiry, fill a quote, and stop until a person says send.
+I wanted to learn how far a stateful agent can go on a small-business front desk *without* giving the model the company chequebook. The question was not “can an LLM talk like a receptionist.” It was: can it triage an enquiry, fill a quote, and require a person to approve amounts above a configurable threshold.
 
 This is a personal learning project. It is not running a business.
 
@@ -51,12 +51,12 @@ This is a personal learning project. It is not running a business.
 
 The sample accepts a customer message and routes it:
 
-- **Quote** — collect job details, call pricing/availability tools, compute a price in application code, pause if the amount needs a person
+- **Quote** — collect job details, call pricing/availability tools, compute a price in application code, and pause when the amount exceeds a configurable approval threshold
 - **Complaint** — dedicated path, not mixed into quoting
 - **FAQ** — common information
 - **Unclear** — hand off instead of guessing
 
-What it does not do: production auth, real telephony, a live company knowledge base, or unsupervised sends. Models are swappable; the graph, schemas, and side effects are the system.
+What it does not do: production auth, real telephony, a live company knowledge base, or real customer-channel delivery. Quotes at or below the configured threshold follow the automatic send path; larger quotes pause for an operator. Models are swappable; the graph, schemas, and side effects are the system.
 
 Repo: [nilushan/langgraph-frontdesk-agent](https://github.com/nilushan/langgraph-frontdesk-agent).
 
@@ -67,7 +67,7 @@ A quote thread looks like this:
 1. Classify the message.
 2. If it is a quote, loop: ask for missing fields, call Zod-validated tools (pricing, availability).
 3. A **code node** turns those fields into a number. The model does not write the total.
-4. Over a threshold, LangGraph **interrupts**. An operator approves, revises the structured fields, or rejects.
+4. Above the configured threshold, LangGraph **interrupts**. An operator approves, revises the structured fields, or rejects; quotes at or below it continue to delivery automatically.
 5. A revision cannot jump to the customer. It re-enters approval, with who changed what.
 6. Delivery is idempotent on quote identity, then the thread continues.
 

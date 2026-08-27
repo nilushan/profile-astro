@@ -1,6 +1,6 @@
 ---
 title: "Keyless Multi-Environment CI/CD on GCP"
-description: "Build once to Artifact Registry, promote the same image through dev/staging/prod, render Kustomize overlays, and authenticate GitHub Actions and GKE with Workload Identity Federation instead of JSON keys."
+description: "Build once to Artifact Registry for GKE and Cloud Run, promote the same image through dev/staging/prod, coordinate Firebase artifacts under the same release, and replace JSON keys with Workload Identity Federation."
 image: /images/projects/keyless-cicd-gcp.jpg
 imageFit: contain
 period: "2026–Present"
@@ -45,7 +45,7 @@ publishDate: 2026-08-10
 lastUpdated: 2026-08-27
 ---
 
-This is the delivery path for the Zimi GCP platform: GitHub Actions builds a versioned image once, stores it in Artifact Registry, and promotes that same digest through development, staging, and production. Kubernetes config is composed with Kustomize. GitHub and GKE authenticate to GCP with Workload Identity Federation, not JSON keys.
+This is the delivery path for the Zimi GCP platform: GitHub Actions builds a versioned image once, stores it in Artifact Registry, and promotes that same digest through development, staging, and production for GKE and Cloud Run. Firebase Hosting and Functions use their own release artifacts and deployment toolchain. Kubernetes config is composed with Kustomize. GitHub and GKE authenticate to GCP with Workload Identity Federation, not JSON keys.
 
 ## Rebuilds, copied YAML, and keys in the cluster
 
@@ -57,7 +57,7 @@ Credentials were the third copy. Service-account keys in GitHub secrets and keys
 
 ## What changed
 
-Main-branch CI builds one versioned container image and publishes it to a shared Artifact Registry. Development, staging, and production deploy that artifact. Runtime-specific jobs still exist — GKE, Cloud Run, Firebase — but they consume the same digest rather than rebuilding it.
+Main-branch CI builds one versioned container image and publishes it to a shared Artifact Registry. GKE and Cloud Run promote that digest through development, staging, and production instead of rebuilding it. Firebase is a separate path tied to the same source revision and release: Hosting deploys built directory contents, while Functions are packaged and built through the Firebase toolchain.
 
 Kubernetes manifests are layered:
 
@@ -85,6 +85,6 @@ The trade-off is setup cost. Federation needs a pool, provider, attribute mappin
 
 Environments promote an immutable artifact instead of rebuilding it. Kubernetes differences live in overlays. GitHub Actions and GKE workloads talk to GCP without long-lived keys in the repo or the cluster.
 
-The same path covers Kubernetes, Cloud Run, and Firebase. A production deploy traces back to a source revision and an Artifact Registry version.
+The coordinated release covers Kubernetes and Cloud Run with the promoted container digest, and Firebase with separately built deployment artifacts. Every production deploy traces back to the same source revision and release; only GKE and Cloud Run trace to the shared Artifact Registry digest.
 
 Related: [production deployment in the C4 model](/projects/iot-platform-architecture).

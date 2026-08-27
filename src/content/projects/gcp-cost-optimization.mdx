@@ -46,7 +46,7 @@ The Zimi platform stores years of device telemetry and control history in Cloud 
 
 Time-series tables do not plateau. Every power sample and state change lands in the operational database, so storage, backups, and query plans all get heavier even when nobody is asking about last year.
 
-Retention as `DELETE FROM … WHERE time < …` made that worse. Removing millions of rows is a long write: WAL, bloat, autovacuum, and disk that does not come back until that work finishes. Meanwhile the queries operators actually run — last hour, last day, this month — were still scanning a table that contained the whole history.
+Retention as `DELETE FROM … WHERE time < …` made that worse. Removing millions of rows is a long write that generates WAL, dead tuples, bloat, and autovacuum pressure. Ordinary `VACUUM` generally makes that space reusable inside PostgreSQL; it does not return the table's disk allocation to the operating system. Meanwhile the queries operators actually run — last hour, last day, this month — were still scanning a table that contained the whole history.
 
 Logging had the same shape. Repetitive, low-signal lines were cheap to `console.log` and expensive to ingest and retain.
 
@@ -60,7 +60,7 @@ The retention path is then boring on purpose:
 2. Check the archive is complete.
 3. `DROP` the partition from Cloud SQL.
 
-Dropping a partition is a metadata operation. It does not replay every row as a delete.
+Dropping an expired partition avoids row-by-row deletion and the resulting vacuum overhead. It is fast, but PostgreSQL takes an `ACCESS EXCLUSIVE` lock on the parent table for the operation, so the retention job runs in a controlled window and keeps the lock brief.
 
 On the logging side I went through what the services emitted and kept lines that help with monitoring, incidents, state changes, and audit. Noise that never appeared in those workflows stopped going to Cloud Logging.
 
